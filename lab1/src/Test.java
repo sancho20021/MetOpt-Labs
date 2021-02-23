@@ -1,6 +1,4 @@
-import methods.DichotomyMinimizer;
-import methods.Function;
-import methods.Minimizer;
+import methods.*;
 
 public class Test {
     public static void main(String[] args) {
@@ -10,6 +8,15 @@ public class Test {
             System.out.println(dm.next());
         }
         double min = dm.findMinimum();
+        System.out.println("min = (" + min + ", " + f9.evaluate(min) + ")");
+
+        System.out.println();
+
+        Minimizer fm = new FibonacciMinimizer(f9, 0, 1, 0.00001);
+        while (fm.hasNext()) {
+            System.out.println(fm.next());
+        }
+        min = fm.findMinimum();
         System.out.println("min = (" + min + ", " + f9.evaluate(min) + ")");
     }
 }

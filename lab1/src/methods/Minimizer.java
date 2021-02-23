@@ -5,6 +5,9 @@ public abstract class Minimizer {
     protected final double a, b, eps;
 
     public Minimizer(final Function fun, final double a, final double b, final double eps) {
+        if (eps <= 0) {
+            throw new IllegalArgumentException("eps should be > 0");
+        }
         this.fun = fun;
         this.a = a;
         this.b = b;
@@ -17,5 +20,12 @@ public abstract class Minimizer {
 
     public abstract void restart();
 
-    public abstract double findMinimum();
+    public double findMinimum() {
+        restart();
+        Section ab = new Section(a, b);
+        while (hasNext()) {
+            ab = next();
+        }
+        return (ab.a + ab.b) / 2;
+    }
 }
