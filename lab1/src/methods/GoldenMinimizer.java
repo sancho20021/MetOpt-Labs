@@ -51,12 +51,4 @@ public class GoldenMinimizer extends Minimizer {
         curA = a;
         curB = b;
     }
-
-    @Override
-    public double findMinimum() {
-        while (hasNext()) {
-            next();
-        }
-        return (curA + curB) / 2;
-    }
 }

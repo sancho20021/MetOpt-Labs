@@ -20,5 +20,12 @@ public abstract class Minimizer {
 
     public abstract void restart();
 
-    public abstract double findMinimum();
+    public double findMinimum() {
+        restart();
+        Section ab = new Section(a, b);
+        while (hasNext()) {
+            ab = next();
+        }
+        return (ab.a + ab.b) / 2;
+    }
 }

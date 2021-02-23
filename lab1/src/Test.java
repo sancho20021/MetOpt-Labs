@@ -1,7 +1,4 @@
-import methods.DichotomyMinimizer;
-import methods.Function;
-import methods.GoldenMinimizer;
-import methods.Minimizer;
+import methods.*;
 
 public class Test {
     public static void main(String[] args) {
@@ -15,11 +12,11 @@ public class Test {
 
         System.out.println();
 
-        Minimizer gm = new GoldenMinimizer(f9, 0, 1, 0.00001);
-        while (gm.hasNext()) {
-            System.out.println(gm.next());
+        Minimizer fm = new FibonacciMinimizer(f9, 0, 1, 0.00001);
+        while (fm.hasNext()) {
+            System.out.println(fm.next());
         }
-        min = gm.findMinimum();
+        min = fm.findMinimum();
         System.out.println("min = (" + min + ", " + f9.evaluate(min) + ")");
     }
 }
