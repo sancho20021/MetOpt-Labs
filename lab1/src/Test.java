@@ -1,5 +1,6 @@
 import methods.DichotomyMinimizer;
 import methods.Function;
+import methods.GoldenMinimizer;
 import methods.Minimizer;
 
 public class Test {
@@ -10,6 +11,15 @@ public class Test {
             System.out.println(dm.next());
         }
         double min = dm.findMinimum();
+        System.out.println("min = (" + min + ", " + f9.evaluate(min) + ")");
+
+        System.out.println();
+
+        Minimizer gm = new GoldenMinimizer(f9, 0, 1, 0.00001);
+        while (gm.hasNext()) {
+            System.out.println(gm.next());
+        }
+        min = gm.findMinimum();
         System.out.println("min = (" + min + ", " + f9.evaluate(min) + ")");
     }
 }
