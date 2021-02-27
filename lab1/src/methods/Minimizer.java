@@ -16,16 +16,24 @@ public abstract class Minimizer {
 
     public abstract boolean hasNext();
 
-    public abstract Section next();
+    protected abstract Section nextIteration();
+
+    public Section next() {
+        if (!hasNext()) {
+            return null;
+        }
+        return nextIteration();
+    }
 
     public abstract void restart();
 
     public double findMinimum() {
         restart();
-        Section ab = new Section(a, b);
         while (hasNext()) {
-            ab = next();
+            nextIteration();
         }
-        return (ab.a + ab.b) / 2;
+        return getCurrentXMin();
     }
+
+    protected abstract double getCurrentXMin();
 }

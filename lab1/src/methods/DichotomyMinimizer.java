@@ -10,8 +10,7 @@ public class DichotomyMinimizer extends Minimizer {
             throw new IllegalArgumentException("delta should be less then 2*eps");
         }
         this.delta = delta;
-        curA = a;
-        curB = b;
+        restart();
     }
 
     @Override
@@ -20,10 +19,7 @@ public class DichotomyMinimizer extends Minimizer {
     }
 
     @Override
-    public Section next() {
-        if (!hasNext()) {
-            return null;
-        }
+    protected Section nextIteration() {
         double x1 = (curA + curB - delta) / 2;
         double x2 = (curA + curB + delta) / 2;
         if (fun.evaluate(x1) <= fun.evaluate(x2)) {
@@ -38,5 +34,9 @@ public class DichotomyMinimizer extends Minimizer {
     public void restart() {
         curA = a;
         curB = b;
+    }
+    @Override
+    protected double getCurrentXMin() {
+        return (curA + curB) / 2;
     }
 }

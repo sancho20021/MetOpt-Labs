@@ -11,14 +11,12 @@ public class FibonacciMinimizer extends Minimizer {
 
     public FibonacciMinimizer(Function fun, double a, double b, double eps) {
         super(fun, a, b, eps);
-        curA = a;
-        curB = b;
         int t = 0;
         while (fib(t) <= (b - a) / eps) {
             t++;
         }
         n = t;
-        curIteration = 0;
+        restart();
     }
 
     @Override
@@ -27,10 +25,7 @@ public class FibonacciMinimizer extends Minimizer {
     }
 
     @Override
-    public Section next() {
-        if (!hasNext()) {
-            return null;
-        }
+    protected Section nextIteration() {
         double x1 = curA + fib(n - curIteration + 1) / fib(n + 2) * (b - a);
         double x2 = curA + fib(n - curIteration + 2) / fib(n + 2) * (b - a);
         curIteration++;
@@ -55,5 +50,9 @@ public class FibonacciMinimizer extends Minimizer {
             fibonacciNums.add(fibonacciNums.get(size - 1) + fibonacciNums.get(size - 2));
         }
         return fibonacciNums.get(n);
+    }
+    @Override
+    protected double getCurrentXMin() {
+        return (curA + curB) / 2;
     }
 }
