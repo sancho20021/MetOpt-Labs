@@ -11,26 +11,7 @@ public class Utility {
 
     public static final int PRECISION = 6;
 
-    public static List<List<String>> getBasicData(Minimizer min) {
-        return getBasicData(min, 6);
-    }
-
-    public static List<List<String>> getBasicData(Minimizer min, int precision) {
-        List<List<String>> res = new ArrayList<>();
-        min.restart();
-        while (min.hasNext()) {
-            Section s = min.next();
-            res.add(List.of(
-                    s.toString(precision),
-                    formatDouble(precision, s.getB() - s.getA()),
-                    formatDouble(precision, min.getCurrentXMin()),
-                    formatDouble(precision, min.getFun().evaluate(min.getCurrentXMin()))
-            ));
-        }
-        return res;
-    }
-
-    public static List<List<String>> getGoalData(Minimizer min) {
+    public static Table getGoalData(Minimizer min) {
         List<List<String>> res = new ArrayList<>();
         min.restart();
         double prev = 1;
@@ -45,29 +26,16 @@ public class Utility {
             ));
             prev = s.getB() - s.getA();
         }
-        return res;
-    }
-
-    // tex table entries format
-    public static String dataToTex(List<List<String>> data) {
-        StringBuilder res = new StringBuilder();
-        // contents
-        for (int i = 0; i < data.size(); i++) {
-            res.append("\\hline").append(System.lineSeparator());
-            res.append(String.join(" & ", data.get(i)));
-            res.append("\\\\").append(System.lineSeparator());
-        }
-
-        res.append("\\hline").append(System.lineSeparator());
-
-        return res.toString();
+        return new Table("Table with required values",
+                List.of("i", "i-th segment", "d_i/d_{i-1}", "x_{min}", "f(x_{min})"),
+                res);
     }
 
     // comma-separated values
-    public static String dataToCSV(List<List<String>> data) {
+    public static String getCSVTable(Table data) {
         StringBuilder res = new StringBuilder();
-        for (int i = 0; i < data.size(); i++) {
-            res.append(String.join(",", data.get(i)));
+        for (int i = 0; i < data.table.size(); i++) {
+            res.append(String.join(",", data.table.get(i)));
             res.append(System.lineSeparator());
         }
 

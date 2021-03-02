@@ -10,28 +10,9 @@ public class Test {
         double a5 = 0.1, b5 = 2.5, eps5 = 0.000001;
         Function f5 = x -> (10 * x * Math.log(x) - x * x / 2);
         Minimizer m2 = new ParabolicMinimizer(f5, a5, b5, eps5);
-        testMinimizer(f5, a5, b5, m2);
 
-        System.out.println(Utility.dataToTex(Utility.getBasicData(m2)));
+        System.out.println(Utility.getTexTable(
+                Utility.getMinimizerTestData("Parabolic minimizer", m2, Utility.PRECISION)));
     }
-
-    private static void testMinimizer(Function f, double a, double b, Minimizer m) {
-        Minimizer dm = new DichotomyMinimizer(f, a, b, 0.000001, 0.000001);
-        while (dm.hasNext()) {
-            System.out.println(dm.next());
-        }
-        double min = dm.findMinimum();
-        System.out.println("min = (" + min + ", " + f.evaluate(min) + ")");
-
-        System.out.println();
-
-        System.out.println("Testing " + dm.getClass().toString() + " on function" + f.toString());
-        while (m.hasNext()) {
-            System.out.println(m.next());
-        }
-        min = m.findMinimum();
-        System.out.println("min = (" + min + ", " + f.evaluate(min) + ")");
-    }
-
 
 }

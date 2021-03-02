@@ -1,4 +1,5 @@
 import methods.*;
+import utils.Table;
 import utils.Utility;
 
 import java.util.List;
@@ -16,12 +17,12 @@ public class Task2 {
     }
 
     private static void printData(String metaData, Minimizer m2) {
-        List<List<String>> goalData = Utility.getGoalData(m2);
+        Table goalData = Utility.getGoalData(m2);
         System.out.println(metaData);
         System.out.println(Utility.getTexTable(
                 metaData,
                 List.of("i", "\\Delta_i", "|\\Delta_i|/|\\Delta_{i-1}|", "x_{min}", "f(x_{min})"),
-                goalData));
+                goalData.table));
         System.out.println("=".repeat(42));
     }
 }
