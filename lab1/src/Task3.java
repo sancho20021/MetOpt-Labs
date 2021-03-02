@@ -38,10 +38,10 @@ public class Task3 {
             count = 0;
             new CombinationMinimizer(fCounting, a, b, eps).findMinimum();
             row.add(Integer.toString(count));
-            eps /= 2;
+            eps /= 10;
             table.add(row);
         }
-        List<String> cols = List.of("eps", "Dichotomy", "Golden", "Fibonacci", "Parabolic", "Brent");
-        System.out.println(Utility.getTexTable("eps to number of fun evaluations", cols, table));
+        List<String> cols = List.of("$\\epsilon$", "Дихотомия", "З. сечения", "Фибоначчи", "Парабол", "Брента");
+        System.out.println(Utility.getTexTable("Зависимость числа вычислений от точности", cols, table));
     }
 }

@@ -12,15 +12,19 @@ public class Utility {
     public static final int PRECISION = 6;
 
     public static List<List<String>> getBasicData(Minimizer min) {
+        return getBasicData(min, 6);
+    }
+
+    public static List<List<String>> getBasicData(Minimizer min, int precision) {
         List<List<String>> res = new ArrayList<>();
         min.restart();
         while (min.hasNext()) {
             Section s = min.next();
             res.add(List.of(
-                    s.toString(PRECISION),
-                    formatDouble(PRECISION, s.getB() - s.getA()),
-                    formatDouble(PRECISION, min.getCurrentXMin()),
-                    formatDouble(PRECISION, min.getFun().evaluate(min.getCurrentXMin()))
+                    s.toString(precision),
+                    formatDouble(precision, s.getB() - s.getA()),
+                    formatDouble(precision, min.getCurrentXMin()),
+                    formatDouble(precision, min.getFun().evaluate(min.getCurrentXMin()))
             ));
         }
         return res;
@@ -96,5 +100,25 @@ public class Utility {
 
         s.append("\\end{centering}").append(br);
         return s.toString();
+    }
+
+    public static String getTexTable(Table table) {
+        return getTexTable(table.name, table.cols, table.table);
+    }
+
+    public static Table getMinimizerTestData(String minName, Minimizer min, int precision) {
+        Table res = new Table(minName, List.of("интервалы", "длина инт.", "точки", "знач. ф-ции"), new ArrayList<>());
+        min.restart();
+        Section s = new Section(min.getA(), min.getB());
+        do {
+            res.table.add(List.of(
+                    "{" + s.toString(precision) + "}",
+                    formatDouble(precision, s.getB() - s.getA()),
+                    formatDouble(precision, min.getCurrentXMin()),
+                    formatDouble(precision, min.getFun().evaluate(min.getCurrentXMin()))
+            ));
+            s = min.next();
+        } while (s != null);
+        return res;
     }
 }
