@@ -1,4 +1,7 @@
-import methods.*;
+import methods.DichotomyMinimizer;
+import methods.Function;
+import methods.Minimizer;
+import methods.ParabolicMinimizer;
 
 import utils.Utility;
 

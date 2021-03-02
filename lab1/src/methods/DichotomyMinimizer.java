@@ -13,6 +13,10 @@ public class DichotomyMinimizer extends Minimizer {
         restart();
     }
 
+    public DichotomyMinimizer(final Function fun, final double a, final double b, final double eps) {
+        this(fun, a, b, eps, eps / 2);
+    }
+
     @Override
     public boolean hasNext() {
         return (curB - curA) > 2 * eps;
@@ -35,6 +39,7 @@ public class DichotomyMinimizer extends Minimizer {
         curA = a;
         curB = b;
     }
+
     @Override
     public double getCurrentXMin() {
         return (curA + curB) / 2;
