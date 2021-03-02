@@ -97,7 +97,7 @@ public class CombinationMinimizer extends Minimizer {
     }
 
     @Override
-    protected double getCurrentXMin() {
+    public double getCurrentXMin() {
         return x;
     }
 }

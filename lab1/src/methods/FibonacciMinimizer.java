@@ -52,7 +52,7 @@ public class FibonacciMinimizer extends Minimizer {
         return fibonacciNums.get(n);
     }
     @Override
-    protected double getCurrentXMin() {
+    public double getCurrentXMin() {
         return (curA + curB) / 2;
     }
 }

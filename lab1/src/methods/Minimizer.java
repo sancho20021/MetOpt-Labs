@@ -35,5 +35,9 @@ public abstract class Minimizer {
         return getCurrentXMin();
     }
 
-    protected abstract double getCurrentXMin();
+    public abstract double getCurrentXMin();
+
+    public Function getFun() {
+        return fun;
+    }
 }

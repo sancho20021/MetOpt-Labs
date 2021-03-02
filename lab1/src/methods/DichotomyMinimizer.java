@@ -36,7 +36,7 @@ public class DichotomyMinimizer extends Minimizer {
         curB = b;
     }
     @Override
-    protected double getCurrentXMin() {
+    public double getCurrentXMin() {
         return (curA + curB) / 2;
     }
 }

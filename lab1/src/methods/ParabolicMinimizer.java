@@ -48,11 +48,11 @@ public class ParabolicMinimizer extends Minimizer {
     @Override
     public void restart() {
         x1 = a;
-        x2 = (a + b) / 2;
         x3 = b;
         f1 = fun.evaluate(x1);
-        f2 = fun.evaluate(x2);
         f3 = fun.evaluate(x3);
+
+        setInitialX2();
 
         curXMin = Double.MAX_VALUE / 10;
         prevXMin = 0;
@@ -64,7 +64,7 @@ public class ParabolicMinimizer extends Minimizer {
     }
 
     @Override
-    protected double getCurrentXMin() {
+    public double getCurrentXMin() {
         return curXMin;
     }
 
@@ -78,5 +78,20 @@ public class ParabolicMinimizer extends Minimizer {
         double a1 = (f2 - f1) / (x2 - x1);
         double a2 = 1 / (x3 - x2) * ((f3 - f1) / (x3 - x1) - (f2 - f1) / (x2 - x1));
         return new double[]{a0, a1, a2};
+    }
+
+    private void setInitialX2() {
+        double step = (b - a) / 3;
+        while (true) {
+            for (double x = a + step; x <= b - step; x += step) {
+                double fx = fun.evaluate(x);
+                if (fx <= f1 && fx <= f3) {
+                    x2 = x;
+                    f2 = fx;
+                    return;
+                }
+            }
+            step /= 2;
+        }
     }
 }

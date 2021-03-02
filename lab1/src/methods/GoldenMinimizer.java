@@ -49,7 +49,7 @@ public class GoldenMinimizer extends Minimizer {
     }
 
     @Override
-    protected double getCurrentXMin() {
+    public double getCurrentXMin() {
         return (curA + curB) / 2;
     }
 }
