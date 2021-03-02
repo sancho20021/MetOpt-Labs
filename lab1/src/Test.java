@@ -7,11 +7,10 @@ import utils.Utility;
 
 public class Test {
     public static void main(String[] args) {
-        double a5 = 0.1, b5 = 2.5;
-        Function f9 = x -> (Math.exp(3 * x) + 5 * Math.exp(-2 * x));
+        double a5 = 0.1, b5 = 2.5, eps5 = 0.000001;
         Function f5 = x -> (10 * x * Math.log(x) - x * x / 2);
-        Minimizer m2 = new ParabolicMinimizer(f5, a5, b5, 0.000001);
-        testMinimizer(f5, 0.1, 2.5, m2);
+        Minimizer m2 = new ParabolicMinimizer(f5, a5, b5, eps5);
+        testMinimizer(f5, a5, b5, m2);
 
         System.out.println(Utility.dataToTex(Utility.getBasicData(m2)));
     }

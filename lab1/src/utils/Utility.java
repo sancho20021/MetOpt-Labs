@@ -8,34 +8,64 @@ import java.util.List;
 import java.util.Locale;
 
 public class Utility {
+
+    public static final int PRECISION = 6;
+
     public static List<List<String>> getBasicData(Minimizer min) {
         List<List<String>> res = new ArrayList<>();
-        res.add(List.of("intervals", "lengths", "xs", "fs"));
         min.restart();
         while (min.hasNext()) {
             Section s = min.next();
             res.add(List.of(
-                    s.toString(6),
-                    formatDouble(6, s.getB() - s.getA()),
-                    formatDouble(6, min.getCurrentXMin()),
-                    formatDouble(6, min.getFun().evaluate(min.getCurrentXMin()))
+                    s.toString(PRECISION),
+                    formatDouble(PRECISION, s.getB() - s.getA()),
+                    formatDouble(PRECISION, min.getCurrentXMin()),
+                    formatDouble(PRECISION, min.getFun().evaluate(min.getCurrentXMin()))
             ));
         }
         return res;
     }
 
-    // converts any valid data to tex table format
+    public static List<List<String>> getGoalData(Minimizer min) {
+        List<List<String>> res = new ArrayList<>();
+        min.restart();
+        double prev = 1;
+        while (min.hasNext()) {
+            Section s = min.next();
+            res.add(List.of(
+                    String.valueOf(res.size()),
+                    s.toString(PRECISION),
+                    formatDouble(PRECISION, (s.getB() - s.getA()) / prev),
+                    formatDouble(PRECISION, min.getCurrentXMin()),
+                    formatDouble(PRECISION, min.getFun().evaluate(min.getCurrentXMin()))
+            ));
+            prev = s.getB() - s.getA();
+        }
+        return res;
+    }
+
+    // tex table entries format
     public static String dataToTex(List<List<String>> data) {
-        // header
         StringBuilder res = new StringBuilder();
         // contents
         for (int i = 0; i < data.size(); i++) {
-            res.append("\\hline" + System.lineSeparator());
+            res.append("\\hline").append(System.lineSeparator());
             res.append(String.join(" & ", data.get(i)));
-            res.append("\\\\" + System.lineSeparator());
+            res.append("\\\\").append(System.lineSeparator());
         }
 
-        res.append("\\hline" + System.lineSeparator());
+        res.append("\\hline").append(System.lineSeparator());
+
+        return res.toString();
+    }
+
+    // comma-separated values
+    public static String dataToCSV(List<List<String>> data) {
+        StringBuilder res = new StringBuilder();
+        for (int i = 0; i < data.size(); i++) {
+            res.append(String.join(",", data.get(i)));
+            res.append(System.lineSeparator());
+        }
 
         return res.toString();
     }
