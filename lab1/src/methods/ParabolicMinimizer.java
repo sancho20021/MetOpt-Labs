@@ -81,8 +81,9 @@ public class ParabolicMinimizer extends Minimizer {
     }
 
     private void setInitialX2() {
+        int count = 100;
         double step = (b - a) / 3;
-        while (true) {
+        while (count > 0) {
             for (double x = a + step; x <= b - step; x += step) {
                 double fx = fun.evaluate(x);
                 if (fx <= f1 && fx <= f3) {
@@ -90,8 +91,10 @@ public class ParabolicMinimizer extends Minimizer {
                     f2 = fx;
                     return;
                 }
+                count--;
             }
             step /= 2;
         }
+        throw new IllegalStateException("No suitable x1 x2 x3 found for Parabolic minimizer");
     }
 }
