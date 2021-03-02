@@ -40,4 +40,12 @@ public abstract class Minimizer {
     public Function getFun() {
         return fun;
     }
+
+    public double getA() {
+        return a;
+    }
+
+    public double getB() {
+        return b;
+    }
 }

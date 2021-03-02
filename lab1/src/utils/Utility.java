@@ -79,15 +79,16 @@ public class Utility {
     public static Table getMinimizerTestData(String minName, Minimizer min, int precision) {
         Table res = new Table(minName, List.of("интервалы", "длина инт.", "точки", "знач. ф-ции"), new ArrayList<>());
         min.restart();
-        while (min.hasNext()) {
-            Section s = min.next();
+        Section s = new Section(min.getA(), min.getB());
+        do {
             res.table.add(List.of(
                     "{" + s.toString(precision) + "}",
                     formatDouble(precision, s.getB() - s.getA()),
                     formatDouble(precision, min.getCurrentXMin()),
                     formatDouble(precision, min.getFun().evaluate(min.getCurrentXMin()))
             ));
-        }
+            s = min.next();
+        } while (s != null);
         return res;
     }
 }
