@@ -20,31 +20,39 @@ public class CombinationMinimizer extends Minimizer {
 
     @Override
     public boolean hasNext() {
-        return Math.abs(r - l) > eps;
+        double tol = eps * Math.abs(x) + eps / 10;
+        return Math.abs(x - (l + r) / 2) + (r - l) / 2 > 2 * tol;
     }
 
     @Override
     protected Section nextIteration() {
         double g = e;
         e = d;
+        double tol = eps * Math.abs(x) + eps / 10;
         double u = 0;
         boolean tu = false;
         if (!(x == w || w == v || x == v) && !(fx == fw || fw == fv || fx == fv)) {  // если точки различны строим аппроксимирующую параболу
             u = minimParabol(w, fw, x, fx, v, fv);
-            if (l + eps <= u && u <= r - eps && Math.abs(u - x) < (g / 2)) {  // если минимум этой параболы удовлетворяет условиям, то принимаем ее в качестве следующей точки.
-                d = Math.abs(u - x);
+            if (l < u && u < r && Math.abs(u - x) < g / 2) {
                 tu = true;
+                if (u - l < 2 * tol || r - u < 2 * tol) {
+                    u = x - Math.signum(x - (l + r) / 2) * tol;
+                }
             }
         }
         if (!tu) {  // если точка u не принялась на предыдущем шаге, находим ее с помощью метода золотого сечения.
             if (x < (r - l) / 2) {
                 u = x + K * (r - x);
-                d = r - x;
+                e = r - x;
             } else {
                 u = x - K * (x - l);
-                d = x - l;
+                e = x - l;
             }
         }
+        if (Math.abs(u - x) < tol) {
+            u = x + Math.signum(u - x) * tol; // Задаем минимальную близость между u и x
+        }
+        d = Math.abs(u - x);
         double fu = fun.apply(u);
         if (fu <= fx) { // вычисления новых значений функции и точек.
             if (u >= x) {
