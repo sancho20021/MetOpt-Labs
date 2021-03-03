@@ -18,8 +18,8 @@ public class Task3 {
         List<List<String>> table = new ArrayList<>();
         double a = 0.1, b = 2.5;
         double eps = 0.5;
-        while (eps > 0.0000001) {
-            List<String> row = new ArrayList<>(List.of(formatDouble(7, eps)));
+        while (eps > 0.00000001) {
+            List<String> row = new ArrayList<>(List.of(formatDouble(9, eps)));
             count = 0;
             new DichotomyMinimizer(fCounting, a, b, eps).findMinimum();
             row.add(Integer.toString(count));
@@ -39,7 +39,7 @@ public class Task3 {
             count = 0;
             new CombinationMinimizer(fCounting, a, b, eps).findMinimum();
             row.add(Integer.toString(count));
-            eps /= 10;
+            eps /= 2;
             table.add(row);
         }
         List<String> cols = List.of("$\\epsilon$", "Дихотомия", "З. сечения", "Фибоначчи", "Парабол", "Брента");
