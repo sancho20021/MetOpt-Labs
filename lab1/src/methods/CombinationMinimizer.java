@@ -45,9 +45,6 @@ public class CombinationMinimizer extends Minimizer {
                 d = x - l;
             }
         }
-//        if (Math.abs(u - x) < eps) {
-//            u = x + Math.signum(u - x) * eps;
-//        }
         double fu = fun.apply(u);
         if (fu <= fx) {
             if (u >= x) {
