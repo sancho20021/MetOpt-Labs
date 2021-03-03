@@ -2,6 +2,7 @@ package methods;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 public class FibonacciMinimizer extends Minimizer {
     private static final List<Double> fibonacciNums = new ArrayList<>(List.of(0.0, 1.0, 1.0));
@@ -12,7 +13,7 @@ public class FibonacciMinimizer extends Minimizer {
     private final int n;
     private int curIteration;
 
-    public FibonacciMinimizer(Function fun, double a, double b, double eps) {
+    public FibonacciMinimizer(Function<Double, Double> fun, double a, double b, double eps) {
         super(fun, a, b, eps);
         int t = 0;
         while (fib(t) <= (b - a) / eps) {
@@ -31,8 +32,8 @@ public class FibonacciMinimizer extends Minimizer {
     protected Section nextIteration() {
         x1 = isX1Set ? x1 : curA + fib(n - curIteration + 1) / fib(n + 2) * (b - a);
         x2 = isX2Set ? x2 : curA + fib(n - curIteration + 2) / fib(n + 2) * (b - a);
-        f1 = isX1Set ? f1 : fun.evaluate(x1);
-        f2 = isX2Set ? f2 : fun.evaluate(x2);
+        f1 = isX1Set ? f1 : fun.apply(x1);
+        f2 = isX2Set ? f2 : fun.apply(x2);
 
         curIteration++;
         if (f1 <= f2) {

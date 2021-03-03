@@ -1,10 +1,12 @@
 package methods;
 
+import java.util.function.Function;
+
 public abstract class Minimizer {
-    protected final Function fun;
+    protected final Function<Double, Double> fun;
     protected final double a, b, eps;
 
-    public Minimizer(final Function fun, final double a, final double b, final double eps) {
+    public Minimizer(final Function<Double, Double> fun, final double a, final double b, final double eps) {
         if (eps <= 0) {
             throw new IllegalArgumentException("eps should be > 0");
         }
@@ -37,7 +39,7 @@ public abstract class Minimizer {
 
     public abstract double getCurrentXMin();
 
-    public Function getFun() {
+    public Function<Double, Double> getFun() {
         return fun;
     }
 

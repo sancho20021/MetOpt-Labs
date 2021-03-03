@@ -1,5 +1,7 @@
 package methods;
 
+import java.util.function.Function;
+
 /**
  * @author Yaroslav Ilin
  */
@@ -11,7 +13,7 @@ public class CombinationMinimizer extends Minimizer {
     private double d, e;
     private double l, r;
 
-    public CombinationMinimizer(Function fun, double a, double b, double eps) {
+    public CombinationMinimizer(Function<Double, Double> fun, double a, double b, double eps) {
         super(fun, a, b, eps);
         restart();
     }
@@ -46,7 +48,7 @@ public class CombinationMinimizer extends Minimizer {
 //        if (Math.abs(u - x) < eps) {
 //            u = x + Math.signum(u - x) * eps;
 //        }
-        double fu = fun.evaluate(u);
+        double fu = fun.apply(u);
         if (fu <= fx) {
             if (u >= x) {
                 l = x;
@@ -89,7 +91,7 @@ public class CombinationMinimizer extends Minimizer {
         x = (l + r) / 2;
         w = x;
         v = x;
-        fx = fun.evaluate(x);
+        fx = fun.apply(x);
         fw = fx;
         fv = fx;
         d = r - l;

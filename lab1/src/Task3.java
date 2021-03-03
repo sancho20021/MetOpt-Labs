@@ -3,6 +3,7 @@ import utils.Table;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import static utils.Utility.formatDouble;
 
@@ -10,7 +11,7 @@ public class Task3 {
     static int count;
 
     public static void main(String[] args) {
-        Function fCounting = x -> {
+        Function<Double, Double> fCounting = x -> {
             count++;
             return 10 * x * Math.log(x) - x * x / 2;
         };

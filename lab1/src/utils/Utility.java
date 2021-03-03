@@ -22,7 +22,7 @@ public class Utility {
                     s.toString(PRECISION),
                     formatDouble(PRECISION, (s.getB() - s.getA()) / prev),
                     formatDouble(PRECISION, min.getCurrentXMin()),
-                    formatDouble(PRECISION, min.getFun().evaluate(min.getCurrentXMin()))
+                    formatDouble(PRECISION, min.getFun().apply(min.getCurrentXMin()))
             ));
             prev = s.getB() - s.getA();
         }
@@ -44,7 +44,7 @@ public class Utility {
                     "{" + s.toString(precision) + "}",
                     formatDouble(precision, s.getB() - s.getA()),
                     formatDouble(precision, min.getCurrentXMin()),
-                    formatDouble(precision, min.getFun().evaluate(min.getCurrentXMin()))
+                    formatDouble(precision, min.getFun().apply(min.getCurrentXMin()))
             ));
             s = min.next();
         } while (s != null);
