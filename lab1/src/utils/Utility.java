@@ -11,26 +11,6 @@ public class Utility {
 
     public static final int PRECISION = 6;
 
-    public static Table getGoalData(Minimizer min) {
-        List<List<String>> res = new ArrayList<>();
-        min.restart();
-        double prev = 1;
-        while (min.hasNext()) {
-            Section s = min.next();
-            res.add(List.of(
-                    String.valueOf(res.size()),
-                    s.toString(PRECISION),
-                    formatDouble(PRECISION, (s.getB() - s.getA()) / prev),
-                    formatDouble(PRECISION, min.getCurrentXMin()),
-                    formatDouble(PRECISION, min.getFun().apply(min.getCurrentXMin()))
-            ));
-            prev = s.getB() - s.getA();
-        }
-        return new Table("Table with required values",
-                List.of("i", "i-th segment", "d_i/d_{i-1}", "x_{min}", "f(x_{min})"),
-                res);
-    }
-
     public static Table getGoalData(String minName, Minimizer min) {
         Table res = new Table(
                 minName,

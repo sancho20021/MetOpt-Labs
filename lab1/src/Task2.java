@@ -2,7 +2,6 @@ import methods.*;
 import utils.Table;
 import utils.Utility;
 
-import java.util.List;
 import java.util.function.Function;
 
 public class Task2 {
@@ -17,13 +16,9 @@ public class Task2 {
         printData("Brent's combined", new CombinationMinimizer(f5, a5, b5, eps5));
     }
 
-    private static void printData(String metaData, Minimizer m2) {
-        Table goalData = Utility.getGoalData(m2);
-        System.out.println(metaData);
-        System.out.println(new Table(
-                metaData,
-                List.of("i", "\\Delta_i", "|\\Delta_i|/|\\Delta_{i-1}|", "x_{min}", "f(x_{min})"),
-                goalData.table).toTex());
-        System.out.println("=".repeat(42));
+    private static void printData(String methodName, Minimizer m2) {
+        Table goalData = Utility.getGoalData(methodName, m2);
+        System.out.print(goalData.toTex());
+        System.out.println("\\pagebreak");
     }
 }
