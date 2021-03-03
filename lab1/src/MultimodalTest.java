@@ -1,11 +1,9 @@
 import methods.*;
 import utils.Utility;
 
-import java.io.IOException;
-
 public class MultimodalTest {
     private static void printTestData(String minName, Minimizer min, int precision) {
-        System.out.println(Utility.getTexTable(Utility.getMinimizerTestData(minName, min, precision)));
+        System.out.println(Utility.getMinimizerTestData(minName, min, precision).toTex());
     }
 
     public static void main(String[] args) {

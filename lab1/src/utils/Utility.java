@@ -31,47 +31,8 @@ public class Utility {
                 res);
     }
 
-    // comma-separated values
-    public static String getCSVTable(Table data) {
-        StringBuilder res = new StringBuilder();
-        for (int i = 0; i < data.table.size(); i++) {
-            res.append(String.join(",", data.table.get(i)));
-            res.append(System.lineSeparator());
-        }
-
-        return res.toString();
-    }
-
     public static String formatDouble(int precision, double x) {
         return String.format(Locale.US, "%." + precision + "f", x);
-    }
-
-    public static String getTexTable(final String tableName, final List<String> cols, final List<List<String>> table) {
-        String br = System.lineSeparator();
-        StringBuilder s = new StringBuilder();
-        s.append("\\begin{centering}").append(br);
-        s.append("\\begin{tabular}{||").append("c ".repeat(cols.size())).append("||}").append(br);
-        s.append("\\hline").append(br);
-
-        s.append("\\multicolumn{").append(cols.size()).append("}{||c||}{").append(tableName).append("}");
-        s.append("\\\\").append(br);
-        s.append("\\hline\\hline").append(br);
-
-        s.append(String.join(" & ", cols)).append("\\\\").append(br);
-        s.append("\\hline").append(br);
-
-        for (final List<String> row : table) {
-            s.append(String.join(" & ", row)).append("\\\\").append(br);
-        }
-
-        s.append("\\hline").append(br).append("\\end{tabular}").append(br);
-
-        s.append("\\end{centering}").append(br);
-        return s.toString();
-    }
-
-    public static String getTexTable(Table table) {
-        return getTexTable(table.name, table.cols, table.table);
     }
 
     public static Table getMinimizerTestData(String minName, Minimizer min, int precision) {

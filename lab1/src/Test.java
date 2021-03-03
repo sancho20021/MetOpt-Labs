@@ -1,8 +1,6 @@
-import methods.DichotomyMinimizer;
 import methods.Function;
 import methods.Minimizer;
 import methods.ParabolicMinimizer;
-
 import utils.Utility;
 
 public class Test {
@@ -11,8 +9,8 @@ public class Test {
         Function f5 = x -> (10 * x * Math.log(x) - x * x / 2);
         Minimizer m2 = new ParabolicMinimizer(f5, a5, b5, eps5);
 
-        System.out.println(Utility.getTexTable(
-                Utility.getMinimizerTestData("Parabolic minimizer", m2, Utility.PRECISION)));
+        System.out.println(
+                Utility.getMinimizerTestData("Parabolic minimizer", m2, Utility.PRECISION).toTex());
     }
 
 }

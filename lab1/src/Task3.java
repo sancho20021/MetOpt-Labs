@@ -1,5 +1,5 @@
 import methods.*;
-import utils.Utility;
+import utils.Table;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +42,6 @@ public class Task3 {
             table.add(row);
         }
         List<String> cols = List.of("$\\epsilon$", "Дихотомия", "З. сечения", "Фибоначчи", "Парабол", "Брента");
-        System.out.println(Utility.getTexTable("Зависимость числа вычислений от точности", cols, table));
+        System.out.println(new Table("Зависимость числа вычислений от точности", cols, table).toTex());
     }
 }
