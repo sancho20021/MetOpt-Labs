@@ -10,7 +10,7 @@ public class MultimodalTest {
 
     public static void main(String[] args) {
         Function<Double, Double> multimodal = x -> Math.pow(x, 5) - Math.pow(x, 3) + x * x;
-        double a = -2, b = 2, eps = 0.01;
+        double a = -2, b = 2, eps = 0.000001;
         printTestData("Дихотомия", new DichotomyMinimizer(multimodal, a, b, eps));
         printTestData("Золотое сечение", new GoldenMinimizer(multimodal, a, b, eps));
         printTestData("Фибоначчи", new FibonacciMinimizer(multimodal, a, b, eps));
