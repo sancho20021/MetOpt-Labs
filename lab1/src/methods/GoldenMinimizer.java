@@ -1,5 +1,7 @@
 package methods;
 
+import java.util.function.Function;
+
 public class GoldenMinimizer extends Minimizer {
     private static final double TAU = (Math.sqrt(5) - 1) / 2;
     private double curA, curB;
@@ -7,7 +9,7 @@ public class GoldenMinimizer extends Minimizer {
     private double x1, x2;
     private boolean isX1Set, isX2Set;
 
-    public GoldenMinimizer(Function fun, double a, double b, double eps) {
+    public GoldenMinimizer(Function<Double, Double> fun, double a, double b, double eps) {
         super(fun, a, b, eps);
         restart();
     }
@@ -21,8 +23,8 @@ public class GoldenMinimizer extends Minimizer {
     protected Section nextIteration() {
         x1 = isX1Set ? x1 : curA + (1 - TAU) * (curB - curA);
         x2 = isX2Set ? x2 : curA + TAU * (curB - curA);
-        f1 = isX1Set ? f1 : fun.evaluate(x1);
-        f2 = isX2Set ? f2 : fun.evaluate(x2);
+        f1 = isX1Set ? f1 : fun.apply(x1);
+        f2 = isX2Set ? f2 : fun.apply(x2);
         if (f1 <= f2) {
             curB = x2;
             x2 = x1;

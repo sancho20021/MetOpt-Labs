@@ -1,11 +1,13 @@
 package methods;
 
+import java.util.function.Function;
+
 public class ParabolicMinimizer extends Minimizer {
     private double x1, x2, x3;
     private double f1, f2, f3;
     private double curXMin, prevXMin;
 
-    public ParabolicMinimizer(Function fun, double a, double b, double eps) {
+    public ParabolicMinimizer(Function<Double, Double> fun, double a, double b, double eps) {
         super(fun, a, b, eps);
         restart();
     }
@@ -19,7 +21,7 @@ public class ParabolicMinimizer extends Minimizer {
     protected Section nextIteration() {
         prevXMin = curXMin;
         updateXMin();
-        double fMin = fun.evaluate(curXMin);
+        double fMin = fun.apply(curXMin);
 
         if (curXMin < x2) {
             if (fMin >= f2) {
@@ -49,8 +51,8 @@ public class ParabolicMinimizer extends Minimizer {
     public void restart() {
         x1 = a;
         x3 = b;
-        f1 = fun.evaluate(x1);
-        f3 = fun.evaluate(x3);
+        f1 = fun.apply(x1);
+        f3 = fun.apply(x3);
 
         setInitialX2();
 
@@ -68,7 +70,7 @@ public class ParabolicMinimizer extends Minimizer {
         return curXMin;
     }
 
-    public Function getCurrentParabola() {
+    public Function<Double, Double> getCurrentParabola() {
         double[] a = getParabolaParams();
         return x -> a[0] + a[1] * (x - x1) + a[2] * (x - x1) * (x - x2);
     }
@@ -85,7 +87,7 @@ public class ParabolicMinimizer extends Minimizer {
         double step = (b - a) / 3;
         while (count > 0) {
             for (double x = a + step; x <= b - step; x += step) {
-                double fx = fun.evaluate(x);
+                double fx = fun.apply(x);
                 if (fx <= f1 && fx <= f3) {
                     x2 = x;
                     f2 = fx;
