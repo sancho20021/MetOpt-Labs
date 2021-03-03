@@ -45,7 +45,7 @@ public class Utility {
                     "{" + s.toString(PRECISION) + "}",
                     formatDouble(PRECISION, (s.getB() - s.getA()) / (prev.getB() - prev.getA())),
                     formatDouble(PRECISION, min.getCurrentXMin()),
-                    formatDouble(PRECISION, min.getFun().evaluate(min.getCurrentXMin()))
+                    formatDouble(PRECISION, min.getFun().apply(min.getCurrentXMin()))
             ));
             prev = s;
             s = min.next();
@@ -55,21 +55,5 @@ public class Utility {
 
     public static String formatDouble(int precision, double x) {
         return String.format(Locale.US, "%." + precision + "f", x);
-    }
-
-    public static Table getMinimizerTestData(String minName, Minimizer min, int precision) {
-        Table res = new Table(minName, List.of("интервалы", "длина инт.", "точки", "знач. ф-ции"), new ArrayList<>());
-        min.restart();
-        Section s = new Section(min.getA(), min.getB());
-        do {
-            res.table.add(List.of(
-                    "{" + s.toString(precision) + "}",
-                    formatDouble(precision, s.getB() - s.getA()),
-                    formatDouble(precision, min.getCurrentXMin()),
-                    formatDouble(precision, min.getFun().apply(min.getCurrentXMin()))
-            ));
-            s = min.next();
-        } while (s != null);
-        return res;
     }
 }
