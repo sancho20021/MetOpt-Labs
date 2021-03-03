@@ -31,6 +31,28 @@ public class Utility {
                 res);
     }
 
+    public static Table getGoalData(String minName, Minimizer min) {
+        Table res = new Table(
+                minName,
+                List.of("i", "$\\Delta_i$", "$|\\Delta_i|/|\\Delta_{i-1}|$", "$x_{\\min}$", "$f(x_{\\min})$"),
+                new ArrayList<>());
+        min.restart();
+        Section s = new Section(min.getA(), min.getB());
+        Section prev = new Section(min.getA(), min.getB());
+        do {
+            res.table.add(List.of(
+                    String.valueOf(res.table.size()),
+                    "{" + s.toString(PRECISION) + "}",
+                    formatDouble(PRECISION, (s.getB() - s.getA()) / (prev.getB() - prev.getA())),
+                    formatDouble(PRECISION, min.getCurrentXMin()),
+                    formatDouble(PRECISION, min.getFun().evaluate(min.getCurrentXMin()))
+            ));
+            prev = s;
+            s = min.next();
+        } while (s != null);
+        return res;
+    }
+
     public static String formatDouble(int precision, double x) {
         return String.format(Locale.US, "%." + precision + "f", x);
     }

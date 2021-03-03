@@ -10,7 +10,7 @@ public class Test {
         Minimizer m2 = new ParabolicMinimizer(f5, a5, b5, eps5);
 
         System.out.println(
-                Utility.getMinimizerTestData("Parabolic minimizer", m2, Utility.PRECISION).toTex());
+                Utility.getGoalData("Parabolic minimizer", m2).toTex());
     }
 
 }
