@@ -56,8 +56,8 @@ public class ParabolicMinimizer extends Minimizer {
 
         setInitialX2();
 
-        curXMin = Double.MAX_VALUE / 10;
-        prevXMin = 0;
+        prevXMin = Double.MAX_VALUE / 10;
+        curXMin = x2;
     }
 
     private void updateXMin() {

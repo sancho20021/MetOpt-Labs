@@ -15,7 +15,7 @@ public class FibonacciMinimizer extends Minimizer {
 
     public FibonacciMinimizer(Function<Double, Double> fun, double a, double b, double eps) {
         super(fun, a, b, eps);
-        int t = 0;
+        int t = 2;
         while (fib(t) <= (b - a) / eps) {
             t++;
         }
@@ -25,13 +25,13 @@ public class FibonacciMinimizer extends Minimizer {
 
     @Override
     public boolean hasNext() {
-        return curIteration <= n;
+        return curIteration < n - 2;
     }
 
     @Override
     protected Section nextIteration() {
-        x1 = isX1Set ? x1 : curA + fib(n - curIteration + 1) / fib(n + 2) * (b - a);
-        x2 = isX2Set ? x2 : curA + fib(n - curIteration + 2) / fib(n + 2) * (b - a);
+        x1 = isX1Set ? x1 : curA + fib(n - curIteration - 2) / fib(n) * (b - a);
+        x2 = isX2Set ? x2 : curA + fib(n - curIteration - 1) / fib(n) * (b - a);
         f1 = isX1Set ? f1 : fun.apply(x1);
         f2 = isX2Set ? f2 : fun.apply(x2);
 
