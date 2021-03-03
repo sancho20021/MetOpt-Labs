@@ -7,11 +7,11 @@ import java.util.function.Function;
  */
 
 public class CombinationMinimizer extends Minimizer {
-    private static final double K = (3 - Math.sqrt(5)) / 2;
-    private double x, w, v;
-    private double fx, fw, fv;
-    private double d, e;
-    private double l, r;
+    private static final double K = (3 - Math.sqrt(5)) / 2;  // Коэффициент золотого сечения
+    private double x, w, v;  // x - точка соответствующая решению, w - точка, соответветствующая второму снизу значению функции, v – предыдущее значение w
+    private double fx, fw, fv;  // значения функции в точках
+    private double d, e; // длина текущего и предыдущего шагов
+    private double l, r;  // Интервал поиска на решения
 
     public CombinationMinimizer(Function<Double, Double> fun, double a, double b, double eps) {
         super(fun, a, b, eps);
@@ -29,14 +29,14 @@ public class CombinationMinimizer extends Minimizer {
         e = d;
         double u = 0;
         boolean tu = false;
-        if (!(x == w || w == v || x == v) && !(fx == fw || fw == fv || fx == fv)) {
+        if (!(x == w || w == v || x == v) && !(fx == fw || fw == fv || fx == fv)) {  // если точки различны строим аппроксимирующую параболу
             u = minimParabol(w, fw, x, fx, v, fv);
-            if (l + eps <= u && u <= r - eps && Math.abs(u - x) < (g / 2)) {
+            if (l + eps <= u && u <= r - eps && Math.abs(u - x) < (g / 2)) {  // если минимум этой параболы удовлетворяет условиям, то принимаем ее в качестве следующей точки.
                 d = Math.abs(u - x);
                 tu = true;
             }
         }
-        if (!tu) {
+        if (!tu) {  // если точка u не принялась на предыдущем шаге, находим ее с помощью метода золотого сечения.
             if (x < (r - l) / 2) {
                 u = x + K * (r - x);
                 d = r - x;
@@ -46,7 +46,7 @@ public class CombinationMinimizer extends Minimizer {
             }
         }
         double fu = fun.apply(u);
-        if (fu <= fx) {
+        if (fu <= fx) { // вычисления новых значений функции и точек.
             if (u >= x) {
                 l = x;
             } else {
@@ -78,7 +78,7 @@ public class CombinationMinimizer extends Minimizer {
     }
 
     private double minimParabol(double x1, double y1, double x2, double y2, double x3, double y3) {
-        return x2 - ((x2 - x1) * (x2 - x1) * (y2 - y3) - (x2 - x3) * (x2 - x3) * (y2 - y1)) / (2 * ((x2 - x1) * (y2 - y3) - (x2 - x3) * (y2 - y1)));
+        return x2 - ((x2 - x1) * (x2 - x1) * (y2 - y3) - (x2 - x3) * (x2 - x3) * (y2 - y1)) / (2 * ((x2 - x1) * (y2 - y3) - (x2 - x3) * (y2 - y1))); // нахождение точки минимума параболы по 3 точкам.
     }
 
     @Override
