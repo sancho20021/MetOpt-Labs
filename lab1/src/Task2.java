@@ -6,7 +6,7 @@ import java.util.function.Function;
 
 public class Task2 {
     public static void main(String[] args) {
-        double a5 = 0.1, b5 = 2.5, eps5 = 0.000001;
+        double a5 = 0.1, b5 = 2.5, eps5 = 0.001;
         Function<Double, Double> f5 = x -> (10 * x * Math.log(x) - x * x / 2);
         printData("Dichotomy", new DichotomyMinimizer(f5, a5, b5, eps5));
         printData("Golden ratio", new GoldenMinimizer(f5, a5, b5, eps5));
