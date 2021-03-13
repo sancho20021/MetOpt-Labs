@@ -61,7 +61,7 @@ public class ParabolicMinimizer extends Minimizer {
     }
 
     private void updateXMin() {
-        double[] a = getParabolaParams();
+        Double[] a = getParabolaParams();
         curXMin = 1.0 / 2 * (x1 + x2 - a[1] / a[2]);
     }
 
@@ -71,15 +71,20 @@ public class ParabolicMinimizer extends Minimizer {
     }
 
     public Function<Double, Double> getCurrentParabola() {
-        double[] a = getParabolaParams();
+        Double[] a = getParabolaParams();
         return x -> a[0] + a[1] * (x - x1) + a[2] * (x - x1) * (x - x2);
     }
 
-    private double[] getParabolaParams() {
+    public String getCurrentParabolaJS() {
+        Double[] a = getParabolaParams();
+        return "x => (" + a[0] + ") + (" + a[1] + ") * (x - (" + x1 + ")) + (" + a[2] + ") * (x - (" + x1 + ")) * (x - (" + x2 + "))";
+    }
+
+    private Double[] getParabolaParams() {
         double a0 = f1;
         double a1 = (f2 - f1) / (x2 - x1);
         double a2 = 1 / (x3 - x2) * ((f3 - f1) / (x3 - x1) - (f2 - f1) / (x2 - x1));
-        return new double[]{a0, a1, a2};
+        return new Double[]{a0, a1, a2};
     }
 
     private void setInitialX2() {
