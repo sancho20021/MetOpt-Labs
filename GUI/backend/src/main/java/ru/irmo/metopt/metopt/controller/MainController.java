@@ -66,9 +66,14 @@ public class MainController {
         return ans;
     }
 
-    @GetMapping("posts")
-    public List<String> findPosts() {
-        return null;
+    @GetMapping("brent")
+    public List<String> brentsParams() {
+        CombinationMinimizer minimizer = new CombinationMinimizer(f5, a5, b5, eps5);
+        minimizer.restart();
+        List<String> ans = new ArrayList<>();
+        do {
+            ans.add(minimizer.getCurrentParabolaJS());
+        } while (minimizer.next() != null);
+        return ans;
     }
-
 }

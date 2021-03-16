@@ -24,6 +24,21 @@ public class CombinationMinimizer extends Minimizer {
         return Math.abs(x - (l + r) / 2) + (r - l) / 2 > 2 * tol;
     }
 
+    public String getCurrentParabolaJS() {
+        if (!(x == w || w == v || x == v) && !(fx == fw || fw == fv || fx == fv)) {  // если точки различны строим аппроксимирующую параболу
+            double u = minimParabol(w, fw, x, fx, v, fv);
+            if (l < u && u < r && Math.abs(u - x) < e / 2) {
+                double x1 = x, x2 = w, x3 = v;
+                double y1 = fx, y2 = fw, y3 = fv;
+                double a = (y3 - (x3 * (y2 - y1) + x2 * y1 - x1 * y2) / (x2 - x1)) / (x3 * (x3 - x1 - x2) + x1 * x2);
+                double b = (y2 - y1) / (x2 - x1) - a * (x1 + x2);
+                double c = (x2 * y1 - x1 * y2) / (x2 - x1) + a * x1 * x2;
+                return "x => (" + c + ") + (" + b + ") * x + (" + a + ") * x * x";
+            }
+        }
+        return "null";
+    }
+
     @Override
     protected Section nextIteration() {
         double g = e;

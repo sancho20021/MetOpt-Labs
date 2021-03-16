@@ -91,7 +91,7 @@ export default {
     beforeCreate() {
         this.$root.$on("onSelect", () => {
             this.par = [];
-            if (this.lastSelected === "Parabolic") {
+            if (this.lastSelected === "Parabolic" || this.lastSelected === "Combination") {
                 for (let i = 1; i < this.arr.length; i++) {
                     this.arr[i][3] = null;
                 }
@@ -114,9 +114,19 @@ export default {
                     }
                 })
             }
+            if (selected === "Combination") {
+                axios.get("api/1/brent").then(response => {
+                    let a = response.data;
+                    for (let i = 0; i < a.length; i++) {
+                        this.par.push(eval(a[i]));
+                    }
+                    // console.log(this.par);
+                })
+            }
             this.value = 0;
             console.log(selected);
         });
+
         this.$root.$on("onSlideChange", () => {
             const value = parseInt(this.value);
             // console.log(this.par[value]);
@@ -124,21 +134,24 @@ export default {
             for (let i = 1; i < this.arr.length; i++) {
                 if (this.arr[i][0] < this.opt[value][0] || this.opt[value][1] < this.arr[i][0]) {
                     this.arr[i][2] = 'red';
-                    if (this.selected === "Parabolic") {
+                    if (this.selected === "Parabolic" || this.selected === "Combination") {
                         this.arr[i][3] = null;
                     }
                 } else {
                     this.arr[i][2] = 'blue';
-                    if (this.selected === "Parabolic") {
+                    if (this.selected === "Parabolic" || this.selected === "Combination" && this.par[value]) {
                         this.arr[i][3] = this.par[value](this.arr[i][0]);
-                        this.arr[i][4] = 'pink'
+                        this.arr[i][4] = 'black'
+                    } else if (this.selected === "Combination") {
+                        this.arr[i][3] = this.arr[i][1];
+                        this.arr[i][4] = 'blue';
                     }
                 }
                 if (Math.abs(this.arr[i][0] - this.minValue) < this.eps) {
                     this.arr[i][2] = 'point { size: 5; shape-type: circle; fill-color: green; visible: true }';
                 }
             }
-            this.changed++;
+            this.changed = (this.changed + 1) % 100;
             // this.$root.$emit("onChangeData", this.chartData);
         });
     }
