@@ -37,12 +37,20 @@ public class Vector {
         return new Vector(result);
     }
 
-    public Vector scale(final double scalingFactor) {
+    public Vector multiply(final double scalingFactor) {
         double[] result = new double[getDim()];
         for (int i = 0; i < getDim(); i++) {
             result[i] = coordinates[i] * scalingFactor;
         }
         return new Vector(result);
+    }
+
+    public double scalarProduct(final Vector other) {
+        double result = 0;
+        for (int i = 0; i < getDim(); i++) {
+            result += coordinates[i] * other.coordinates[i];
+        }
+        return result;
     }
 
     private double reduce(DoubleUnaryOperator mapF, Function<DoubleSummaryStatistics, Double> stat) {
