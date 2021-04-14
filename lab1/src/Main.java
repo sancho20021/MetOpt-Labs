@@ -33,7 +33,7 @@ public class Main {
             if (f.getGradientAbs(x) < eps) {
                 break;
             }
-            Vector next = x.add(f.getGradient(x).scale(-alpha));
+            Vector next = x.add(f.getGradient(x).multiply(-alpha));
             if (f.getF(next) < f.getF(x)) {
                 x = next;
                 continue;

@@ -1,5 +1,7 @@
 package methods.multidimensional;
 
+import java.util.List;
+
 public interface SquareMatrix {
     /**
      * Multiplies this matrix with other matrix
@@ -41,6 +43,13 @@ public interface SquareMatrix {
     Vector multiply(Vector vector);
 
     /**
+     * Multiplies vector with this matrix
+     * @param vector vector to multiply
+     * @return matrix, product of multiplication
+     */
+    Vector multiplyLeft(Vector vector);
+
+    /**
      * Checks if sizes of matrices are same
      *
      * @param other other matrix
@@ -54,6 +63,7 @@ public interface SquareMatrix {
 
     /**
      * Returns element (i, j)
+     *
      * @param i i
      * @param j j
      * @return element (i, j)
@@ -62,6 +72,7 @@ public interface SquareMatrix {
 
     /**
      * Returns row's row
+     *
      * @param row row
      * @return row's row
      */
@@ -69,8 +80,31 @@ public interface SquareMatrix {
 
     /**
      * Returns column's column
+     *
      * @param column column
      * @return column's column
      */
     Vector column(int column);
+
+    /**
+     * Returns list of rows
+     *
+     * @return list of rows
+     */
+    List<Vector> rows();
+
+    /**
+     * Returns list of columns
+     *
+     * @return list of columns
+     */
+    List<Vector> columns();
+
+    /**
+     * Returns matrix multiplied by x
+     *
+     * @param x x
+     * @return matrix multiplied by x
+     */
+    SquareMatrix multiply(double x);
 }
