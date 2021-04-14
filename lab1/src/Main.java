@@ -1,5 +1,3 @@
-package lab2;
-
 import java.util.Arrays;
 import java.util.function.Function;
 
@@ -17,8 +15,8 @@ public class Main {
         Function<Point, Double>[] gradient = new Function[2];
         gradient[0] = x -> x.get(0) * 128 + x.get(1) * 126 - 10;
         gradient[1] = x -> x.get(0) * 126 + 128 * x.get(1) + 30;
-        System.out.println("The minimum is: " + getMinByGradientDecsent(new MultiFunction(f, gradient, null)));
-
+        double min = getMinByGradientDecsent(new MultiFunction(f, gradient, null));
+        System.out.println("The minimum is: " + min);
     }
 
     static double getMinByGradientDecsent(MultiFunction f) {
@@ -39,7 +37,7 @@ public class Main {
                 x = next;
                 continue;
             }
-            alpha /= 2;
+            alpha /= 2; // на самом деле надо перейти на третий шаг!
         }
         return f.getF(x);
     }

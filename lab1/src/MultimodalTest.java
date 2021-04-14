@@ -1,4 +1,7 @@
-import methods.*;
+import methods.unidimensional.DichotomyMinimizer;
+import methods.unidimensional.FibonacciMinimizer;
+import methods.unidimensional.GoldenMinimizer;
+import methods.unidimensional.Minimizer;
 import utils.Utility;
 
 import java.util.function.Function;

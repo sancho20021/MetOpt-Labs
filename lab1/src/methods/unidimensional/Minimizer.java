@@ -1,4 +1,4 @@
-package methods;
+package methods.unidimensional;
 
 import java.util.function.Function;
 

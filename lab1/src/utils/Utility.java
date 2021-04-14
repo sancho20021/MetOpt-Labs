@@ -1,7 +1,7 @@
 package utils;
 
-import methods.Minimizer;
-import methods.Section;
+import methods.unidimensional.Minimizer;
+import methods.unidimensional.Section;
 
 import java.util.ArrayList;
 import java.util.List;

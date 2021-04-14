@@ -1,4 +1,4 @@
-package methods;
+package methods.unidimensional;
 
 import utils.Utility;
 

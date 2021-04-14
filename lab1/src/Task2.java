@@ -1,4 +1,4 @@
-import methods.*;
+import methods.unidimensional.*;
 import utils.Table;
 import utils.Utility;
 
