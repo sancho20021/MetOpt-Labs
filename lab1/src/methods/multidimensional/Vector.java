@@ -29,6 +29,22 @@ public class Vector {
         return reduce(Math::abs, DoubleSummaryStatistics::getMax);
     }
 
+    public Vector add(final Vector other) {
+        double[] result = new double[getDim()];
+        for (int i = 0; i < getDim(); i++) {
+            result[i] = coordinates[i] + other.coordinates[i];
+        }
+        return new Vector(result);
+    }
+
+    public Vector scale(final double scalingFactor) {
+        double[] result = new double[getDim()];
+        for (int i = 0; i < getDim(); i++) {
+            result[i] = coordinates[i] * scalingFactor;
+        }
+        return new Vector(result);
+    }
+
     private double reduce(DoubleUnaryOperator mapF, Function<DoubleSummaryStatistics, Double> stat) {
         return stat.apply(Arrays.stream(coordinates).map(mapF).summaryStatistics());
     }
