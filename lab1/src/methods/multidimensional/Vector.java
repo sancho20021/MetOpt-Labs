@@ -2,6 +2,7 @@ package methods.multidimensional;
 
 import java.util.Arrays;
 import java.util.DoubleSummaryStatistics;
+import java.util.List;
 import java.util.function.DoubleUnaryOperator;
 import java.util.function.Function;
 
@@ -10,6 +11,13 @@ public class Vector {
 
     public Vector(final double... coordinates) {
         this.coordinates = coordinates;
+    }
+
+    public Vector(final List<Double> coordinates) {
+        this.coordinates = new double[coordinates.size()];
+        for (int i = 0; i < coordinates.size(); i++) {
+            this.coordinates[i] = coordinates.get(i);
+        }
     }
 
     public int getDim() {
@@ -62,5 +70,20 @@ public class Vector {
             throw new IllegalArgumentException(
                     "trying to get " + i + "-th coordinate in a vector of dimension " + getDim());
         }
+    }
+
+    public double[] coordinatesCopy() {
+        return coordinates.clone();
+    }
+
+    public static Vector oneElementVector(int size, int index, double value) {
+        double[] elements = new double[size];
+        elements[index] = value;
+        return new Vector(elements);
+    }
+
+    @Override
+    public String toString() {
+        return Arrays.toString(coordinates);
     }
 }
