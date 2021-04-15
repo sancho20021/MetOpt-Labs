@@ -42,7 +42,9 @@ public class MultidimensionalTester {
                 double eps = 1e-2;
                 double v1 = f1.get(new GradientDescentMinimizer(f1, 2 / (minEigen1 + maxEigen1), startX, eps).findMinimum());
                 double v2 = f1.get(new ConjugateGradientsMinimizer(f1, startX, eps).findMinimum());
+                double v3 = f1.get(new FastestDescent(f1, startX, eps, 2 / (minEigen1 + maxEigen1)).findMinimum());
                 Assert.assertTrue("Methods differ: (" + v1 + " " + v2 + ")", Math.abs(v1 - v2) < 2 * eps);
+                Assert.assertTrue("Methods differ: (" + v1 + " " + v3 + ")", Math.abs(v1 - v3) < 2 * eps);
             }
         }
     }

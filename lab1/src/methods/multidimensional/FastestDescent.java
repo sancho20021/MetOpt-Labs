@@ -14,7 +14,7 @@ public class FastestDescent extends MultiMinimizer {
 
     @Override
     public boolean hasNext() {
-        return fun.getGradient(startX).getEuclideanNorm() >= eps;
+        return fun.getGradient(x).getEuclideanNorm() >= eps;
     }
 
     @Override
