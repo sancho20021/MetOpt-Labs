@@ -20,7 +20,7 @@ public class Main {
         double maxEigen = 254;
         var gradientMinimizer = new GradientDescentMinimizer(
                 f, 2 / (minEigen + maxEigen), new Vector(0, 0), 1e-2);
-        for (int i = 0; i < 10000 && gradientMinimizer.hasNext(); i++) {
+        for (int i = 0; i < 1000000 && gradientMinimizer.hasNext(); i++) {
             var x = gradientMinimizer.getCurrentXMin();
             System.out.printf("%d-th iteration: x={%.4f,%.4f}, f(x)=%.4f",
                     i, x.getIth(0), x.getIth(1), gradientMinimizer.getFun().get(x));

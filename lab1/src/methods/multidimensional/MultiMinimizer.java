@@ -1,7 +1,9 @@
 package methods.multidimensional;
 
+import java.util.concurrent.TimeoutException;
+
 public abstract class MultiMinimizer {
-    public static final int MAX_ITERATIONS = 100500;
+    public static final int MAX_ITERATIONS = 10_000_000;
 
     protected final QuadraticFunction fun;
     protected Vector startX;
@@ -29,10 +31,14 @@ public abstract class MultiMinimizer {
 
     public abstract void restart();
 
-    public Vector findMinimum() {
+    public Vector findMinimum() throws TimeoutException {
         restart();
-        for (int i = 0; i < MAX_ITERATIONS && hasNext(); i++) {
+        int i;
+        for (i = 0; i < MAX_ITERATIONS && hasNext(); i++) {
             nextIteration();
+        }
+        if (i == MAX_ITERATIONS) {
+            throw new TimeoutException("Failed time out");
         }
         return getCurrentXMin();
     }

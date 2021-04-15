@@ -2,6 +2,8 @@ import methods.multidimensional.*;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.concurrent.TimeoutException;
+
 public class MultidimensionalTester {
     QuadraticFunction f1 = new QuadraticFunction(
             new FullMatrix(
@@ -16,8 +18,8 @@ public class MultidimensionalTester {
 
     QuadraticFunction f2 = new QuadraticFunction(
             new FullMatrix(
-                    254, 506,
-                    506, 254),
+                    508, 506,
+                    506, 508),
             new Vector(50, 130),
             -111
     );
@@ -52,20 +54,40 @@ public class MultidimensionalTester {
     private void all_equal(QuadraticFunction f, double minEigen, double maxEigen) {
         for (int i = -10; i < 11; i++) {
             for (int j = -10; j < 11; j++) {
+                System.out.println("Testing (i, j) = " + i + " " + j);
+                System.out.flush();
                 var startX = new Vector(i, j);
                 double eps = 1e-2;
-                Vector xmin1 = new GradientDescentMinimizer(f, 2 / (minEigen + maxEigen), startX, eps).findMinimum();
+
+                Vector xmin1 = null;
+                try {
+                    xmin1 = new GradientDescentMinimizer(f, 2 / (minEigen + maxEigen), startX, eps).findMinimum();
+                } catch (TimeoutException e) {
+                    Assert.fail("Failed time out GDM");
+                }
                 double v1 = f.get(xmin1);
-                Vector xmin2 = new ConjugateGradientsMinimizer(f, startX, eps).findMinimum();
+
+                Vector xmin2 = null;
+                try {
+                    xmin2 = new ConjugateGradientsMinimizer(f, startX, eps).findMinimum();
+                } catch (TimeoutException e) {
+                    Assert.fail("Failed time out CGM");
+                }
                 double v2 = f.get(xmin2);
-                Vector xmin3 = new FastestDescent(f, startX, eps, 2 / (minEigen + maxEigen)).findMinimum();
+
+                Vector xmin3 = null;
+                try {
+                    xmin3 = new FastestDescent(f, startX, eps, 2 / (minEigen + maxEigen)).findMinimum();
+                } catch (TimeoutException e) {
+                    Assert.fail("Failed time out FD");
+                }
                 double v3 = f.get(xmin3);
-                System.err.println("Testing (i, j) = " + i + " " + j);
+
                 Assert.assertTrue(
                         "Methods differ (GDM, CGM): (" + v1 + " " + v2 + ")\n   X differs:\n        GDM    " + xmin1.toString() + "\n       CGM    " + xmin2.toString(),
                         Math.abs(v1 - v2) < 2 * eps);
                 Assert.assertTrue(
-                        "Methods differ (GDM, FD): (" + v1 + " " + v3 + ")\n    X differs:\n        GDM    " + xmin1.toString() + "\n       CGM    " + xmin3.toString(),
+                        "Methods differ (GDM, FD): (" + v1 + " " + v3 + ")\n    X differs:\n        GDM    " + xmin1.toString() + "\n       FD   " + xmin3.toString(),
                         Math.abs(v1 - v3) < 2 * eps);
             }
         }
