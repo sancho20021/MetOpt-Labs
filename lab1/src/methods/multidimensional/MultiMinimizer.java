@@ -1,6 +1,8 @@
 package methods.multidimensional;
 
 public abstract class MultiMinimizer {
+    protected final int MAX_ITERATIONS = 100500;
+
     protected final QuadraticFunction fun;
     protected Vector startX;
     protected final double eps;
@@ -29,7 +31,7 @@ public abstract class MultiMinimizer {
 
     public Vector findMinimum() {
         restart();
-        while (hasNext()) {
+        for (int i = 0; i < MAX_ITERATIONS && hasNext(); i++) {
             nextIteration();
         }
         return getCurrentXMin();

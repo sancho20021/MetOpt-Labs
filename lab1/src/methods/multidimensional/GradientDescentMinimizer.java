@@ -1,8 +1,6 @@
 package methods.multidimensional;
 
 public class GradientDescentMinimizer extends MultiMinimizer {
-    private final int MAX_ITERATIONS = 10000;
-
     private double startAlpha, alpha;
     private Vector x;
 
