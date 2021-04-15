@@ -10,9 +10,7 @@ public class ContourLineApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         try {
-//            FXMLLoader loader = new FXMLLoader();
-//            loader.setLocation("/application.ContourLineApplication.fxml");
-            Parent root = FXMLLoader.load(ContourLineApplication.class.getResource("ContourLineApplication.fxml"));
+            Parent root = FXMLLoader.load(ContourLineApplication.class.getResource("application/ContourLineApplication.fxml"));
 //            Scene scene  = new Scene(root);
 //            stage.setScene(scene);
             stage.show();

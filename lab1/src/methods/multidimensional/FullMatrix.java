@@ -1,5 +1,7 @@
 package methods.multidimensional;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -13,6 +15,17 @@ public class FullMatrix implements SquareMatrix {
 
     public FullMatrix(final SquareMatrix other) {
         this.rows = other.rows();
+    }
+
+    public FullMatrix(double... values) {
+        int dim = (int) Math.sqrt(values.length);
+        if (dim * dim != values.length) {
+            throw new IllegalArgumentException("can't construct a square matrix of " + values.length + " elements");
+        }
+        rows = new ArrayList<>();
+        for (int i = 0; i < dim; i++) {
+            rows.add(new Vector(Arrays.copyOfRange(values, i * dim, (i + 1) * dim)));
+        }
     }
 
     @Override
