@@ -3,6 +3,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Random;
 import java.util.concurrent.TimeoutException;
 
 public class MultidimensionalTester {
@@ -46,15 +47,18 @@ public class MultidimensionalTester {
     static double maxEigen4 = 1;
 
     static QuadraticFunction crazyMatrix() {
-        int dim = 1000;
+        int dim = 10000;
         double[] es = new double[dim];
         Arrays.fill(es, 2);
         double[] zeros = new double[dim];
         return new QuadraticFunction(new DiagonalMatrix(es), new Vector(zeros), 0);
     }
+
     static QuadraticFunction crazy = crazyMatrix();
     static double minEigenCrazy = 2;
     static double maxEigenCrazy = 2;
+
+    private static final Random RANDOM_GENERATOR = new Random();
 
     @Test
     public void test01_all_equal() {
@@ -81,45 +85,57 @@ public class MultidimensionalTester {
         all_equal(crazy, minEigenCrazy, maxEigenCrazy);
     }
 
+    private void log(String message) {
+        System.out.println(message);
+        System.out.flush();
+    }
+
     private void all_equal(QuadraticFunction f, double minEigen, double maxEigen) {
-        for (int i = -10; i < 11; i++) {
-            for (int j = -10; j < 11; j++) {
-//                System.out.println("Testing (i, j) = " + i + " " + j);
-//                System.out.flush();
-                var startX = new Vector(i, j);
-                double eps = 1e-2;
-
-                Vector xmin1 = null;
-                try {
-                    xmin1 = new GradientDescentMinimizer(f, 2 / (minEigen + maxEigen), startX, eps).findMinimum();
-                } catch (TimeoutException e) {
-                    Assert.fail("Failed time out GDM");
-                }
-                double v1 = f.get(xmin1);
-
-                Vector xmin2 = null;
-                try {
-                    xmin2 = new ConjugateGradientsMinimizer(f, startX, eps).findMinimum();
-                } catch (TimeoutException e) {
-                    Assert.fail("Failed time out CGM");
-                }
-                double v2 = f.get(xmin2);
-
-                Vector xmin3 = null;
-                try {
-                    xmin3 = new FastestDescent(f, startX, eps, 2 / (minEigen + maxEigen)).findMinimum();
-                } catch (TimeoutException e) {
-                    Assert.fail("Failed time out FD");
-                }
-                double v3 = f.get(xmin3);
-
-                Assert.assertTrue(
-                        "Methods differ (GDM, CGM): (" + v1 + " " + v2 + ")\n   X differs:\n        GDM    " + xmin1.toString() + "\n       CGM    " + xmin2.toString(),
-                        Math.abs(v1 - v2) < 2 * eps);
-                Assert.assertTrue(
-                        "Methods differ (GDM, FD): (" + v1 + " " + v3 + ")\n    X differs:\n        GDM    " + xmin1.toString() + "\n       FD   " + xmin3.toString(),
-                        Math.abs(v1 - v3) < 2 * eps);
+        for (int i = 0; i < 1; i++) {
+            var startX = new Vector(RANDOM_GENERATOR.ints(f.getA().size(), -1000, 1000).asDoubleStream().toArray());
+            double eps = 1e-2;
+            log("Start testing");
+            long timeStart = System.currentTimeMillis();
+            log("Start testing GDM");
+            Vector xmin1 = null;
+            try {
+                xmin1 = new GradientDescentMinimizer(f, 2 / (minEigen + maxEigen), startX, eps).findMinimum();
+            } catch (TimeoutException e) {
+                Assert.fail("Failed time out GDM");
             }
+            double v1 = f.get(xmin1);
+            long timeFinish = System.currentTimeMillis();
+            log("GDM was calculated (time: " + (timeFinish - timeStart) + ")");
+
+            timeStart = System.currentTimeMillis();
+            log("Start testing CGM");
+            Vector xmin2 = null;
+            try {
+                xmin2 = new ConjugateGradientsMinimizer(f, startX, eps).findMinimum();
+            } catch (TimeoutException e) {
+                Assert.fail("Failed time out CGM");
+            }
+            double v2 = f.get(xmin2);
+            timeFinish = System.currentTimeMillis();
+            log("CGM was calculated (time: " + (timeFinish - timeStart) + ")");
+
+            timeStart = System.currentTimeMillis();
+            log("Start testing FD");
+            Vector xmin3 = null;
+            try {
+                xmin3 = new FastestDescent(f, startX, eps, 2 / (minEigen + maxEigen)).findMinimum();
+            } catch (TimeoutException e) {
+                Assert.fail("Failed time out FD");
+            }
+            double v3 = f.get(xmin3);
+            timeFinish = System.currentTimeMillis();
+            log("FD was calculated (time: " + (timeFinish - timeStart) + ")");
+            Assert.assertTrue(
+                    "Methods differ (GDM, CGM): (" + v1 + " " + v2 + ")\n   X differs:\n        GDM    " + xmin1.toString() + "\n       CGM    " + xmin2.toString(),
+                    Math.abs(v1 - v2) < 2 * eps);
+            Assert.assertTrue(
+                    "Methods differ (GDM, FD): (" + v1 + " " + v3 + ")\n    X differs:\n        GDM    " + xmin1.toString() + "\n       FD   " + xmin3.toString(),
+                    Math.abs(v1 - v3) < 2 * eps);
         }
     }
 }
