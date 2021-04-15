@@ -1,10 +1,13 @@
 package methods.multidimensional;
 
+import utils.Utility;
+
 import java.util.Arrays;
 import java.util.DoubleSummaryStatistics;
 import java.util.List;
 import java.util.function.DoubleUnaryOperator;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class Vector {
     private final double[] coordinates;
@@ -50,6 +53,10 @@ public class Vector {
         return new Vector(result);
     }
 
+    public Vector subtract(final Vector other) {
+        return add(other.multiply(-1));
+    }
+
     public Vector multiply(final double scalingFactor) {
         double[] result = new double[getDim()];
         for (int i = 0; i < getDim(); i++) {
@@ -89,6 +96,9 @@ public class Vector {
 
     @Override
     public String toString() {
-        return Arrays.toString(coordinates);
+
+        return Arrays.stream(coordinates)
+                .mapToObj(x -> Utility.formatDouble(8, x))
+                .collect(Collectors.joining(", ", "[", "]"));
     }
 }

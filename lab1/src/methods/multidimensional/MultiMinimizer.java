@@ -1,7 +1,7 @@
 package methods.multidimensional;
 
 public abstract class MultiMinimizer {
-    protected final int MAX_ITERATIONS = 100500;
+    public static final int MAX_ITERATIONS = 100500;
 
     protected final QuadraticFunction fun;
     protected Vector startX;
