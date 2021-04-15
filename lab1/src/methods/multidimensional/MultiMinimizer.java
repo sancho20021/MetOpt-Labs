@@ -6,6 +6,7 @@ public abstract class MultiMinimizer {
     protected final QuadraticFunction fun;
     protected Vector startX;
     protected final double eps;
+    protected Vector p;
 
     protected MultiMinimizer(final QuadraticFunction fun, Vector startX, double eps) {
         if (eps <= 0) {
@@ -43,4 +44,7 @@ public abstract class MultiMinimizer {
         return fun;
     }
 
+    public Vector getP() {
+        return p;
+    }
 }
