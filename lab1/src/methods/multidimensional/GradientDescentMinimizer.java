@@ -1,11 +1,9 @@
 package methods.multidimensional;
 
 public class GradientDescentMinimizer extends MultiMinimizer {
-    private double startAlpha, alpha;
+    private final double startAlpha;
+    private double alpha;
     private Vector x;
-
-    // these iterations
-    private int iterationCounter;
 
     public GradientDescentMinimizer(final QuadraticFunction fun, double startAlpha, Vector startX, double eps) {
         super(fun, startX, eps);
@@ -14,11 +12,10 @@ public class GradientDescentMinimizer extends MultiMinimizer {
     }
 
     public boolean hasNext() {
-        return fun.getGradient(x).getEuclideanNorm() >= eps && iterationCounter < MAX_ITERATIONS;
+        return fun.getGradient(x).getEuclideanNorm() >= eps;
     }
 
     public Vector nextIteration() {
-        iterationCounter++;
         Vector next = x.add(fun.getGradient(x).normalize().multiply(-alpha));
         if (fun.get(next) < fun.get(x)) {
             return x = next;
@@ -29,7 +26,6 @@ public class GradientDescentMinimizer extends MultiMinimizer {
 
     @Override
     public void restart() {
-        iterationCounter = 0;
         alpha = startAlpha;
         x = startX;
     }
