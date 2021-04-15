@@ -4,42 +4,46 @@ package methods.multidimensional;
  * @author Yaroslav Ilin
  */
 
-public class ConjugateGradientsMinimizer {
+public class ConjugateGradientsMinimizer extends MultiMinimizer {
     private Vector x;
     private Vector gradient;
     private Vector p;
-    private final QuadraticFunction f;
     private final double eps;
 
-    public ConjugateGradientsMinimizer(QuadraticFunction f, Vector x, double eps) {
+    public ConjugateGradientsMinimizer(QuadraticFunction fun, Vector x, double eps) {
+        super(fun, x, eps);
         this.x = x;
-        this.f = f;
-        this.gradient = f.getGradient(x);
+        this.gradient = fun.getGradient(x);
         this.eps = eps;
         p = gradient.multiply(-1.0);
     }
 
-    public double getMin() {
-        while (hasNext()) {
-            nextIteration();
-        }
-        return f.get(x);
+    @Override
+    public boolean hasNext() {
+        return !(fun.getGradient(x).getEuclideanNorm() < eps);
     }
 
-    private boolean hasNext() {
-        return !(f.getGradient(x).getEuclideanNorm() < eps);
-    }
-
-    public void nextIteration() {
+    public Vector nextIteration() {
         double gradientNorm = gradient.getEuclideanNorm();
-        Vector Ap = f.getA().multiply(p);
+        Vector Ap = fun.getA().multiply(p);
         double alpha = (gradientNorm * gradientNorm) / (Ap.scalarProduct(p));
-        Vector xk = x;
         x = x.add(p.multiply(alpha));
         Vector gradientk = gradient;
         gradient = gradient.add(Ap.multiply(alpha));
         double gradientkNorm = gradient.getEuclideanNorm();
         double betta = (gradientkNorm * gradientkNorm) / (gradientNorm * gradientNorm);
         p = gradientk.multiply(-1.0).add(p.multiply(betta));
+        return x;
+    }
+
+    @Override
+    public void restart() {
+        x = startX;
+        gradient = fun.getGradient(x);
+    }
+
+    @Override
+    public Vector getCurrentXMin() {
+        return x;
     }
 }
