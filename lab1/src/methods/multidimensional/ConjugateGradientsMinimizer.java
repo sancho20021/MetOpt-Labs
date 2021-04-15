@@ -26,8 +26,9 @@ public class ConjugateGradientsMinimizer extends MultiMinimizer {
     }
 
     public Vector nextIteration() {
-        if (iterationCount == 1000) {
+        if (iterationCount == fun.getA().size()) {
             p = gradient.multiply(-1.0);
+            iterationCount = 0;
         }
         double gradientNorm = gradient.getEuclideanNorm();
         Vector Ap = fun.getA().multiply(p);
