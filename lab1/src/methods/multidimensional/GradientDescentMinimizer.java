@@ -3,14 +3,15 @@ package methods.multidimensional;
 public class GradientDescentMinimizer extends MultiMinimizer {
     private final int MAX_ITERATIONS = 10000;
 
-    private double alpha;
+    private double startAlpha, alpha;
     private Vector x;
 
     // these iterations
     private int iterationCounter;
 
     public GradientDescentMinimizer(final QuadraticFunction fun, double startAlpha, Vector startX, double eps) {
-        super(fun, startAlpha, startX, eps);
+        super(fun, startX, eps);
+        this.startAlpha = startAlpha;
         restart();
     }
 

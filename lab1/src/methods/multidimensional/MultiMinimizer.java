@@ -3,14 +3,13 @@ package methods.multidimensional;
 public abstract class MultiMinimizer {
     protected final QuadraticFunction fun;
     protected Vector startX;
-    protected final double startAlpha, eps;
+    protected final double eps;
 
-    public MultiMinimizer(final QuadraticFunction fun, double startAlpha, Vector startX, double eps) {
+    public MultiMinimizer(final QuadraticFunction fun, Vector startX, double eps) {
         if (eps <= 0) {
             throw new IllegalArgumentException("eps should be > 0");
         }
         this.fun = fun;
-        this.startAlpha = startAlpha;
         this.startX = startX;
         this.eps = eps;
     }
