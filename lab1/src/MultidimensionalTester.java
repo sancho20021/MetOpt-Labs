@@ -2,39 +2,59 @@ import methods.multidimensional.*;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.concurrent.TimeoutException;
 
 public class MultidimensionalTester {
-    QuadraticFunction f1 = new QuadraticFunction(
+    static QuadraticFunction f1 = new QuadraticFunction(
             new FullMatrix(
                     128, 126,
                     126, 128),
             new Vector(-10, 30),
             13
     );
-    double minEigen1 = 2;
-    double maxEigen1 = 254;
+    static double minEigen1 = 2;
+    static double maxEigen1 = 254;
 
 
-    QuadraticFunction f2 = new QuadraticFunction(
+    static QuadraticFunction f2 = new QuadraticFunction(
             new FullMatrix(
                     508, 506,
                     506, 508),
             new Vector(50, 130),
             -111
     );
-    double minEigen2 = 2;
-    double maxEigen2 = 1014;
+    static double minEigen2 = 2;
+    static double maxEigen2 = 1014;
 
-    QuadraticFunction f3 = new QuadraticFunction(
+    static QuadraticFunction f3 = new QuadraticFunction(
             new FullMatrix(
                     422, -420,
                     -420, 422),
             new Vector(-192, 50),
             -25
     );
-    double minEigen3 = 2;
-    double maxEigen3 = 842;
+    static double minEigen3 = 2;
+    static double maxEigen3 = 842;
+
+    static QuadraticFunction circle = new QuadraticFunction(
+            new DiagonalMatrix(1, 1),
+            new Vector(0, 0),
+            0
+    );
+    static double minEigen4 = 1;
+    static double maxEigen4 = 1;
+
+    static QuadraticFunction crazyMatrix() {
+        int dim = 1000;
+        double[] es = new double[dim];
+        Arrays.fill(es, 2);
+        double[] zeros = new double[dim];
+        return new QuadraticFunction(new DiagonalMatrix(es), new Vector(zeros), 0);
+    }
+    static QuadraticFunction crazy = crazyMatrix();
+    static double minEigenCrazy = 2;
+    static double maxEigenCrazy = 2;
 
     @Test
     public void test01_all_equal() {
@@ -51,11 +71,21 @@ public class MultidimensionalTester {
         all_equal(f3, minEigen3, maxEigen3);
     }
 
+    @Test
+    public void test04_all_equal() {
+        all_equal(circle, minEigen4, maxEigen4);
+    }
+
+    @Test
+    public void test05_crazy_all_equal() {
+        all_equal(crazy, minEigenCrazy, maxEigenCrazy);
+    }
+
     private void all_equal(QuadraticFunction f, double minEigen, double maxEigen) {
         for (int i = -10; i < 11; i++) {
             for (int j = -10; j < 11; j++) {
-                System.out.println("Testing (i, j) = " + i + " " + j);
-                System.out.flush();
+//                System.out.println("Testing (i, j) = " + i + " " + j);
+//                System.out.flush();
                 var startX = new Vector(i, j);
                 double eps = 1e-2;
 
