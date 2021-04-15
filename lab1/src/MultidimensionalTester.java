@@ -36,18 +36,38 @@ public class MultidimensionalTester {
 
     @Test
     public void test01_all_equal() {
+        all_equal(f1, minEigen1, maxEigen1);
+    }
+
+    @Test
+    public void test02_all_equal() {
+        all_equal(f2, minEigen2, maxEigen2);
+    }
+
+    @Test
+    public void test03_all_equal() {
+        all_equal(f3, minEigen3, maxEigen3);
+    }
+
+    private void all_equal(QuadraticFunction f, double minEigen, double maxEigen) {
         for (int i = -10; i < 11; i++) {
             for (int j = -10; j < 11; j++) {
                 var startX = new Vector(i, j);
                 double eps = 1e-2;
-                double v1 = f1.get(new GradientDescentMinimizer(f1, 2 / (minEigen1 + maxEigen1), startX, eps).findMinimum());
-                double v2 = f1.get(new ConjugateGradientsMinimizer(f1, startX, eps).findMinimum());
-                double v3 = f1.get(new FastestDescent(f1, startX, eps, 2 / (minEigen1 + maxEigen1)).findMinimum());
-                Assert.assertTrue("Methods differ: (" + v1 + " " + v2 + ")", Math.abs(v1 - v2) < 2 * eps);
-                Assert.assertTrue("Methods differ: (" + v1 + " " + v3 + ")", Math.abs(v1 - v3) < 2 * eps);
+                Vector xmin1 = new GradientDescentMinimizer(f, 2 / (minEigen + maxEigen), startX, eps).findMinimum();
+                double v1 = f.get(xmin1);
+                Vector xmin2 = new ConjugateGradientsMinimizer(f, startX, eps).findMinimum();
+                double v2 = f.get(xmin2);
+                Vector xmin3 = new FastestDescent(f, startX, eps, 2 / (minEigen + maxEigen)).findMinimum();
+                double v3 = f.get(xmin3);
+                System.err.println("Testing (i, j) = " + i + " " + j);
+                Assert.assertTrue(
+                        "Methods differ (GDM, CGM): (" + v1 + " " + v2 + ")\n   X differs:\n        GDM    " + xmin1.toString() + "\n       CGM    " + xmin2.toString(),
+                        Math.abs(v1 - v2) < 2 * eps);
+                Assert.assertTrue(
+                        "Methods differ (GDM, FD): (" + v1 + " " + v3 + ")\n    X differs:\n        GDM    " + xmin1.toString() + "\n       CGM    " + xmin3.toString(),
+                        Math.abs(v1 - v3) < 2 * eps);
             }
         }
     }
-
-
 }
