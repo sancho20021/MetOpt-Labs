@@ -9,6 +9,7 @@ public class ConjugateGradientsMinimizer extends MultiMinimizer {
     private Vector gradient;
     private Vector p;
     private final double eps;
+    private int iterationCount;
 
     public ConjugateGradientsMinimizer(QuadraticFunction fun, Vector x, double eps) {
         super(fun, x, eps);
@@ -16,6 +17,7 @@ public class ConjugateGradientsMinimizer extends MultiMinimizer {
         this.gradient = fun.getGradient(x);
         this.eps = eps;
         p = gradient.multiply(-1.0);
+        this.iterationCount = 0;
     }
 
     @Override
@@ -24,6 +26,9 @@ public class ConjugateGradientsMinimizer extends MultiMinimizer {
     }
 
     public Vector nextIteration() {
+        if (iterationCount == 1000) {
+            p = gradient.multiply(-1.0);
+        }
         double gradientNorm = gradient.getEuclideanNorm();
         Vector Ap = fun.getA().multiply(p);
         double alpha = (gradientNorm * gradientNorm) / (Ap.scalarProduct(p));
@@ -32,6 +37,7 @@ public class ConjugateGradientsMinimizer extends MultiMinimizer {
         gradient = gradient.add(Ap.multiply(alpha));
         double betta = (lastGradientNorm * lastGradientNorm) / (gradientNorm * gradientNorm);
         p = gradient.multiply(-1.0).add(p.multiply(betta));
+        iterationCount++;
         return x;
     }
 
@@ -39,6 +45,7 @@ public class ConjugateGradientsMinimizer extends MultiMinimizer {
     public void restart() {
         x = startX;
         gradient = fun.getGradient(x);
+        iterationCount = 0;
     }
 
     @Override
