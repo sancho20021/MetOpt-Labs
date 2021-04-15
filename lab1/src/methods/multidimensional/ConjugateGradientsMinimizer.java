@@ -7,6 +7,7 @@ package methods.multidimensional;
 public class ConjugateGradientsMinimizer extends MultiMinimizer {
     private Vector x;
     private Vector gradient;
+    private Vector p;
     private final double eps;
     private int iterationCount;
 
