@@ -20,7 +20,7 @@ public class ConjugateGradientsMinimizer extends MultiMinimizer {
 
     @Override
     public boolean hasNext() {
-        return !(fun.getGradient(x).getEuclideanNorm() < eps);
+        return !(gradient.getEuclideanNorm() < eps);
     }
 
     public Vector nextIteration() {
@@ -28,11 +28,10 @@ public class ConjugateGradientsMinimizer extends MultiMinimizer {
         Vector Ap = fun.getA().multiply(p);
         double alpha = (gradientNorm * gradientNorm) / (Ap.scalarProduct(p));
         x = x.add(p.multiply(alpha));
-        Vector gradientk = gradient;
+        double lastGradientNorm = gradient.getEuclideanNorm();
         gradient = gradient.add(Ap.multiply(alpha));
-        double gradientkNorm = gradient.getEuclideanNorm();
-        double betta = (gradientkNorm * gradientkNorm) / (gradientNorm * gradientNorm);
-        p = gradientk.multiply(-1.0).add(p.multiply(betta));
+        double betta = (lastGradientNorm * lastGradientNorm) / (gradientNorm * gradientNorm);
+        p = gradient.multiply(-1.0).add(p.multiply(betta));
         return x;
     }
 
