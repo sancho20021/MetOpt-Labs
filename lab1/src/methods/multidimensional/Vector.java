@@ -37,6 +37,11 @@ public class Vector {
         return reduce(Math::abs, DoubleSummaryStatistics::getMax);
     }
 
+    public Vector normalize() {
+        double norm = getEuclideanNorm();
+        return this.multiply(norm == 0 ? 1 : 1 / norm);
+    }
+
     public Vector add(final Vector other) {
         double[] result = new double[getDim()];
         for (int i = 0; i < getDim(); i++) {

@@ -37,11 +37,25 @@ public class Table {
         return s.toString();
     }
 
+    /**
+     * @return the table in csv format
+    * */
     public String toCSV() {
-        // comma-separated values
+        return toDSV(",");
+    }
+
+    /**
+     * @return the table as whitespace-separated values
+    * */
+    public String toTSV() {
+        return toDSV(" ");
+    }
+
+    public String toDSV(String delimeter) {
+        // delimiter-separated values
         StringBuilder res = new StringBuilder();
         for (List<String> strings : table) {
-            res.append(String.join(",", strings));
+            res.append(String.join(delimeter, strings));
             res.append(System.lineSeparator());
         }
         return res.toString();

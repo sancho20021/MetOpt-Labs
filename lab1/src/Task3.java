@@ -1,5 +1,3 @@
-package misc;
-
 import methods.unidimensional.*;
 import utils.Table;
 
