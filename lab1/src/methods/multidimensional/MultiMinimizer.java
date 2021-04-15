@@ -5,7 +5,7 @@ public abstract class MultiMinimizer {
     protected Vector startX;
     protected final double eps;
 
-    public MultiMinimizer(final QuadraticFunction fun, Vector startX, double eps) {
+    protected MultiMinimizer(final QuadraticFunction fun, Vector startX, double eps) {
         if (eps <= 0) {
             throw new IllegalArgumentException("eps should be > 0");
         }

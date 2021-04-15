@@ -1,7 +1,4 @@
-import methods.multidimensional.FullMatrix;
-import methods.multidimensional.GradientDescentMinimizer;
-import methods.multidimensional.QuadraticFunction;
-import methods.multidimensional.Vector;
+import methods.multidimensional.*;
 
 import java.util.List;
 
@@ -21,15 +18,22 @@ public class Main {
         );
         double minEigen = 2;
         double maxEigen = 254;
-        var gradientMinimizer = new GradientDescentMinimizer(
-                f, 2 / (minEigen + maxEigen), new Vector(0, 0), 1e-2);
-        var fun = gradientMinimizer.getFun();
-        for (int i = 0; i < 10000 && gradientMinimizer.hasNext(); i++) {
-            var x = gradientMinimizer.getCurrentXMin();
+//        var gradientMinimizer = new GradientDescentMinimizer(
+//                f, 2 / (minEigen + maxEigen), new Vector(0, 0), 1e-2);
+//        for (int i = 0; i < 10000 && gradientMinimizer.hasNext(); i++) {
+//            var x = gradientMinimizer.getCurrentXMin();
+//            System.out.printf("%d-th iteration: x={%.4f,%.4f}, f(x)=%.4f",
+//                    i, x.getIth(0), x.getIth(1), gradientMinimizer.getFun().get(x));
+//            System.out.println();
+//            gradientMinimizer.next();
+//        }
+        var conjMinimizer = new ConjugateGradientsMinimizer(f, new Vector(0, 0), 1e-2);
+        for (int i = 0; i < 1000 && conjMinimizer.hasNext(); i++) {
+            var x = conjMinimizer.getCurrentXMin();
             System.out.printf("%d-th iteration: x={%.4f,%.4f}, f(x)=%.4f",
-                    i, x.getIth(0), x.getIth(1), fun.get(x));
+                    i, x.getIth(0), x.getIth(1), conjMinimizer.getFun().get(x));
             System.out.println();
-            gradientMinimizer.next();
+            conjMinimizer.next();
         }
     }
 }
