@@ -1,6 +1,8 @@
 package methods.multidimensional;
 
+import java.util.Objects;
 import java.util.concurrent.TimeoutException;
+import java.util.stream.Stream;
 
 public abstract class MultiMinimizer {
     public static final int MAX_ITERATIONS = 10_000_000;
@@ -49,4 +51,8 @@ public abstract class MultiMinimizer {
         return fun;
     }
 
+    public Stream<Vector> points() {
+        restart();
+        return Stream.iterate(next(), Objects::nonNull, prev -> next());
+    }
 }

@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.TimeoutException;
 
+import java.util.Arrays;
+
 public class MultidimensionalTester {
     static QuadraticFunction f1 = new QuadraticFunction(
             new FullMatrix(
@@ -137,5 +139,22 @@ public class MultidimensionalTester {
                     "Methods differ (GDM, FD): (" + v1 + " " + v3 + ")\n    X differs:\n        GDM    " + xmin1.toString() + "\n       FD   " + xmin3.toString(),
                     Math.abs(v1 - v3) < 2 * eps);
         }
+    }
+
+
+    public static void main(String[] args) throws TimeoutException {
+        QuadraticFunction simple = new QuadraticFunction(
+                new DiagonalMatrix(1, 1),
+                new Vector(0, 0),
+                0
+        );
+        double i = 3, j = 0;
+        var startX = new Vector(i, j);
+        double eps = 1e-2;
+        Vector xmin3 = new FastestDescent(crazyMatrix(), startX, eps, 2).findMinimum();
+        double v3 = simple.get(xmin3);
+        System.out.println("Testing (i, j) = " + i + " " + j);
+        System.out.println(xmin3 + " " + v3);
+        System.out.println("-----------------------");
     }
 }

@@ -33,7 +33,13 @@ public class FastestDescent extends MultiMinimizer {
     }
 
     private double oneDimMin(Vector x0) {
+        testDirection(x0);
         return new FibonacciMinimizer(a -> fun.get(x0.add(fun.getGradient(x0).multiply(-a))), 0.0, maxA, eps)
                 .findMinimum();
+    }
+
+    public void testDirection(Vector x0) {
+        var gradient = fun.getGradient(x0);
+        System.out.println("Gradient: " + gradient);
     }
 }
