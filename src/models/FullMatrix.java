@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class FullMatrix implements SquareMatrix {
+public class FullMatrix extends SquareMatrix {
     List<Vector> rows;
 
     public FullMatrix(List<Vector> rows) {

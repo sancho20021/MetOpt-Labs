@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 
-public class DiagonalMatrix implements SquareMatrix {
+public class DiagonalMatrix extends SquareMatrix {
     final double[] elements;
 
     public DiagonalMatrix(double... elements) {

@@ -1,15 +1,16 @@
 package models;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-public interface SquareMatrix {
+public abstract class SquareMatrix {
     /**
      * Multiplies this matrix with other matrix
      *
      * @param other matrix to multiply
      * @return product of matrices
      */
-    SquareMatrix multiply(SquareMatrix other);
+    public abstract SquareMatrix multiply(SquareMatrix other);
 
     /**
      * Sums this matrix with other matrix
@@ -17,7 +18,7 @@ public interface SquareMatrix {
      * @param other matrix to sum with
      * @return sum of matrices
      */
-    SquareMatrix add(SquareMatrix other);
+    public abstract SquareMatrix add(SquareMatrix other);
 
     /**
      * Subtracts other matrix from this matrix
@@ -25,14 +26,14 @@ public interface SquareMatrix {
      * @param other matrix to subtract
      * @return this matrix minus other matrix
      */
-    SquareMatrix subtract(SquareMatrix other);
+    public abstract SquareMatrix subtract(SquareMatrix other);
 
     /**
      * Returns dimension of the matrix
      *
      * @return dimension of the matrix
      */
-    int size();
+    public abstract int size();
 
     /**
      * Multiplies this matrix with vector
@@ -40,14 +41,15 @@ public interface SquareMatrix {
      * @param vector vector to multiply
      * @return vector, product of multiplication
      */
-    Vector multiply(Vector vector);
+    public abstract Vector multiply(Vector vector);
 
     /**
      * Multiplies vector with this matrix
+     *
      * @param vector vector to multiply
      * @return matrix, product of multiplication
      */
-    Vector multiplyLeft(Vector vector);
+    public abstract Vector multiplyLeft(Vector vector);
 
     /**
      * Checks if sizes of matrices are same
@@ -55,7 +57,7 @@ public interface SquareMatrix {
      * @param other other matrix
      * @throws IllegalArgumentException if sizes don't match
      */
-    default void checkSizeMatch(SquareMatrix other) throws IllegalArgumentException {
+    void checkSizeMatch(SquareMatrix other) throws IllegalArgumentException {
         if (this.size() != other.size()) {
             throw new IllegalArgumentException("Sizes of matrices are not same");
         }
@@ -68,7 +70,7 @@ public interface SquareMatrix {
      * @param j j
      * @return element (i, j)
      */
-    double element(int i, int j);
+    public abstract double element(int i, int j);
 
     /**
      * Returns row's row
@@ -76,7 +78,7 @@ public interface SquareMatrix {
      * @param row row
      * @return row's row
      */
-    Vector row(int row);
+    public abstract Vector row(int row);
 
     /**
      * Returns column's column
@@ -84,21 +86,21 @@ public interface SquareMatrix {
      * @param column column
      * @return column's column
      */
-    Vector column(int column);
+    public abstract Vector column(int column);
 
     /**
      * Returns list of rows
      *
      * @return list of rows
      */
-    List<Vector> rows();
+    public abstract List<Vector> rows();
 
     /**
      * Returns list of columns
      *
      * @return list of columns
      */
-    List<Vector> columns();
+    public abstract List<Vector> columns();
 
     /**
      * Returns matrix multiplied by x
@@ -106,5 +108,12 @@ public interface SquareMatrix {
      * @param x x
      * @return matrix multiplied by x
      */
-    SquareMatrix multiply(double x);
+    public abstract SquareMatrix multiply(double x);
+
+    @Override
+    public String toString() {
+        return rows().stream()
+                .map(Vector::toString)
+                .collect(Collectors.joining(System.lineSeparator(), "{", "}"));
+    }
 }

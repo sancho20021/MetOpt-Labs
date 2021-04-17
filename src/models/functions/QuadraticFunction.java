@@ -60,4 +60,10 @@ public class QuadraticFunction {
     public double getC() {
         return c;
     }
+
+    @Override
+    public String toString() {
+        return String.format("A:%n%s%nB:%n%s%nC:%n%f%n", getA().toString(), getB().toString(), getC());
+    }
+
 }

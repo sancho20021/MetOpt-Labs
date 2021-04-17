@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.function.DoubleUnaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 
 public class Vector {
     private final double[] coordinates;
@@ -100,5 +101,9 @@ public class Vector {
         return Arrays.stream(coordinates)
                 .mapToObj(x -> Utility.formatDouble(8, x))
                 .collect(Collectors.joining(", ", "[", "]"));
+    }
+
+    public List<Double> getElements() {
+        return DoubleStream.of(coordinates).boxed().collect(Collectors.toList());
     }
 }
