@@ -1,5 +1,8 @@
 package methods.multidimensional;
 
+import models.Vector;
+import models.functions.QuadraticFunction;
+
 public class GradientDescentMinimizer extends MultiMinimizer {
     private final double startAlpha;
     private double alpha;

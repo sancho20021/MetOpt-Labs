@@ -1,4 +1,4 @@
-package methods.multidimensional;
+package models;
 
 import utils.Utility;
 

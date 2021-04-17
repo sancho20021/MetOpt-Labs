@@ -1,3 +1,5 @@
+package methods.multidimensional;
+
 import methods.unidimensional.DichotomyMinimizer;
 import methods.unidimensional.FibonacciMinimizer;
 import methods.unidimensional.GoldenMinimizer;

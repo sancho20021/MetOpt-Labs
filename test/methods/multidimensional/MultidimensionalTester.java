@@ -1,12 +1,15 @@
-import methods.multidimensional.*;
+package methods.multidimensional;
+
+import models.DiagonalMatrix;
+import models.FullMatrix;
+import models.Vector;
+import models.functions.QuadraticFunction;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.TimeoutException;
-
-import java.util.Arrays;
 
 public class MultidimensionalTester {
     static QuadraticFunction f1 = new QuadraticFunction(

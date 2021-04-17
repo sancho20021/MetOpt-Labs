@@ -1,6 +1,8 @@
 package methods.multidimensional;
 
 import methods.unidimensional.FibonacciMinimizer;
+import models.Vector;
+import models.functions.QuadraticFunction;
 
 public class FastestDescent extends MultiMinimizer {
     private Vector x;

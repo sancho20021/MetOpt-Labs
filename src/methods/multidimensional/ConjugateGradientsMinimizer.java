@@ -1,5 +1,8 @@
 package methods.multidimensional;
 
+import models.Vector;
+import models.functions.QuadraticFunction;
+
 /**
  * @author Yaroslav Ilin
  */

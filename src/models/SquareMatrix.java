@@ -1,4 +1,4 @@
-package methods.multidimensional;
+package models;
 
 import java.util.List;
 

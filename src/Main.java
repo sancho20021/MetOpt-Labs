@@ -1,6 +1,7 @@
 import methods.multidimensional.*;
-
-import java.util.List;
+import models.FullMatrix;
+import models.Vector;
+import models.functions.QuadraticFunction;
 
 /**
  * @author Yaroslav Ilin

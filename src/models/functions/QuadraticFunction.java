@@ -1,4 +1,7 @@
-package methods.multidimensional;
+package models.functions;
+
+import models.SquareMatrix;
+import models.Vector;
 
 public class QuadraticFunction {
     private final SquareMatrix a;

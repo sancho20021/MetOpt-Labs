@@ -1,5 +1,8 @@
 package methods.multidimensional;
 
+import models.Vector;
+import models.functions.QuadraticFunction;
+
 import java.util.Objects;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Stream;
