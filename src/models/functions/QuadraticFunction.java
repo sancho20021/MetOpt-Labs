@@ -63,7 +63,12 @@ public class QuadraticFunction {
 
     @Override
     public String toString() {
-        return String.format("A:%n%s%nB:%n%s%nC:%n%f%n", getA().toString(), getB().toString(), getC());
+        return String.format(
+                "Function arity: %d %nA: %n%s %nB: %n%s %nC: %n%f %n",
+                getA().size(),
+                getA().toString(),
+                getB().toString(),
+                getC());
     }
 
 }

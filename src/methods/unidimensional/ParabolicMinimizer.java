@@ -84,18 +84,23 @@ public class ParabolicMinimizer extends Minimizer {
 
     private void setInitialX2() {
         int count = 100;
-        double step = (b - a) / 3;
+        double left = a, right = b;
         while (count > 0) {
-            for (double x = a + step; x <= b - step; x += step) {
-                double fx = fun.apply(x);
-                if (fx <= f1 && fx <= f3) {
-                    x2 = x;
-                    f2 = fx;
-                    return;
-                }
-                count--;
+            double p1 = left + (right - left) * 1 / 3, p2 = left + (right - left) * 2 / 3;
+            double fp1 = fun.apply(p1), fp2 = fun.apply(p2);
+            double pMin = fp1 < fp2 ? p1 : p2;
+            double fpMin = Math.min(fp1, fp2);
+            if (fpMin < f1 && fpMin < f3) {
+                x2 = pMin;
+                f2 = fpMin;
+                return;
             }
-            step /= 2;
+            if (fp1 > fp2) {
+                left = p1;
+            } else {
+                right = p2;
+            }
+            count--;
         }
         throw new IllegalStateException("No suitable x1 x2 x3 found for Parabolic minimizer");
     }

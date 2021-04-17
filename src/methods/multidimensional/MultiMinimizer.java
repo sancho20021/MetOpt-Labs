@@ -56,6 +56,6 @@ public abstract class MultiMinimizer {
 
     public Stream<Vector> points() {
         restart();
-        return Stream.iterate(next(), Objects::nonNull, prev -> next());
+        return Stream.concat(Stream.of(startX), Stream.iterate(next(), Objects::nonNull, prev -> next()));
     }
 }
