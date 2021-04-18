@@ -14,6 +14,10 @@ public class GradientDescentMinimizer extends MultiMinimizer {
         restart();
     }
 
+    public GradientDescentMinimizer(final QuadraticFunction fun, Vector startX, double eps) {
+        this(fun, 2 / (fun.getMinEigenValueAbs() + fun.getMaxEigenValueAbs()), startX, eps);
+    }
+
     public boolean hasNext() {
         return fun.getGradient(x).getEuclideanNorm() >= eps;
     }

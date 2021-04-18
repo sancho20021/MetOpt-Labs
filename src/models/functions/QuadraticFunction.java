@@ -1,5 +1,6 @@
 package models.functions;
 
+import models.DiagonalMatrix;
 import models.SquareMatrix;
 import models.Vector;
 
@@ -59,6 +60,22 @@ public class QuadraticFunction {
 
     public double getC() {
         return c;
+    }
+
+    public double getMinEigenValueAbs() {
+        checkDiagonality();
+        return ((DiagonalMatrix) a).getMinEigenValueAbs();
+    }
+
+    public double getMaxEigenValueAbs() {
+        checkDiagonality();
+        return ((DiagonalMatrix) a).getMaxEigenValueAbs();
+    }
+
+    private void checkDiagonality() {
+        if (!(a instanceof DiagonalMatrix)) {
+            throw new IllegalStateException("Performed an operation, that requires matrix diagonality");
+        }
     }
 
     @Override

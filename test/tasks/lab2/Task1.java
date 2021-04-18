@@ -1,12 +1,11 @@
 package tasks.lab2;
 
 import com.panayotis.gnuplot.JavaPlot;
-import methods.multidimensional.ConjugateGradientsMinimizer;
+import com.panayotis.gnuplot.plot.DataSetPlot;
 import methods.multidimensional.FastestDescent;
 import methods.unidimensional.*;
 import org.junit.Test;
 import tasks.lab2.models.Task;
-import utils.JavaPlotExample;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -17,8 +16,8 @@ import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static tasks.lab2.Constants.STANDARD_EPS;
-import static tasks.lab2.Constants.STANDARD_MAXA;
+import static methods.multidimensional.Constants.STANDARD_EPS;
+import static methods.multidimensional.Constants.STANDARD_MAXA;
 import static utils.JavaPlotExample.getPlot;
 import static utils.JavaPlotExample.getPointsGraph;
 
@@ -63,7 +62,7 @@ public class Task1 {
         return IntStream.range(0, number).mapToObj(i -> Task.getRandomTask(dimension, k)).collect(Collectors.toList());
     }
 
-    private static List<Point2D.Double> getConditionArrayPoints(final double[] iterations) {
+    public static List<Point2D.Double> getConditionArrayPoints(final double[] iterations) {
         var points = new ArrayList<Point2D.Double>();
         for (int i = 0; i < iterations.length; i++) {
             points.add(new Point2D.Double(i + 1, iterations[i]));
@@ -71,9 +70,13 @@ public class Task1 {
         return points;
     }
 
+    public static DataSetPlot getGraphFromConditionArray(final double[] iterationNumbers, final String name) {
+        return getPointsGraph(getConditionArrayPoints(iterationNumbers), name);
+    }
+
     public static JavaPlot conditionNumberToIterations(final Map<String, double[]> methodNameToIterations) {
         var graphs = methodNameToIterations.entrySet().stream()
-                .map(entry -> getPointsGraph(getConditionArrayPoints(entry.getValue()), entry.getKey()))
+                .map(entry -> getGraphFromConditionArray(entry.getValue(), entry.getKey()))
                 .collect(Collectors.toList());
         return getPlot(
                 "Зависимость скорости сходимости от числа обусловленности, размерность пр-ва: " + DIMENSION,

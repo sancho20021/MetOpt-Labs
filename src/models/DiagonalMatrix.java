@@ -1,5 +1,6 @@
 package models;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.IntToDoubleFunction;
 import java.util.stream.Collectors;
@@ -103,5 +104,13 @@ public class DiagonalMatrix extends SquareMatrix {
     @Override
     public String toString() {
         return rows().stream().map(Vector::toString).collect(Collectors.joining(System.lineSeparator()));
+    }
+
+    public double getMinEigenValueAbs() {
+        return Arrays.stream(elements).map(Math::abs).min().getAsDouble();
+    }
+
+    public double getMaxEigenValueAbs() {
+        return Arrays.stream(elements).map(Math::abs).max().getAsDouble();
     }
 }

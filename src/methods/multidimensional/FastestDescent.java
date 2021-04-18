@@ -1,14 +1,13 @@
 package methods.multidimensional;
 
-import methods.unidimensional.CombinationMinimizer;
 import methods.unidimensional.FibonacciMinimizer;
+import methods.unidimensional.GoldenMinimizer;
 import methods.unidimensional.Minimizer;
+import methods.unidimensional.ParabolicMinimizer;
 import models.Vector;
 import models.functions.QuadraticFunction;
-import org.junit.Test;
 
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class FastestDescent extends MultiMinimizer {
     private Vector x;
@@ -18,6 +17,10 @@ public class FastestDescent extends MultiMinimizer {
 
     public FastestDescent(QuadraticFunction fun, Vector startX, double eps, double maxA) {
         this(fun, startX, eps, maxA, FibonacciMinimizer.class);
+    }
+
+    public FastestDescent(QuadraticFunction fun, Vector startX, double eps) {
+        this(fun, startX, eps, startX.getDim() * 2 * fun.getMaxEigenValueAbs());
     }
 
     public FastestDescent(QuadraticFunction fun, Vector startX, double eps, double maxA, Class<? extends Minimizer> uniMinimizer) {
