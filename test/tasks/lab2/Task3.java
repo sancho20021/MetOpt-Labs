@@ -68,7 +68,7 @@ public class Task3 {
     }
 
     private List<DataSetPlot> getAllGraphs(final Class<? extends MultiMinimizer> mToken) {
-        int[] dims = {1, 2, 5, 10, 100, 3000};
+        int[] dims = {1, 2, 5, 10, 100, 1000};
         var dimGraphs = new ArrayList<DataSetPlot>();
         for (var dim : dims) {
             System.out.println("Testing n = " + dim);

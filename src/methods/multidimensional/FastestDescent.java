@@ -16,11 +16,12 @@ public class FastestDescent extends MultiMinimizer {
     private int allIterationsCount;
 
     public FastestDescent(QuadraticFunction fun, Vector startX, double eps, double maxA) {
-        this(fun, startX, eps, maxA, FibonacciMinimizer.class);
+        this(fun, startX, eps, maxA, startX.getDim() < 100 ? ParabolicMinimizer.class : FibonacciMinimizer.class);
     }
 
     public FastestDescent(QuadraticFunction fun, Vector startX, double eps) {
-        this(fun, startX, eps, startX.getDim() * 2 * fun.getMaxEigenValueAbs());
+        this(fun, startX, eps,
+                startX.getDim() * Math.max(1, fun.getB().maxElementAbs()) * 2 * fun.getMaxEigenValueAbs());
     }
 
     public FastestDescent(QuadraticFunction fun, Vector startX, double eps, double maxA, Class<? extends Minimizer> uniMinimizer) {

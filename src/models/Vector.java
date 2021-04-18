@@ -106,4 +106,8 @@ public class Vector {
     public List<Double> getElements() {
         return DoubleStream.of(coordinates).boxed().collect(Collectors.toList());
     }
+
+    public double maxElementAbs() {
+        return Arrays.stream(coordinates).map(Math::abs).max().getAsDouble();
+    }
 }
