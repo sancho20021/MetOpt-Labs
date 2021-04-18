@@ -5,6 +5,7 @@ import models.DiagonalMatrix;
 import models.Vector;
 import models.functions.QuadraticFunction;
 import org.junit.Test;
+import tasks.lab2.models.Task;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +36,9 @@ public class TaskGenerationTest {
     public void testDifferentUniminimizers() {
         boolean print = false;
 
-        List<MultidimensionalTester.Task> tasks = new ArrayList<>();
+        List<Task> tasks = new ArrayList<>();
         for (int i = 1; i < 2; i++) {
-            tasks.add(MultidimensionalTester.Task.getRandomTask(2000, i));
+            tasks.add(Task.getRandomTask(2000, i));
         }
         var eps = 0.01;
         var mins = tasks.stream()

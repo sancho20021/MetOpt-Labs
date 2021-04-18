@@ -5,6 +5,7 @@ import java.util.function.Function;
 public abstract class Minimizer {
     protected final Function<Double, Double> fun;
     protected final double a, b, eps;
+    private int iterationsCount;
 
     public Minimizer(final Function<Double, Double> fun, final double a, final double b, final double eps) {
         if (eps <= 0) {
@@ -14,6 +15,7 @@ public abstract class Minimizer {
         this.a = a;
         this.b = b;
         this.eps = eps;
+        iterationsCount = 0;
     }
 
     public abstract boolean hasNext();
@@ -24,6 +26,7 @@ public abstract class Minimizer {
         if (!hasNext()) {
             return null;
         }
+        iterationsCount++;
         return nextIteration();
     }
 
@@ -33,6 +36,7 @@ public abstract class Minimizer {
         restart();
         while (hasNext()) {
             nextIteration();
+            iterationsCount++;
         }
         return getCurrentXMin();
     }
@@ -49,5 +53,13 @@ public abstract class Minimizer {
 
     public double getB() {
         return b;
+    }
+
+    public int getIterationsCount() {
+        return iterationsCount;
+    }
+
+    public void resetIterationsCount() {
+        iterationsCount = 0;
     }
 }

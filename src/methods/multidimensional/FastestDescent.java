@@ -14,6 +14,7 @@ public class FastestDescent extends MultiMinimizer {
     private Vector x;
     private final double maxA;
     private final Class<? extends Minimizer> uniMinimizer;
+    private int allIterationsCount;
 
     public FastestDescent(QuadraticFunction fun, Vector startX, double eps, double maxA) {
         this(fun, startX, eps, maxA, FibonacciMinimizer.class);
@@ -24,6 +25,7 @@ public class FastestDescent extends MultiMinimizer {
         this.maxA = maxA;
         this.uniMinimizer = uniMinimizer;
         restart();
+        allIterationsCount = 0;
     }
 
     @Override
@@ -50,10 +52,13 @@ public class FastestDescent extends MultiMinimizer {
         Function<Double, Double> uniFunction = a -> fun.get(x0.add(fun.getGradient(x0).multiply(-a)));
         // printUniFunction(uniFunction);
         try {
-            return uniMinimizer
+            var uniMinInstance = uniMinimizer
                     .getConstructor(Function.class, double.class, double.class, double.class)
-                    .newInstance(uniFunction, 0.0, maxA, eps)
-                    .findMinimum();
+                    .newInstance(uniFunction, 0.0, maxA, eps);
+            uniMinInstance.resetIterationsCount();
+            double result = uniMinInstance.findMinimum();
+            allIterationsCount += uniMinInstance.getIterationsCount();
+            return result;
         } catch (Exception e) {
             System.err.println("Error occurred while trying to use one dimension minimizer");
             throw new IllegalStateException("See log, message: " + e.getMessage(), e);
@@ -61,13 +66,16 @@ public class FastestDescent extends MultiMinimizer {
     }
 
     private void printUniFunction(Function<Double, Double> uniFunction) {
-        for (double xx = 0; xx < maxA; xx = (xx + 0.5)*1.1) {
+        for (double xx = 0; xx < maxA; xx = (xx + 0.5) * 1.1) {
             System.out.println("(x, f(x)) = (" + xx + ", " + uniFunction.apply(xx) + ")");
         }
     }
 
-    public void testDirection(Vector x0) {
-        var gradient = fun.getGradient(x0);
-        System.out.println("Gradient: " + gradient);
+    public int getAllIterationsCount() {
+        return allIterationsCount;
+    }
+
+    public void resetAllIterationsCount() {
+        allIterationsCount = 0;
     }
 }
