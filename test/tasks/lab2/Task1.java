@@ -17,12 +17,12 @@ import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static tasks.lab2.Constants.STANDARD_EPS;
+import static tasks.lab2.Constants.STANDARD_MAXA;
 import static utils.JavaPlotExample.getPlot;
 import static utils.JavaPlotExample.getPointsGraph;
 
 public class Task1 {
-    final static double STANDARD_EPS = 0.0001;
-    final static double STANDARD_MAXA = 10000;
     final static int DIMENSION = 2;
 
     private static int getItersNumber(final Task task, final Class<? extends Minimizer> m) {
@@ -53,13 +53,13 @@ public class Task1 {
         );
     }
 
-    private static double[] getAverageItersNumbers(final List<List<Task>> tasks, Class<? extends Minimizer> m) {
+    public static double[] getAverageItersNumbers(final List<List<Task>> tasks, Class<? extends Minimizer> m) {
         return tasks.stream()
                 .mapToDouble(ts -> getItersNumbers(ts, m).average().getAsDouble())
                 .toArray();
     }
 
-    private static List<Task> getRandomTasks(final int number, final int dimension, final int k) {
+    public static List<Task> getRandomTasks(final int number, final int dimension, final int k) {
         return IntStream.range(0, number).mapToObj(i -> Task.getRandomTask(dimension, k)).collect(Collectors.toList());
     }
 
