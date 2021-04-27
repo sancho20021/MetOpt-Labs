@@ -2,16 +2,16 @@ package methods.multidimensional;
 
 import models.DiagonalMatrix;
 import models.FullMatrix;
-import models.SquareMatrix;
 import models.Vector;
 import models.functions.QuadraticFunction;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.TimeoutException;
-import java.util.stream.DoubleStream;
+import java.util.stream.Stream;
 
 public class MultidimensionalTester {
     static QuadraticFunction f1 = new QuadraticFunction(
@@ -144,6 +144,15 @@ public class MultidimensionalTester {
                     "Methods differ (GDM, FD): (" + v1 + " " + v3 + ")\n    X differs:\n        GDM    " + xmin1.toString() + "\n       FD   " + xmin3.toString(),
                     Math.abs(v1 - v3) < 2 * eps);
         }
+    }
+
+    @Test
+    public void testF1Fastest() {
+        double i = 0, j = 0;
+        var startX = new Vector(i, j);
+        double eps = 1e-2;
+        Stream<Vector> tmp = new FastestDescent(f1, startX, eps, 100).points();
+        tmp.forEach(x -> System.out.printf(Locale.US, "{x: %f, y: %f}, ", x.getIth(0), x.getIth(1)));
     }
 
     public static void main(String[] args) throws TimeoutException {

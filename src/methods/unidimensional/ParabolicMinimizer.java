@@ -90,7 +90,7 @@ public class ParabolicMinimizer extends Minimizer {
             double fp1 = fun.apply(p1), fp2 = fun.apply(p2);
             double pMin = fp1 < fp2 ? p1 : p2;
             double fpMin = Math.min(fp1, fp2);
-            if (fpMin < f1 && fpMin < f3) {
+            if (fpMin <= f1 && fpMin <= f3) {
                 x2 = pMin;
                 f2 = fpMin;
                 return;
