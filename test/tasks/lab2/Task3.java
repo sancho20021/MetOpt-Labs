@@ -14,7 +14,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class Task3 {
     public static MultiMinimizer getMinimizerFromTask(final Task task, final Class<? extends MultiMinimizer> mToken) {
@@ -31,6 +30,7 @@ public class Task3 {
     public static int[] getItersNumbers(final List<? extends MultiMinimizer> minimizers) {
         int[] iterationsNumbers = new int[minimizers.size()];
         for (int i = 0; i < minimizers.size(); i++) {
+            System.out.println(i);
             iterationsNumbers[i] = (int) minimizers.get(i).points().count() - 1;
         }
         return iterationsNumbers;
@@ -56,11 +56,13 @@ public class Task3 {
         double[] conditionNumbersDouble = Arrays.stream(conditionNumbers).mapToDouble(x -> x).toArray();
         var minimizerSets = new ArrayList<List<? extends MultiMinimizer>>();
         for (int conditionNumber : conditionNumbers) {
-            System.out.println("Testing condition number = " + conditionNumber);
             minimizerSets.add(minimizersFromTasks(Task1.getRandomTasks(5, dim, conditionNumber), mToken));
         }
-        double[] averageIterations = minimizerSets.stream()
-                .mapToDouble(list -> getAverage(getItersNumbers(list))).toArray();
+        double[] averageIterations = new double[minimizerSets.size()];
+        for (int i = 0; i < minimizerSets.size(); i++) {
+            System.out.println("Testing condition number = " + conditionNumbers[i]);
+            averageIterations[i] = getAverage(getItersNumbers(minimizerSets.get(i)));
+        }
         return JavaPlotExample.getPointsGraph(
                 getPointsFromArrays(conditionNumbersDouble, averageIterations),
                 "n= " + dim
@@ -80,7 +82,7 @@ public class Task3 {
     private void plot(Class<? extends MultiMinimizer> mToken, final String methodName) {
         var graphs = getAllGraphs(mToken);
         var plot = JavaPlotExample.getPlot(
-                "Зависимость числа итераций от числа обусловленности. Метод: " + methodName,
+                "Зависимость числа итераций от числа обусл. " + methodName,
                 "Число обусловленности",
                 "Число итераций",
                 graphs
