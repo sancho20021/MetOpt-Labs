@@ -3,7 +3,7 @@ package lab3.models;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class SquareMatrix extends SimpleSquareMatrix {
+public abstract class SquareMatrix implements SimpleSquareMatrix {
     /**
      * Multiplies this matrix with other matrix
      *

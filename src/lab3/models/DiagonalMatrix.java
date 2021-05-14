@@ -113,4 +113,10 @@ public class DiagonalMatrix extends SquareMatrix {
     public double getMaxEigenValueAbs() {
         return Arrays.stream(elements).map(Math::abs).max().getAsDouble();
     }
+
+    private void checkSizeMatch(final SimpleSquareMatrix other) throws IllegalArgumentException {
+        if (this.size() != other.size()) {
+            throw new IllegalArgumentException("Sizes of matrices are not same");
+        }
+    }
 }

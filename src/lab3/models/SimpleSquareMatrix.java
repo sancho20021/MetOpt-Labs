@@ -1,25 +1,16 @@
 package lab3.models;
 
-public abstract class SimpleSquareMatrix {
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+public interface SimpleSquareMatrix {
 
     /**
      * Returns dimension of the matrix
      *
      * @return dimension of the matrix
      */
-    public abstract int size();
-
-    /**
-     * Checks if sizes of matrices are same
-     *
-     * @param other other matrix
-     * @throws IllegalArgumentException if sizes don't match
-     */
-    public void checkSizeMatch(final SimpleSquareMatrix other) throws IllegalArgumentException {
-        if (this.size() != other.size()) {
-            throw new IllegalArgumentException("Sizes of matrices are not same");
-        }
-    }
+    int size();
 
     /**
      * Returns element (i, j)
@@ -28,5 +19,18 @@ public abstract class SimpleSquareMatrix {
      * @param j j
      * @return element (i, j)
      */
-    public abstract double get(int i, int j);
+    double get(int i, int j);
+
+    /**
+     * Returns string representation of matrix
+     * @return string
+     */
+    default String convertToString() {
+        return IntStream.range(0, size())
+                .mapToObj(i ->
+                        IntStream.range(0, size())
+                                .mapToObj(j -> Double.toString(get(i, j)))
+                                .collect(Collectors.joining(" "))
+                ).collect(Collectors.joining(System.lineSeparator()));
+    }
 }

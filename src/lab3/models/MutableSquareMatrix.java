@@ -1,6 +1,6 @@
 package lab3.models;
 
-public interface MutableSquareMatrix {
+public interface MutableSquareMatrix extends SimpleSquareMatrix{
     /**
      * Sets a_ij = x
      * @param i i

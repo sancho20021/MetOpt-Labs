@@ -1,4 +1,4 @@
-package lab3;
+package lab3.models;
 
 import lab3.models.MutableSquareMatrix;
 import lab3.models.SimpleSquareMatrix;
@@ -6,7 +6,7 @@ import lab3.models.SimpleSquareMatrix;
 /**
  * @author Yaroslav Ilin
  */
-public class ProfileFormatMatrix extends SimpleSquareMatrix implements MutableSquareMatrix {
+public class ProfileFormatMatrix implements MutableSquareMatrix {
     private final int n;
     private final double[] di;
     private final double[] al;
@@ -69,19 +69,22 @@ public class ProfileFormatMatrix extends SimpleSquareMatrix implements MutableSq
         if (i == j) {
             di[i] = x;
         } else if (i > j) {
-            int profileLen = ia[i + 1] - ia[i];
-            int firstNotZero = i - profileLen;
-            if (j < firstNotZero) {
-                throw new IllegalArgumentException("Changing the profile of matrix is not allowed");
-            }
-            al[ia[i] + j - firstNotZero] = x;
+            setProfile(i, j, x, al);
         } else {
-            int profileLen = ia[j + 1] - ia[j];
-            int firstNotZero = j - profileLen;
-            if (i < firstNotZero) {
-                throw new IllegalArgumentException("Changing the profile of matrix is not allowed");
-            }
-            au[ia[j] + i - firstNotZero] = x;
+            setProfile(j, i, x, au);
         }
+    }
+
+    private void setProfile(int i, int j, double x, double[] al) {
+        int profileLen = ia[i + 1] - ia[i];
+        int firstNotZero = i - profileLen;
+        if (j < firstNotZero) {
+            if (x != 0) {
+                throw new IllegalArgumentException("Changing the profile of matrix is not allowed");
+            } else {
+                return;
+            }
+        }
+        al[ia[i] + j - firstNotZero] = x;
     }
 }
