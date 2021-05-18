@@ -1,8 +1,5 @@
 package lab3.models;
 
-import lab3.models.MutableSquareMatrix;
-import lab3.models.SimpleSquareMatrix;
-
 /**
  * @author Yaroslav Ilin
  */
@@ -13,6 +10,10 @@ public class ProfileFormatMatrix implements MutableSquareMatrix {
     private final double[] au;
     private final int[] ia;
 
+    public ProfileFormatMatrix(final double[][] a) {
+        this(a.length, a);
+    }
+
     public ProfileFormatMatrix(final int n, final double[][] a) {
         assert a.length >= n;
         assert a[0].length >= n;
@@ -22,24 +23,22 @@ public class ProfileFormatMatrix implements MutableSquareMatrix {
             di[i] = a[i][i];
         }
         ia = new int[n + 1];
-        ia[0] = 1;
-        for (int i = 1; i < n + 1; i++) {
-            int c = i - 1;
-            for (int j = 0; j < i - 1; j++) {
-                if (a[i - 1][j] != 0) {
-                    c = j;
-                    break;
-                }
+        ia[0] = 0;
+        for (int i = 0; i < n; i++) {
+            int firstNotZero = 0;  // first not zero element in i-th row or column
+            while (firstNotZero < i && a[i][firstNotZero] == 0 && a[firstNotZero][i] == 0) {
+                firstNotZero++;
             }
-            ia[i] = i - c - 1 + ia[i - 1];
+            ia[i + 1] = ia[i] + i - firstNotZero; // i-th row (column) has (i - firstNotZero) not zero elements
         }
-        al = new double[ia[n] - 1];
-        au = new double[ia[n] - 1];
-        int k = 0;
-        for (int i = 2; i < n + 1; i++) {
-            for (int j = i - (ia[i] - ia[i - 1]); j < i; j++) {
-                al[k] = a[i - 1][j];
-                au[k++] = a[j][i - 1];
+        al = new double[ia[n]];
+        au = new double[ia[n]];
+        for (int i = 1; i < n; i++) {
+            int profileLen = ia[i + 1] - ia[i];
+            int firstNotZero = i - profileLen;
+            for (int j = 0; j < profileLen; j++) {
+                al[ia[i] + j] = a[i][firstNotZero + j];
+                au[ia[i] + j] = a[firstNotZero + j][i];
             }
         }
     }
@@ -86,5 +85,9 @@ public class ProfileFormatMatrix implements MutableSquareMatrix {
             }
         }
         al[ia[i] + j - firstNotZero] = x;
+    }
+
+    public int getDataSize() {
+        return au.length + di.length + al.length;
     }
 }
