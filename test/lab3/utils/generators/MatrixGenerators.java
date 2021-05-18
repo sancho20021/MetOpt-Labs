@@ -1,4 +1,4 @@
-package lab3.models;
+package lab3.utils.generators;
 
 import java.util.Arrays;
 import java.util.IntSummaryStatistics;
@@ -6,6 +6,8 @@ import java.util.Random;
 import java.util.function.DoubleSupplier;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+
+import static lab3.utils.generators.MainGenerator.random;
 
 public class MatrixGenerators {
     private static final Random RANDOM = new Random(228);

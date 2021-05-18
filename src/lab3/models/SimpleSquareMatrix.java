@@ -23,6 +23,7 @@ public interface SimpleSquareMatrix {
 
     /**
      * Returns string representation of matrix
+     *
      * @return string
      */
     default String convertToString() {
@@ -32,5 +33,11 @@ public interface SimpleSquareMatrix {
                                 .mapToObj(j -> Double.toString(get(i, j)))
                                 .collect(Collectors.joining(" "))
                 ).collect(Collectors.joining(System.lineSeparator()));
+    }
+
+    default double[][] getDataCopy() {
+        return IntStream.range(0, size())
+                .mapToObj(i -> IntStream.range(0, size()).mapToDouble(j -> get(i, j)).toArray())
+                .toArray(double[][]::new);
     }
 }

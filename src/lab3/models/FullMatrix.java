@@ -13,6 +13,14 @@ public class FullMatrix extends SquareMatrix {
         this(Arrays.stream(data).map(Vector::new).collect(Collectors.toList()));
     }
 
+    public FullMatrix(final SimpleSquareMatrix other) {
+        this(
+                IntStream.range(0, other.size())
+                        .mapToObj(i -> IntStream.range(0, other.size()).mapToDouble(j -> other.get(i, j)).toArray())
+                        .toArray(double[][]::new)
+        );
+    }
+
     public FullMatrix(List<Vector> rows) {
         this.rows = rows;
     }
