@@ -9,6 +9,10 @@ import java.util.stream.IntStream;
 public class FullMatrix extends SquareMatrix {
     List<Vector> rows;
 
+    public FullMatrix(final double[][] data) {
+        this(Arrays.stream(data).map(Vector::new).collect(Collectors.toList()));
+    }
+
     public FullMatrix(List<Vector> rows) {
         this.rows = rows;
     }

@@ -3,12 +3,12 @@ package lab3.models;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.Random;
 
+import static lab3.models.MatrixGenerators.generateMatrix;
+import static lab3.models.MatrixGenerators.generateSparseMatrix;
 import static org.junit.Assert.assertTrue;
 
 public class ProfileFormatMatrixTest {
-    private static final Random random = new Random(228);
 
     private boolean equal(final ProfileFormatMatrix profileFormatMatrix, final double[][] matrix) {
         int n = profileFormatMatrix.size();
@@ -71,41 +71,5 @@ public class ProfileFormatMatrixTest {
         return new FullMatrix(Arrays.stream(matrix)
                 .flatMapToDouble(Arrays::stream)
                 .toArray()).toString();
-    }
-
-    private static double[][] generateMatrix(final int n) {
-        return generateSparseMatrix(n, -100, 100, 1);
-    }
-
-    /**
-     * Generates a random matrix with given proportion of nonzero elements
-     *
-     * @param n         size of the matrix
-     * @param lo        lower bound of elements
-     * @param to        higher bound of elements
-     * @param notZeroPr probability of each element being not zero
-     * @return generated matrix
-     */
-    public static double[][] generateSparseMatrix(final int n, final double lo, final double to, final double notZeroPr) {
-        double[][] ans = new double[n][n];
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                ans[i][j] = randomWithPossibleZero(lo, to, notZeroPr);
-            }
-        }
-        return ans;
-    }
-
-    /**
-     * Returns a random double with not zero probability of zero in given range
-     *
-     * @param lo        lower bound
-     * @param hi        higher bound
-     * @param notZeroPr probability of not zero value
-     * @return generated random double
-     */
-    public static double randomWithPossibleZero(final double lo, final double hi, final double notZeroPr) {
-        double x = random.nextDouble();
-        return x <= notZeroPr ? lo + (hi - lo) * random.nextDouble() : 0;
     }
 }
