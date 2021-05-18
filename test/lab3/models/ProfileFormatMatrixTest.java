@@ -4,8 +4,8 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
-import static lab3.models.MatrixGenerators.generateMatrix;
-import static lab3.models.MatrixGenerators.generateSparseMatrix;
+import static lab3.utils.generators.MatrixGenerators.generateMatrix;
+import static lab3.utils.generators.MatrixGenerators.generateSparseMatrix;
 import static org.junit.Assert.assertTrue;
 
 public class ProfileFormatMatrixTest {

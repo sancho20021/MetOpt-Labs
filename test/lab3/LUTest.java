@@ -1,6 +1,7 @@
 package lab3;
 
 import lab3.models.*;
+import lab3.utils.generators.MatrixGenerators;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -25,7 +26,7 @@ public class LUTest {
     private static boolean testLU(final double[][] matrix, final double eps) {
         final SimpleSquareMatrix origin = new ProfileFormatMatrix(matrix);
         final MutableSquareMatrix working = new ProfileFormatMatrix(matrix);
-        LU.applyLU(working, eps);
+        LU.applyLU(working);
         final SquareMatrix l = getL(working);
         final SquareMatrix u = getU(working);
         System.out.println("Origin: ");
@@ -48,7 +49,7 @@ public class LUTest {
         }
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                if (Math.abs(m1.get(i, j) - m2.get(i, j)) > eps) {
+                if (Math.abs(m1.get(i, j) - m2.get(i, j)) >= eps) {
                     return false;
                 }
             }

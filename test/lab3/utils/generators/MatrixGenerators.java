@@ -1,10 +1,10 @@
-package lab3.models;
+package lab3.utils.generators;
 
-import java.util.Random;
 import java.util.function.DoubleSupplier;
 
+import static lab3.utils.generators.MainGenerator.random;
+
 public class MatrixGenerators {
-    private static final Random random = new Random(228);
 
     public static double[][] generateMatrix(final int n) {
         return generateSparseMatrix(n, -100, 100, 1);

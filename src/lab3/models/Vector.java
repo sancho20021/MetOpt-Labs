@@ -84,10 +84,6 @@ public class Vector {
         }
     }
 
-    public double[] coordinatesCopy() {
-        return coordinates.clone();
-    }
-
     public static Vector oneElementVector(int size, int index, double value) {
         double[] elements = new double[size];
         elements[index] = value;
@@ -104,6 +100,10 @@ public class Vector {
 
     public List<Double> getElements() {
         return DoubleStream.of(coordinates).boxed().collect(Collectors.toList());
+    }
+
+    public double[] getElementsArrayCopy() {
+        return Arrays.copyOf(coordinates, coordinates.length);
     }
 
     public double maxElementAbs() {
