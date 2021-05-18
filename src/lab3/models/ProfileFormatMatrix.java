@@ -1,5 +1,7 @@
 package lab3.models;
 
+import java.util.stream.IntStream;
+
 /**
  * @author Yaroslav Ilin
  */
@@ -9,6 +11,10 @@ public class ProfileFormatMatrix implements MutableSquareMatrix {
     private final double[] al;
     private final double[] au;
     private final int[] ia;
+
+    public ProfileFormatMatrix(final double... values) {
+        this(new FullMatrix(values).getStandardMatrix());
+    }
 
     public ProfileFormatMatrix(final double[][] a) {
         this(a.length, a);

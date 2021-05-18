@@ -106,4 +106,8 @@ public class FullMatrix extends SquareMatrix {
     public String toString() {
         return rows.stream().map(Vector::toString).collect(Collectors.joining(System.lineSeparator()));
     }
+
+    public double[][] getStandardMatrix() {
+        return rows.stream().map(row -> row.getElements().toArray()).toArray(double[][]::new);
+    }
 }

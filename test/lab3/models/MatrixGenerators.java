@@ -1,10 +1,14 @@
 package lab3.models;
 
+import java.util.Arrays;
+import java.util.IntSummaryStatistics;
 import java.util.Random;
 import java.util.function.DoubleSupplier;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class MatrixGenerators {
-    private static final Random random = new Random(228);
+    private static final Random RANDOM = new Random(228);
 
     public static double[][] generateMatrix(final int n) {
         return generateSparseMatrix(n, -100, 100, 1);
@@ -32,12 +36,42 @@ public class MatrixGenerators {
      * @return generated random double
      */
     public static double randomWithPossibleZero(final double lo, final double hi, final double notZeroPr) {
-        double x = random.nextDouble();
-        return x <= notZeroPr ? lo + (hi - lo) * random.nextDouble() : 0;
+        double x = RANDOM.nextDouble();
+        return x <= notZeroPr ? lo + (hi - lo) * RANDOM.nextDouble() : 0;
+    }
+
+    /*
+    * Generates a matrix that has the nonzero elements in a small neighbourhood of the diagonal
+    * */
+    public static double[][] generateDiagonalDominanceMatrix(final int n) {
+        final double[][] matrix = generateIntegerMatrix(n, -4, 0);
+        IntStream.range(0, n).forEach(i -> matrix[i][i] = -Arrays.stream(matrix[i]).sum() + matrix[i][i]);
+        matrix[0][0] += 1d;
+        return matrix;
+    }
+
+    /*
+    * a[i][j] = 1 / (i + j + 1)
+    *  i, j in [0 : n)
+    * */
+    public static double[][] generateHilbertMatrix(final int n) {
+        final double[][] matrix = new double[n][n];
+        IntStream.range(0, n * n).forEach(i -> matrix[i / n][i % n] = 1d / (i / n + i % n + 1));
+        return matrix;
+    }
+
+    /*
+    * Generates the matrix from the second task
+    * */
+    public static double[][] generateAkMatrix(final int n, final int k) {
+        final double[][] matrix = generateIntegerMatrix(n, -4, 0);
+        IntStream.range(0, n).forEach(i -> matrix[i][i] = -Arrays.stream(matrix[i]).sum() + matrix[i][i]);
+        matrix[0][0] += Math.pow(10, -k);
+        return matrix;
     }
 
     public static double[][] generateIntegerMatrix(final int n, final int lo, final int hi) {
-        return generateMatrix(n, () -> random.nextInt(hi - lo) + lo);
+        return generateMatrix(n, () -> RANDOM.nextInt(hi - lo) + lo);
     }
 
     public static double[][] generateMatrix(final int n, final DoubleSupplier getElement) {
