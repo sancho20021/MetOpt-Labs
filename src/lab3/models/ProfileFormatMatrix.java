@@ -13,7 +13,7 @@ public class ProfileFormatMatrix implements MutableSquareMatrix {
     private final double[] au;
     private final int[] ia;
 
-    public ProfileFormatMatrix(int n, double[][] a) {
+    public ProfileFormatMatrix(final int n, final double[][] a) {
         assert a.length >= n;
         assert a[0].length >= n;
         this.n = n;
@@ -50,22 +50,22 @@ public class ProfileFormatMatrix implements MutableSquareMatrix {
     }
 
     @Override
-    public double get(int i, int j) {
+    public double get(final int i, final int j) {
         if (i == j) {
             return di[i];
         } else if (i > j) {
-            int profileLen = ia[i + 1] - ia[i];
-            int firstNotZero = i - profileLen;
+            final int profileLen = ia[i + 1] - ia[i];
+            final int firstNotZero = i - profileLen;
             return j < firstNotZero ? 0 : al[ia[i] + j - firstNotZero];
         } else {
-            int profileLen = ia[j + 1] - ia[j];
-            int firstNotZero = j - profileLen;
+            final int profileLen = ia[j + 1] - ia[j];
+            final int firstNotZero = j - profileLen;
             return i < firstNotZero ? 0 : au[ia[j] + i - firstNotZero];
         }
     }
 
     @Override
-    public void set(int i, int j, double x) {
+    public void set(final int i, final int j, final double x) {
         if (i == j) {
             di[i] = x;
         } else if (i > j) {
@@ -75,9 +75,9 @@ public class ProfileFormatMatrix implements MutableSquareMatrix {
         }
     }
 
-    private void setProfile(int i, int j, double x, double[] al) {
-        int profileLen = ia[i + 1] - ia[i];
-        int firstNotZero = i - profileLen;
+    private void setProfile(final int i, final int j, final double x, final double[] al) {
+        final int profileLen = ia[i + 1] - ia[i];
+        final int firstNotZero = i - profileLen;
         if (j < firstNotZero) {
             if (x != 0) {
                 throw new IllegalArgumentException("Changing the profile of matrix is not allowed");
