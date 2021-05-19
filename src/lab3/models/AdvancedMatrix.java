@@ -88,4 +88,9 @@ public abstract class AdvancedMatrix implements MutableSquareMatrix {
                 .map(Vector::toString)
                 .collect(Collectors.joining(System.lineSeparator(), "{", "}"));
     }
+
+    public String toRawString() {
+        return getRows().stream().map(Vector::toRawString).collect(Collectors.joining(System.lineSeparator()));
+    }
+
 }

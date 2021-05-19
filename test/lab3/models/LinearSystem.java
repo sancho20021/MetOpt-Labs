@@ -53,4 +53,13 @@ public class LinearSystem {
     public static Supplier<LinearSystem> newLSGenerator(final Supplier<double[][]> getA, final Supplier<double[]> getB) {
         return () -> new LinearSystem(getA.get(), getB.get());
     }
+
+    public String toRawString() {
+        StringBuilder result = new StringBuilder();
+        final String lf = System.lineSeparator();
+        result.append(matrix.size()).append(lf);
+        result.append(matrix.toRawString()).append(lf);
+        result.append(b.toRawString()).append(lf);
+        return result.toString();
+    }
 }

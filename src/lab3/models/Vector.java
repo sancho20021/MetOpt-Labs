@@ -98,6 +98,12 @@ public class Vector {
                 .collect(Collectors.joining(", ", "[", "]"));
     }
 
+    public String toRawString() {
+        return Arrays.stream(coordinates)
+                .mapToObj(Double::toString)
+                .collect(Collectors.joining(" "));
+    }
+
     public List<Double> getElements() {
         return DoubleStream.of(coordinates).boxed().collect(Collectors.toList());
     }
