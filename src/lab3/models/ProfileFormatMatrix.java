@@ -1,5 +1,7 @@
 package lab3.models;
 
+import java.util.Arrays;
+
 /**
  * @author Yaroslav Ilin
  */
@@ -21,6 +23,14 @@ public class ProfileFormatMatrix implements MutableSquareMatrix {
 
     public ProfileFormatMatrix(final double[][] a) {
         this(a.length, a);
+    }
+
+    public ProfileFormatMatrix(final int n, final double[] di, final int[] ia, final double[] au, final double[] al) {
+        this.n = n;
+        this.di = Arrays.copyOf(di, di.length);
+        this.ia = Arrays.copyOf(ia, ia.length);
+        this.au = Arrays.copyOf(au, au.length);
+        this.al = Arrays.copyOf(al, al.length);
     }
 
     public ProfileFormatMatrix(final int n, final double[][] a) {
@@ -98,5 +108,21 @@ public class ProfileFormatMatrix implements MutableSquareMatrix {
 
     public int getDataSize() {
         return au.length + di.length + al.length;
+    }
+
+    public double[] getDiCopy() {
+        return Arrays.copyOf(di, di.length);
+    }
+
+    public double[] getAlCopy() {
+        return Arrays.copyOf(al, al.length);
+    }
+
+    public double[] getAuCopy() {
+        return Arrays.copyOf(au, au.length);
+    }
+
+    public int[] getIaCopy() {
+        return Arrays.copyOf(ia, ia.length);
     }
 }
