@@ -1,6 +1,5 @@
 package lab3.methods;
 
-import lab3.models.FullMatrix;
 import lab3.models.MutableSquareMatrix;
 import lab3.models.SimpleSquareMatrix;
 
@@ -46,11 +45,15 @@ public class Gauss {
      * @return solution, x
      */
     public static double[] backwardSolve(final SimpleSquareMatrix u, final double[] b) {
+        return backwardSolve(u, b, IntStream.range(0, b.length).toArray());
+    }
+
+    private static double[] backwardSolve(final SimpleSquareMatrix u, final double[] b, final int[] perm) {
         final int n = u.size();
         final double[] x = new double[n];
         for (int kk = n - 1; kk >= 0; kk--) {
             final int k = kk;
-            x[k] = (b[k] - IntStream.range(k + 1, n).mapToDouble(j -> u.get(k, j) * x[j]).sum()) / u.get(k, k);
+            x[perm[k]] = (b[perm[k]] - IntStream.range(k + 1, n).mapToDouble(j -> u.get(perm[k], j) * x[j]).sum()) / u.get(perm[k], k);
         }
         return x;
     }
@@ -73,7 +76,7 @@ public class Gauss {
                 }
             }
         }
-        return Optional.of(backwardSolve(a, b));
+        return Optional.of(backwardSolve(a, b, perm));
     }
 
     private static boolean swapKthWithLargest(final MutableSquareMatrix a, final double[] b, final int k, final int[] perm, final double eps) {

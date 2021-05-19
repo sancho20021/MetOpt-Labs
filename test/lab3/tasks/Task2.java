@@ -7,15 +7,13 @@ import lab3.models.Vector;
 import lab3.utils.generators.LSGenerators;
 import lab3.utils.generators.MatrixGenerators;
 import org.junit.Test;
+import utils.Table;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -138,9 +136,7 @@ public class Task2 {
                 final Scanner in = new Scanner(problem);
                 final LinearSystem ls = parseLS(in);
                 final Vector ans = new Vector(LU.solveInPlace(ls.getA(), ls.getB().getElementsArrayCopy()));
-                writer.println("Expected: " + ls.getCorrectAnswer().toRawString());
-                writer.println("Got: " + ans.toRawString());
-                writer.println("Diff: " + ls.getError(ans).toRawString());
+                writer.println(ans.toRawString());
             } catch (final IOException e) {
                 System.err.println("Error while I/O with " + problem + ", " + solution);
             }

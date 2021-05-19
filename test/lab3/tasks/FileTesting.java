@@ -14,7 +14,10 @@ import java.util.Map;
 
 public class FileTesting {
     private static final Path TEST_ROOT = Path.of("tests");
-    private static final Map<String, Path> TEST_FOLDERS = new HashMap<>(Map.of(Task2.TEST_FOLDER, TEST_ROOT.resolve(Task2.TEST_FOLDER)));
+    private static final Map<String, Path> TEST_FOLDERS = new HashMap<>(Map.of(
+            Task2.TEST_FOLDER, TEST_ROOT.resolve(Task2.TEST_FOLDER),
+            Task3.TEST_FOLDER, TEST_ROOT.resolve(Task3.TEST_FOLDER)
+    ));
 
     public static void writeFile(final String testName, final String testFolder, final String testData) throws IOException {
         final Path testDir = TEST_FOLDERS.computeIfAbsent(testFolder, TEST_ROOT::resolve).resolve(Path.of(testName));
@@ -64,7 +67,11 @@ public class FileTesting {
         }
     }
 
-    public static void deleteTests() {
+    @Test
+    public void deleteTests() {
+        if (true) {
+            throw new IllegalStateException("Ты че конч удалять тесты?");
+        }
         try {
             Files.walk(TEST_ROOT)
                     .sorted(Comparator.reverseOrder())
