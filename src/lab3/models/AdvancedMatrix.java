@@ -3,14 +3,14 @@ package lab3.models;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class SquareMatrix implements SimpleSquareMatrix {
+public abstract class AdvancedMatrix implements MutableSquareMatrix {
     /**
      * Multiplies this matrix with other matrix
      *
      * @param other matrix to multiply
      * @return product of matrices
      */
-    public abstract SquareMatrix multiply(SquareMatrix other);
+    public abstract AdvancedMatrix multiply(AdvancedMatrix other);
 
     /**
      * Sums this matrix with other matrix
@@ -18,7 +18,7 @@ public abstract class SquareMatrix implements SimpleSquareMatrix {
      * @param other matrix to sum with
      * @return sum of matrices
      */
-    public abstract SquareMatrix add(SquareMatrix other);
+    public abstract AdvancedMatrix add(AdvancedMatrix other);
 
     /**
      * Subtracts other matrix from this matrix
@@ -26,7 +26,7 @@ public abstract class SquareMatrix implements SimpleSquareMatrix {
      * @param other matrix to subtract
      * @return this matrix minus other matrix
      */
-    public abstract SquareMatrix subtract(SquareMatrix other);
+    public abstract AdvancedMatrix subtract(AdvancedMatrix other);
 
     /**
      * Multiplies this matrix with vector
@@ -80,7 +80,7 @@ public abstract class SquareMatrix implements SimpleSquareMatrix {
      * @param x x
      * @return matrix multiplied by x
      */
-    public abstract SquareMatrix multiply(double x);
+    public abstract AdvancedMatrix multiply(double x);
 
     @Override
     public String toString() {

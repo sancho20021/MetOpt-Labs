@@ -1,4 +1,4 @@
-package lab3;
+package lab3.methods;
 
 import lab3.models.*;
 import lab3.utils.generators.MatrixGenerators;
@@ -8,6 +8,17 @@ import org.junit.Test;
 import java.util.stream.IntStream;
 
 public class LUTest {
+    @Test
+    public void testSLAU() {
+        GaussTest.testSLAUSolver(
+                10,
+                3,
+                -10,
+                10,
+                slau -> LU.solveInPlace(new ProfileFormatMatrix(slau.getA()), slau.getB().getElementsArrayCopy())
+        );
+    }
+
     @Test
     public void test() {
         final int samples = 3;
@@ -27,8 +38,8 @@ public class LUTest {
         final SimpleSquareMatrix origin = new ProfileFormatMatrix(matrix);
         final MutableSquareMatrix working = new ProfileFormatMatrix(matrix);
         LU.applyLU(working);
-        final SquareMatrix l = getL(working);
-        final SquareMatrix u = getU(working);
+        final AdvancedMatrix l = getL(working);
+        final AdvancedMatrix u = getU(working);
         System.out.println("Origin: ");
         System.out.println(origin.convertToString());
         System.out.println("L:");
@@ -57,7 +68,7 @@ public class LUTest {
         return true;
     }
 
-    public static SquareMatrix getL(final SimpleSquareMatrix matrix) {
+    public static AdvancedMatrix getL(final SimpleSquareMatrix matrix) {
         final int n = matrix.size();
         double[][] data = new double[n][n];
         for (int i = 0; i < n; i++) {
@@ -68,7 +79,7 @@ public class LUTest {
         return new FullMatrix(data);
     }
 
-    public static SquareMatrix getU(final SimpleSquareMatrix matrix) {
+    public static AdvancedMatrix getU(final SimpleSquareMatrix matrix) {
         final int n = matrix.size();
         double[][] data = new double[n][n];
         for (int i = 0; i < n; i++) {
@@ -80,7 +91,7 @@ public class LUTest {
         return new FullMatrix(data);
     }
 
-    public static SquareMatrix getD(final SimpleSquareMatrix matrix) {
+    public static AdvancedMatrix getD(final SimpleSquareMatrix matrix) {
         return new DiagonalMatrix(IntStream.range(0, matrix.size()).mapToDouble(i -> matrix.get(i, i)).toArray());
     }
 }

@@ -1,28 +1,32 @@
 package lab3.models;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 public class LinearSystem {
-    private final FullMatrix matrix;
+    private final AdvancedMatrix matrix;
     private final Vector b;
     private final Optional<Vector> correctAnswer;
 
-    public LinearSystem(final FullMatrix matrix, final Vector b, final Vector correctAnswer) {
+    public LinearSystem(final AdvancedMatrix matrix, final Vector b, final Vector correctAnswer) {
         this.matrix = matrix;
         this.b = b;
         this.correctAnswer = Optional.of(correctAnswer);
         assert matrix.size() == b.getDim();
         assert matrix.size() == correctAnswer.getDim();
     }
+    public LinearSystem(final double[][] a, final double[] b) {
+        this(new FullMatrix(a), new Vector(b));
+    }
 
-    public LinearSystem(final FullMatrix matrix, final Vector b) {
+    public LinearSystem(final AdvancedMatrix matrix, final Vector b) {
         this.matrix = matrix;
         this.b = b;
         this.correctAnswer = Optional.empty();
         assert matrix.size() == b.getDim();
     }
 
-    public FullMatrix getMatrix() {
+    public AdvancedMatrix getA() {
         return matrix;
     }
 
@@ -44,5 +48,9 @@ public class LinearSystem {
 
     public Vector getResidual(final Vector other) {
         return b.subtract(matrix.multiply(other));
+    }
+
+    public static Supplier<LinearSystem> newLSGenerator(final Supplier<double[][]> getA, final Supplier<double[]> getB) {
+        return () -> new LinearSystem(getA.get(), getB.get());
     }
 }

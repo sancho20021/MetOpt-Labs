@@ -1,16 +1,15 @@
 package lab3.models;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class FullMatrix extends SquareMatrix {
-    List<Vector> rows;
+public class FullMatrix extends AdvancedMatrix {
+    final double[][] data;
 
     public FullMatrix(final double[][] data) {
-        this(Arrays.stream(data).map(Vector::new).collect(Collectors.toList()));
+        this.data = data;
     }
 
     public FullMatrix(final SimpleSquareMatrix other) {
@@ -21,12 +20,13 @@ public class FullMatrix extends SquareMatrix {
         );
     }
 
-    public FullMatrix(List<Vector> rows) {
-        this.rows = rows;
-    }
-
-    public FullMatrix(final SquareMatrix other) {
-        this.rows = other.getRows();
+    /**
+     * Copies other matrix elements to this
+     *
+     * @param other other matrix
+     */
+    public FullMatrix(final AdvancedMatrix other) {
+        this.data = other.getDataCopy();
     }
 
     public FullMatrix(double... values) {
@@ -34,19 +34,23 @@ public class FullMatrix extends SquareMatrix {
         if (dim * dim != values.length) {
             throw new IllegalArgumentException("can't construct a square matrix of " + values.length + " elements");
         }
-        rows = new ArrayList<>();
+        data = new double[dim][dim];
         for (int i = 0; i < dim; i++) {
-            rows.add(new Vector(Arrays.copyOfRange(values, i * dim, (i + 1) * dim)));
+            data[i] = Arrays.copyOfRange(values, i * dim, (i + 1) * dim);
         }
     }
 
+    public FullMatrix(final List<Vector> rows) {
+        this(rows.stream().map(Vector::getElementsArrayCopy).toArray(double[][]::new));
+    }
+
     @Override
-    public SquareMatrix multiply(SquareMatrix other) {
+    public AdvancedMatrix multiply(AdvancedMatrix other) {
         return new FullMatrix(getRows().stream().map(other::multiplyLeft).collect(Collectors.toList()));
     }
 
     @Override
-    public SquareMatrix add(SquareMatrix other) {
+    public AdvancedMatrix add(AdvancedMatrix other) {
         return new FullMatrix(
                 IntStream.range(0, size())
                         .mapToObj(r -> this.getRow(r).add(other.getRow(r)))
@@ -55,18 +59,18 @@ public class FullMatrix extends SquareMatrix {
     }
 
     @Override
-    public SquareMatrix subtract(SquareMatrix other) {
+    public AdvancedMatrix subtract(AdvancedMatrix other) {
         return add(other.multiply(-1));
     }
 
     @Override
     public int size() {
-        return rows.size();
+        return data.length;
     }
 
     @Override
     public Vector multiply(Vector vector) {
-        return new Vector(rows.stream().mapToDouble(row -> row.scalarProduct(vector)).toArray());
+        return new Vector(getRows().stream().mapToDouble(row -> row.scalarProduct(vector)).toArray());
     }
 
     @Override
@@ -77,22 +81,22 @@ public class FullMatrix extends SquareMatrix {
 
     @Override
     public double get(int i, int j) {
-        return rows.get(i).getIth(j);
+        return data[i][j];
     }
 
     @Override
     public Vector getRow(int row) {
-        return rows.get(row);
+        return new Vector(data[row]);
     }
 
     @Override
     public Vector getColumn(int column) {
-        return new Vector(rows.stream().mapToDouble(row -> row.getIth(column)).toArray());
+        return new Vector(getRows().stream().mapToDouble(row -> row.getIth(column)).toArray());
     }
 
     @Override
     public List<Vector> getRows() {
-        return rows;
+        return Arrays.stream(data).map(Vector::new).collect(Collectors.toList());
     }
 
     @Override
@@ -106,16 +110,17 @@ public class FullMatrix extends SquareMatrix {
     }
 
     @Override
-    public SquareMatrix multiply(double x) {
-        return new FullMatrix(rows.stream().map(row -> row.multiply(x)).collect(Collectors.toList()));
+    public AdvancedMatrix multiply(double x) {
+        return new FullMatrix(getRows().stream().map(row -> row.multiply(x)).collect(Collectors.toList()));
     }
 
     @Override
     public String toString() {
-        return rows.stream().map(Vector::toString).collect(Collectors.joining(System.lineSeparator()));
+        return getRows().stream().map(Vector::toString).collect(Collectors.joining(System.lineSeparator()));
     }
 
-    public double[][] getStandardMatrix() {
-        return rows.stream().map(row -> row.getElements().toArray()).toArray(double[][]::new);
+    @Override
+    public void set(int i, int j, double x) {
+        data[i][j] = x;
     }
 }

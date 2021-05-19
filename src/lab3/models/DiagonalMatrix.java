@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 
-public class DiagonalMatrix extends SquareMatrix {
+public class DiagonalMatrix extends AdvancedMatrix {
     final double[] elements;
 
     public DiagonalMatrix(double... elements) {
@@ -22,7 +22,7 @@ public class DiagonalMatrix extends SquareMatrix {
     }
 
     @Override
-    public SquareMatrix multiply(SquareMatrix other) {
+    public AdvancedMatrix multiply(AdvancedMatrix other) {
         return other instanceof DiagonalMatrix
                 ? multiply((DiagonalMatrix) other)
                 : new FullMatrix(this).multiply(other);
@@ -34,7 +34,7 @@ public class DiagonalMatrix extends SquareMatrix {
     }
 
     @Override
-    public SquareMatrix add(SquareMatrix other) {
+    public AdvancedMatrix add(AdvancedMatrix other) {
         return other instanceof DiagonalMatrix
                 ? add((DiagonalMatrix) other)
                 : new FullMatrix(this).add(other);
@@ -46,7 +46,7 @@ public class DiagonalMatrix extends SquareMatrix {
     }
 
     @Override
-    public SquareMatrix subtract(SquareMatrix other) {
+    public AdvancedMatrix subtract(AdvancedMatrix other) {
         return add(other.multiply(-1));
     }
 
@@ -93,7 +93,7 @@ public class DiagonalMatrix extends SquareMatrix {
     }
 
     @Override
-    public SquareMatrix multiply(double x) {
+    public AdvancedMatrix multiply(double x) {
         return new DiagonalMatrix(DoubleStream.of(elements).map(a -> a * x).toArray());
     }
 
@@ -117,6 +117,16 @@ public class DiagonalMatrix extends SquareMatrix {
     private void checkSizeMatch(final SimpleSquareMatrix other) throws IllegalArgumentException {
         if (this.size() != other.size()) {
             throw new IllegalArgumentException("Sizes of matrices are not same");
+        }
+    }
+
+    @Override
+    public void set(final int i, final int j, final double x) {
+        if (i != j && x != 0) {
+            throw new IllegalArgumentException("Cannot set nonzero value to a[i][j != i] in a Diagonal matrix");
+        }
+        if (i == j) {
+            elements[i] = x;
         }
     }
 }
