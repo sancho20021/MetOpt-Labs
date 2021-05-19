@@ -26,15 +26,19 @@ public class GenerateMatrices {
     }
 
     private void testGenerator(final Function<Integer, double[][]> matrixSupplier) {
-        for (int n = 1; n < 10; n++) {
+        for (int n = 1; n < 5; n++) {
             final int finalN = n;
-            final Stream<double[][]> matrixStream = Stream.generate(() -> matrixSupplier.apply(finalN)).limit(1);
-            matrixStream.map(matrix -> new LinearSystem(matrix, xStar(finalN)))
-                    .forEach(ls -> System.out.println(ls.toRawString()));
+            final Stream<FullMatrix> matrixStream = Stream.generate(() -> new FullMatrix(matrixSupplier.apply(finalN))).limit(3);
+            matrixStream.map(matrix -> new LinearSystem(
+                    matrix,
+                    new FullMatrix(matrix)
+                            .multiply(xStar(finalN)),
+                    xStar(finalN)))
+                    .forEach(ls -> System.out.println(ls.toRawString()));;
         }
     }
 
-    private double[] xStar(final int n) {
-        return IntStream.range(1, n + 1).mapToDouble(x -> x).toArray();
+    private Vector xStar(final int n) {
+        return new Vector(IntStream.range(1, n + 1).mapToDouble(x -> x).toArray());
     }
 }

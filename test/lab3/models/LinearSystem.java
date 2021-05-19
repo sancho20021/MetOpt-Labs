@@ -55,11 +55,12 @@ public class LinearSystem {
     }
 
     public String toRawString() {
-        StringBuilder result = new StringBuilder();
+        final StringBuilder result = new StringBuilder();
         final String lf = System.lineSeparator();
         result.append(matrix.size()).append(lf);
         result.append(matrix.toRawString()).append(lf);
         result.append(b.toRawString()).append(lf);
+        result.append(correctAnswer.orElse(null).toRawString()).append(lf);
         return result.toString();
     }
 }
