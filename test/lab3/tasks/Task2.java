@@ -1,17 +1,23 @@
 package lab3.tasks;
 
+import lab3.methods.Gauss;
+import lab3.models.LinearSystem;
 import lab3.models.ProfileFormatMatrix;
+import lab3.models.Vector;
+import lab3.utils.generators.LSGenerators;
 import lab3.utils.generators.MatrixGenerators;
+import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.io.IOException;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Task2 {
     private static final Scanner scn = new Scanner(System.in);
+    public static final String TEST_GROUP = "Task2";
 
     public static <T> String property(final String name, final T property, final Function<T, String> toString) {
         return name + " " + toString.apply(property);
@@ -74,6 +80,43 @@ public class Task2 {
 
     private static List<ProfileFormatMatrix> read(final int count) {
         return Stream.generate(() -> parseProfileFormatMatrix(scn)).limit(count).collect(Collectors.toList());
+    }
+
+    public static LinearSystem parseLS(final Scanner in) {
+        final var a = parseProfileFormatMatrix(in);
+        final var b = parseLineProperty(in, Task2::parseDoubleArray);
+        final var xStar = parseLineProperty(in, Task2::parseDoubleArray);
+        return new LinearSystem(a, new Vector(b), new Vector(xStar));
+    }
+
+    public static String getLinearSystemProfileString(final LinearSystem s) {
+        final StringBuilder str = new StringBuilder();
+        str.append(getProfileFormatString((ProfileFormatMatrix) s.getA()));
+        addLine(str, property("b", s.getB(), Vector::toRawString));
+        addLine(str, property("x", s.getCorrectAnswer(), Vector::toRawString));
+        return str.toString();
+    }
+
+    private static LinearSystem generateAkSystem(final int n, final int k) {
+        return LSGenerators.getProfilFormatLS(MatrixGenerators.generateAkMatrix(n, k));
+    }
+
+    @Test
+    public void createTests() {
+        final Map<Integer, String> testGroups = Map.of(10, "n=10", 100, "n=100", 1000, "n=1000");
+        final int maxK = 3;
+        testGroups.forEach((n, name) -> {
+            final AtomicInteger k = new AtomicInteger(0);
+            LSGenerators.generateSystems(n, Task2::generateAkSystem).limit(maxK).forEach(system -> {
+                final String testData = getLinearSystemProfileString(system);
+                try {
+                    FileTesting.createTest(name + "_k=" + k.getAndIncrement(), TEST_GROUP, testData);
+                } catch (final IOException e) {
+                    System.err.println("Couldn't create test: ");
+                    System.err.println(testData);
+                }
+            });
+        });
     }
 
     public static void main(String[] args) {
