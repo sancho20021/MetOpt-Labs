@@ -2,8 +2,13 @@ package lab3.methods;
 
 import lab3.models.MutableSquareMatrix;
 
-public class LU {
 
+public class LU {
+    /**
+     * Applies LU-decomposition to matrix.
+     * Does n*(n^2 - 1)/3 muls or divs
+     * @param matrix given matrix
+     */
     public static void applyLU(final MutableSquareMatrix matrix) {
         for (int i = 0; i < matrix.size(); i++) {
             for (int j = 0; j < i; j++) {
@@ -29,7 +34,9 @@ public class LU {
     }
 
     /**
-     * Solves a system of linear equations in form of Ax = b
+     * Solves a system of linear equations in form of Ax = b.
+     * Does n^3/3 + n^2 + 2n/3 muls or divs
+     *
      * @param a matrix A
      * @param b vector b
      * @return x, solution

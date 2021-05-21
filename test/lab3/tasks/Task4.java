@@ -42,4 +42,14 @@ public class Task4 {
             }
         }
     }
+
+    @Test
+    public void printAkStatistics() {
+        Task2.printAkStatistics("Метод Гаусса", Gauss::solveOptimized, FullMatrix::new);
+    }
+
+    @Test
+    public void printHilbertStatistics() {
+        Task3.printHilbertStatistics("Метод Гаусса", Gauss::solveOptimized, FullMatrix::new);
+    }
 }

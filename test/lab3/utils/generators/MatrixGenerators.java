@@ -54,11 +54,15 @@ public class MatrixGenerators {
 
     /*
     * a[i][j] = 1 / (i + j + 1)
-    *  i, j in [0 : n)
+    *  i, j in [1 : n]
     * */
     public static double[][] generateHilbertMatrix(final int n) {
         final double[][] matrix = new double[n][n];
-        IntStream.range(0, n * n).forEach(i -> matrix[i / n][i % n] = 1d / (i / n + i % n + 1));
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                matrix[i][j] = 1.0/(i + 1 + j);
+            }
+        }
         return matrix;
     }
 

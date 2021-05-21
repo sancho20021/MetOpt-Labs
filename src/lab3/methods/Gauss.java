@@ -7,6 +7,8 @@ import java.util.Optional;
 import java.util.stream.IntStream;
 
 public class Gauss {
+    public final static double DEFAULT_EPS = 1e-15;
+
     /**
      * Finds solution to the equation Ax = b
      *
@@ -22,8 +24,13 @@ public class Gauss {
         return solve(a, b, true, eps);
     }
 
+    public static double[] solveOptimized(final MutableSquareMatrix a, final double[] b) {
+        return solveOptimized(a, b, DEFAULT_EPS).orElseThrow();
+    }
+
     /**
-     * Solves system of linear equations in form of Lx = b, where L is lower-triangle shaped matrix
+     * Solves system of linear equations in form of Lx = b, where L is lower-triangle shaped matrix.
+     * Does n(n+1)/2 muls or divs
      *
      * @param l matrix L
      * @param b vector b
@@ -38,7 +45,8 @@ public class Gauss {
     }
 
     /**
-     * Solves system of linear equations in form of Ux = b, where U is upper-triangle shaped matrix
+     * Solves system of linear equations in form of Ux = b, where U is upper-triangle shaped matrix.
+     * Does n(n+1)/2 muls or divs
      *
      * @param u matrix U
      * @param b vector b
@@ -58,8 +66,18 @@ public class Gauss {
         return x;
     }
 
+    /**
+     * Solves system of linear equations Ax = b
+     * Does n^3/3 + n^2 - n/3 muls or divs
+     * @param a matrix A
+     * @param b vector b
+     * @param doSwap option to choose best row on each iteration
+     * @param eps epsilon to compare a number with zero
+     * @return solution if possible
+     */
     private static Optional<double[]> solve(final MutableSquareMatrix a, final double[] b, final boolean doSwap, final double eps) {
         final int n = a.size();
+//        System.out.println("--------------------GAUSS START------------------");
         final int[] perm = IntStream.range(0, n).toArray();
         for (int k = 0; k < n - 1; k++) {
             if (doSwap) {
@@ -74,7 +92,10 @@ public class Gauss {
                 for (int j = k + 1; j < n; j++) {
                     a.set(perm[i], j, a.get(perm[i], j) - t * a.get(perm[k], j));
                 }
+                a.set(perm[i], k, 0);
             }
+//            System.out.println(k + " phase of Gauss");
+//            System.out.println(a.convertToString());
         }
         return Optional.of(backwardSolve(a, b, perm));
     }

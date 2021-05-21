@@ -2,6 +2,7 @@ package lab3.tasks;
 
 import lab3.methods.LU;
 import lab3.models.LinearSystem;
+import lab3.models.MutableSquareMatrix;
 import lab3.models.ProfileFormatMatrix;
 import lab3.models.Vector;
 import lab3.utils.generators.LSGenerators;
@@ -15,9 +16,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Task2 {
     private static final Scanner scn = new Scanner(System.in);
@@ -75,17 +76,6 @@ public class Task2 {
         return new ProfileFormatMatrix(n, d, ia, au, al);
     }
 
-    private static void print(final int count) {
-        final int n = 10;
-        Stream.generate(() -> new ProfileFormatMatrix(MatrixGenerators.generateIntegerMatrix(n, -3, 3)))
-                .limit(count)
-                .forEach(m -> System.out.print(getProfileFormatString(m)));
-    }
-
-    private static List<ProfileFormatMatrix> read(final int count) {
-        return Stream.generate(() -> parseProfileFormatMatrix(scn)).limit(count).collect(Collectors.toList());
-    }
-
     public static LinearSystem parseLS(final Scanner in) {
         final var a = parseProfileFormatMatrix(in);
         final var b = parseLineProperty(in, Task2::parseDoubleArray);
@@ -101,8 +91,12 @@ public class Task2 {
         return str.toString();
     }
 
-    private static LinearSystem generateAkSystem(final int n, final int k) {
-        return LSGenerators.getProfilFormatLS(MatrixGenerators.generateAkMatrix(n, k));
+    private static LinearSystem generateAkSystem(final int n, final int k, final Function<double[][], MutableSquareMatrix> matrixCons) {
+        return LSGenerators.getLS(MatrixGenerators.generateAkMatrix(n, k), matrixCons);
+    }
+
+    private static LinearSystem generateProfileAkSystem(final int n, final int k) {
+        return generateAkSystem(n, k, ProfileFormatMatrix::new);
     }
 
     @Test
@@ -111,7 +105,7 @@ public class Task2 {
         final int maxK = 5;
         testGroups.forEach((n, name) -> {
             final AtomicInteger k = new AtomicInteger(0);
-            LSGenerators.generateSystems(n, Task2::generateAkSystem).limit(maxK).forEach(system -> {
+            LSGenerators.generateSystems(n, Task2::generateProfileAkSystem).limit(maxK).forEach(system -> {
                 final String testData = getLinearSystemProfileString(system);
                 try {
                     FileTesting.writeFile(name + "_k=" + k.getAndIncrement(), TEST_FOLDER, testData);
@@ -145,9 +139,53 @@ public class Task2 {
         }
     }
 
-    public static void main(String[] args) {
-        print(5);
-        final var kek = read(5);
-        kek.forEach(m -> System.out.print(getProfileFormatString(m)));
+    @Test
+    public void testAK() {
+        final int n = 1000;
+        final int k = 10;
+        System.out.println(getTableRow(n, k, ProfileFormatMatrix::new, LU::solveInPlace));
+    }
+
+    private static List<String> getTableRow(
+            final int n,
+            final int k,
+            final Function<double[][], MutableSquareMatrix> matrixCons,
+            final BiFunction<MutableSquareMatrix, double[], double[]> solver
+    ) {
+        LinearSystem ls = generateAkSystem(n, k, matrixCons);
+        Vector numericalSolution = new Vector(solver.apply(ls.getA(), ls.getB().getElementsArrayCopy()));
+        double euclideanError = ls.getEuclideanError(numericalSolution);
+        return List.of(
+                Integer.toString(n),
+                Integer.toString(k),
+                toPrettyStr(euclideanError),
+                toPrettyStr(euclideanError / ls.getCorrectAnswer().getEuclideanNorm())
+        );
+    }
+
+    public static void printAkStatistics(final String methodName, final BiFunction<MutableSquareMatrix, double[], double[]> solver,
+                                         final Function<double[][], MutableSquareMatrix> matrixCons) {
+        List<List<String>> entries = new ArrayList<>();
+        for (int n = 10; n <= 1000; n *= 10) {
+            for (int k = 0; k <= 8; k++) {
+                entries.add(getTableRow(n, k, matrixCons, solver));
+            }
+        }
+        System.out.println(
+                new Table(
+                        methodName + ", матрицы $A_k$",
+                        List.of("$n$", "$k$", "$||x^{*}-x_k||$", "$\\frac{||x^{*}-x_k||}{||x^{*}||}$"),
+                        entries
+                ).toTex()
+        );
+    }
+
+    @Test
+    public void printAk() {
+        printAkStatistics("LU разложение", LU::solveInPlace, ProfileFormatMatrix::new);
+    }
+
+    public static String toPrettyStr(final double x) {
+        return String.format(Locale.US, "%.9f", x);
     }
 }
