@@ -27,7 +27,7 @@ public class GaussTest {
     @Test
     public void testOptimizedGauss() {
         final double eps = 0.0000001;
-        testSLAUSolver(2, 2, -10, 10, slau -> Gauss.solveOptimized(slau.getA(), slau.getB().getElementsArrayCopy(), eps).get());
+        testSLAUSolver(10, 10, -10, 10, slau -> Gauss.solveOptimized(slau.getA(), slau.getB().getElementsArrayCopy(), eps).get());
     }
 
     @Test

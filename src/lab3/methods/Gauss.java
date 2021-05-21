@@ -53,7 +53,7 @@ public class Gauss {
         final double[] x = new double[n];
         for (int kk = n - 1; kk >= 0; kk--) {
             final int k = kk;
-            x[perm[k]] = (b[perm[k]] - IntStream.range(k + 1, n).mapToDouble(j -> u.get(perm[k], j) * x[j]).sum()) / u.get(perm[k], k);
+            x[k] = (b[perm[k]] - IntStream.range(k + 1, n).mapToDouble(j -> u.get(perm[k], j) * x[j]).sum()) / u.get(perm[k], k);
         }
         return x;
     }

@@ -108,7 +108,7 @@ public class Task2 {
     @Test
     public void createTests() {
         final Map<Integer, String> testGroups = Map.of(10, "n=10", 100, "n=100", 1000, "n=1000");
-        final int maxK = 1;
+        final int maxK = 5;
         testGroups.forEach((n, name) -> {
             final AtomicInteger k = new AtomicInteger(0);
             LSGenerators.generateSystems(n, Task2::generateAkSystem).limit(maxK).forEach(system -> {
@@ -136,7 +136,9 @@ public class Task2 {
                 final Scanner in = new Scanner(problem);
                 final LinearSystem ls = parseLS(in);
                 final Vector ans = new Vector(LU.solveInPlace(ls.getA(), ls.getB().getElementsArrayCopy()));
-                writer.println(ans.toRawString());
+                writer.println("Expected: " + ls.getCorrectAnswer().toRawString());
+                writer.println("Got: " + ans.toRawString());
+                writer.println("Error: " + ls.getEuclideanError(ans));
             } catch (final IOException e) {
                 System.err.println("Error while I/O with " + problem + ", " + solution);
             }

@@ -16,7 +16,8 @@ public class FileTesting {
     private static final Path TEST_ROOT = Path.of("tests");
     private static final Map<String, Path> TEST_FOLDERS = new HashMap<>(Map.of(
             Task2.TEST_FOLDER, TEST_ROOT.resolve(Task2.TEST_FOLDER),
-            Task3.TEST_FOLDER, TEST_ROOT.resolve(Task3.TEST_FOLDER)
+            Task3.TEST_FOLDER, TEST_ROOT.resolve(Task3.TEST_FOLDER),
+            Task4.TEST_FOLDER, TEST_ROOT.resolve(Task4.TEST_FOLDER)
     ));
 
     public static void writeFile(final String testName, final String testFolder, final String testData) throws IOException {
