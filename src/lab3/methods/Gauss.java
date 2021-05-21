@@ -69,10 +69,11 @@ public class Gauss {
     /**
      * Solves system of linear equations Ax = b
      * Does n^3/3 + n^2 - n/3 muls or divs
-     * @param a matrix A
-     * @param b vector b
+     *
+     * @param a      matrix A
+     * @param b      vector b
      * @param doSwap option to choose best row on each iteration
-     * @param eps epsilon to compare a number with zero
+     * @param eps    epsilon to compare a number with zero
      * @return solution if possible
      */
     private static Optional<double[]> solve(final MutableSquareMatrix a, final double[] b, final boolean doSwap, final double eps) {
@@ -82,7 +83,7 @@ public class Gauss {
         for (int k = 0; k < n - 1; k++) {
             if (doSwap) {
                 if (!swapKthWithLargest(a, b, k, perm, eps)) {
-                    return Optional.empty();
+                  //  return Optional.empty();
                 }
             }
 

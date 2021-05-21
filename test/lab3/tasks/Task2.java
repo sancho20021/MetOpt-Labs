@@ -1,9 +1,7 @@
 package lab3.tasks;
 
 import lab3.methods.LU;
-import lab3.models.LinearSystem;
-import lab3.models.MutableSquareMatrix;
-import lab3.models.ProfileFormatMatrix;
+import lab3.models.*;
 import lab3.models.Vector;
 import lab3.utils.generators.LSGenerators;
 import lab3.utils.generators.MatrixGenerators;
@@ -167,7 +165,7 @@ public class Task2 {
                                          final Function<double[][], MutableSquareMatrix> matrixCons) {
         List<List<String>> entries = new ArrayList<>();
         for (int n = 10; n <= 1000; n *= 10) {
-            for (int k = 0; k <= 8; k++) {
+            for (int k = 0; k <= 10; k++) {
                 entries.add(getTableRow(n, k, matrixCons, solver));
             }
         }

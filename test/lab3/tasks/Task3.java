@@ -52,7 +52,7 @@ public class Task3 {
     public static void printHilbertStatistics(final String methodName, final BiFunction<MutableSquareMatrix, double[], double[]> solver,
                                               final Function<double[][], MutableSquareMatrix> matrixCons) {
         List<List<String>> entries = new ArrayList<>();
-        for (int n = 2; n <= 14; n += 2) {
+        for (int n = 2; n <= 128; n = n * 3 / 2) {
             LinearSystem ls = generateHilbertSystem(n, matrixCons);
             Vector numericalSolution = new Vector(solver.apply(ls.getA(), ls.getB().getElementsArrayCopy()));
             double euclideanError = ls.getEuclideanError(numericalSolution);
