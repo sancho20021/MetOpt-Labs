@@ -24,7 +24,7 @@ public class FastestDescent extends MultiMinimizer {
 
     public FastestDescent(final QuadraticFunction fun, final Vector startX, final double eps, final Class<? extends Minimizer> uniMinimizer) {
         this(fun, startX, eps,
-                2.0 / fun.getMinEigenValueAbs()/*startX.getDim() * Math.max(1, fun.getB().maxElementAbs()) * 2 * fun.getMaxEigenValueAbs()*/,
+                2.0 / fun.getMinEigenValueAbs() * Math.max(1, fun.getB().getEuclideanNorm()),
                 uniMinimizer
         );
     }

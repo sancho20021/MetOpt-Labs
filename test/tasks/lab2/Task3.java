@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static methods.multidimensional.Constants.STANDARD_EPS;
+
 public class Task3 {
     public static MultiMinimizer getMinimizerFromTask(final Task task, final Class<? extends MultiMinimizer> mToken) {
         try {
@@ -56,7 +58,7 @@ public class Task3 {
         double[] conditionNumbersDouble = Arrays.stream(conditionNumbers).mapToDouble(x -> x).toArray();
         var minimizerSets = new ArrayList<List<? extends MultiMinimizer>>();
         for (int conditionNumber : conditionNumbers) {
-            minimizerSets.add(minimizersFromTasks(Task1.getRandomTasks(5, dim, conditionNumber), mToken));
+            minimizerSets.add(minimizersFromTasks(Task1.getRandomTasks(4, dim, conditionNumber), mToken));
         }
         double[] averageIterations = new double[minimizerSets.size()];
         for (int i = 0; i < minimizerSets.size(); i++) {
@@ -70,7 +72,7 @@ public class Task3 {
     }
 
     private List<DataSetPlot> getAllGraphs(final Class<? extends MultiMinimizer> mToken) {
-        int[] dims = {1, 2, 5, 10, 100, 1000};
+        int[] dims = {1, 2, 10, 100, 300, 1000};
         var dimGraphs = new ArrayList<DataSetPlot>();
         for (var dim : dims) {
             System.out.println("Testing n = " + dim);
@@ -104,6 +106,35 @@ public class Task3 {
     @Test
     public void conjugateTest() {
         plot(ConjugateGradientsMinimizer.class, "Сопряженные градиенты");
+    }
+
+    @Test
+    public void compareMethodsForRecord() {
+        var taskForRecord = Task1.getRandomTasks(1, 10, 500, -5000, 5000).get(0);
+        System.out.println("Задача минимизации:");
+        System.out.println("Минимальное с.ч.: " + taskForRecord.f.getMinEigenValueAbs() + ", макс. с.ч.: " + taskForRecord.f.getMaxEigenValueAbs());
+        System.out.println("Точность: " + STANDARD_EPS);
+        System.out.println("Начальная точка:");
+        System.out.println(taskForRecord.initialPoint);
+        System.out.println("Результаты работы алгоритмов:");
+        printItersNumberGradient(taskForRecord);
+        printItersNumberFastest(taskForRecord);
+        printItersNumberConjugate(taskForRecord);
+    }
+
+    private static void printItersNumberGradient(final Task task) {
+        System.out.println("Градиентный спуск:");
+        System.out.println(new GradientDescentMinimizer(task.f, task.initialPoint, STANDARD_EPS).points().count() - 1);
+    }
+
+    private static void printItersNumberFastest(final Task task) {
+        System.out.println("Наискорейший спуск:");
+        System.out.println(new FastestDescent(task.f, task.initialPoint, STANDARD_EPS).points().count() - 1);
+    }
+
+    private static void printItersNumberConjugate(final Task task) {
+        System.out.println("Сопряженные градиенты:");
+        System.out.println(new ConjugateGradientsMinimizer(task.f, task.initialPoint, STANDARD_EPS).points().count() - 1);
     }
 
     private void listConstructors(final Class<?> token) {

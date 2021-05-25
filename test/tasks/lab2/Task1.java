@@ -14,17 +14,29 @@ import java.awt.geom.Point2D;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
+import static methods.multidimensional.Constants.STANDARD_DIGITS;
 import static methods.multidimensional.Constants.STANDARD_EPS;
 import static utils.JavaPlotExample.getPlot;
 import static utils.JavaPlotExample.getPointsGraph;
 
 public class Task1 {
     final static int DIMENSION = 2;
+    private final static Map<String, Class<? extends Minimizer>> methodVariations = Map.of(
+            "Дихотомия", GoldenMinimizer.class,
+            "Золотое сечение", GoldenMinimizer.class,
+            "Фибоначчи", FibonacciMinimizer.class,
+            "Парабол", ParabolicMinimizer.class/*,
+                "Брента", CombinationMinimizer.class*/
+    );
+
+    private static Stream<Vector> getPoints(final Task task, final Class<? extends Minimizer> m) {
+        return new FastestDescent(task.f, task.initialPoint, STANDARD_EPS, m).points();
+    }
 
     private static int getItersNumber(final Task task, final Class<? extends Minimizer> m) {
-        var descent = new FastestDescent(task.f, task.initialPoint, STANDARD_EPS, m);
-        return (int) descent.points().count() - 1;
+        return (int) (getPoints(task, m).count() - 1);
 //        descent.resetAllIterationsCount();
 //        try {
 //            descent.findMinimum();
@@ -58,7 +70,11 @@ public class Task1 {
     }
 
     public static List<Task> getRandomTasks(final int number, final int dimension, final int k) {
-        return IntStream.range(0, number).mapToObj(i -> Task.getRandomTask(dimension, k)).collect(Collectors.toList());
+        return getRandomTasks(number, dimension, k, -1000, 1000);
+    }
+
+    public static List<Task> getRandomTasks(final int number, final int dim, final int k, final int lo, final int hi) {
+        return IntStream.range(0, number).mapToObj(i -> Task.getRandomTask(dim, k, lo, hi)).collect(Collectors.toList());
     }
 
     public static List<Point2D.Double> getConditionArrayPoints(final double[] iterations) {
@@ -85,10 +101,7 @@ public class Task1 {
         );
     }
 
-    private Map<String, double[]> getTestMethodsResults(
-            final List<List<Task>> tasks,
-            final Map<String, Class<? extends Minimizer>> methodVariations
-    ) {
+    private Map<String, double[]> getTestMethodsResults(final List<List<Task>> tasks) {
         final Map<String, double[]> results = new HashMap<>();
         methodVariations.forEach((key, value) -> {
             System.out.println("Testing " + key);
@@ -100,19 +113,38 @@ public class Task1 {
     @Test
     public void differentOneDimMinimizers() {
         System.out.println("EPS = " + STANDARD_EPS);
-        var tasks = IntStream.range(1, 11).mapToObj(k -> getRandomTasks(10, DIMENSION, k))
+        var tasks = IntStream.range(1, 11).mapToObj(k -> getRandomTasks(5, DIMENSION, k, -10, 10))
                 .collect(Collectors.toList());
-        final Map<String, Class<? extends Minimizer>> methodVariations = Map.of(
-                "Дихотомия", GoldenMinimizer.class,
-                "Золотое сечение", GoldenMinimizer.class,
-                "Фибоначчи", FibonacciMinimizer.class,
-                "Парабол", ParabolicMinimizer.class,
-                "Брента", CombinationMinimizer.class
-        );
-        var results = getTestMethodsResults(tasks, methodVariations);
+        var results = getTestMethodsResults(tasks);
         var plot = conditionNumberToIterations(results);
         plot.setTitle("Влияние выбора одном. метода опт. на скорость сходимости наиск. спуска.");
         plot.plot();
+        printRecordStatistics();
+    }
+
+    private static void printRecordStatistics() {
+        var taskForRecord = getRandomTasks(1, DIMENSION, 5, -10, 10).get(0);
+        System.out.println("Задача минимизации:");
+        System.out.println("Квадратичная функция:");
+        System.out.println(taskForRecord.f);
+        System.out.println("Начальная точка:");
+        System.out.println(taskForRecord.initialPoint);
+        System.out.println("Точность: " + STANDARD_EPS);
+        System.out.println("Результаты работы алгоритмов:");
+        for (var m : methodVariations.entrySet()) {
+            System.out.println(m.getKey());
+            System.out.println(getItersNumber(taskForRecord, m.getValue()) + " Итераций");
+            System.out.println("Точки приближения:");
+            System.out.println(
+                    getPoints(taskForRecord, m.getValue())
+                            .map(v ->
+                                    v.getElements().stream()
+                                            .map(x -> String.format("%." + STANDARD_DIGITS + "f", x))
+                                            .collect(Collectors.toList())
+                            ).collect(Collectors.toList())
+            );
+            System.out.println();
+        }
     }
 
     @Test
