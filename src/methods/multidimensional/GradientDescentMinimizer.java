@@ -8,13 +8,15 @@ public class GradientDescentMinimizer extends MultiMinimizer {
     private double alpha;
     private Vector x;
 
-    public GradientDescentMinimizer(final QuadraticFunction fun, double startAlpha, Vector startX, double eps) {
+    public GradientDescentMinimizer(final QuadraticFunction fun,
+                                    final double startAlpha,
+                                    final Vector startX, final double eps) {
         super(fun, startX, eps);
         this.startAlpha = startAlpha;
         restart();
     }
 
-    public GradientDescentMinimizer(final QuadraticFunction fun, Vector startX, double eps) {
+    public GradientDescentMinimizer(final QuadraticFunction fun, final Vector startX, final double eps) {
         this(fun, 2 / (fun.getMinEigenValueAbs() + fun.getMaxEigenValueAbs()), startX, eps);
     }
 
@@ -23,7 +25,7 @@ public class GradientDescentMinimizer extends MultiMinimizer {
     }
 
     public Vector nextIteration() {
-        Vector next = x.add(fun.getGradient(x).normalize().multiply(-alpha));
+        final Vector next = x.add(fun.getGradient(x).multiply(-alpha));
         if (fun.get(next) < fun.get(x)) {
             return x = next;
         }

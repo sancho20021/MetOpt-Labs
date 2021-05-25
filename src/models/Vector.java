@@ -10,6 +10,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 
+/*
+* An immutable vector in R^n
+* */
 public class Vector {
     private final double[] coordinates;
 

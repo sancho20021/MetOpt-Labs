@@ -13,23 +13,23 @@ public class FastestDescent extends MultiMinimizer {
     private final double maxA;
     private final Class<? extends Minimizer> uniMinimizer;
 
-    public FastestDescent(QuadraticFunction fun, Vector startX, double eps, double maxA) {
+    public FastestDescent(final QuadraticFunction fun, final Vector startX, final double eps, final double maxA) {
         this(fun, startX, eps, maxA, startX.getDim() < 100 ? ParabolicMinimizer.class : FibonacciMinimizer.class);
     }
 
-    public FastestDescent(QuadraticFunction fun, Vector startX, double eps) {
+    public FastestDescent(final QuadraticFunction fun, final Vector startX, final double eps) {
         this(fun, startX, eps,
                 startX.getDim() * Math.max(1, fun.getB().maxElementAbs()) * 2 * fun.getMaxEigenValueAbs());
     }
 
-    public FastestDescent(QuadraticFunction fun, Vector startX, double eps, Class<? extends Minimizer> uniMinimizer) {
+    public FastestDescent(final QuadraticFunction fun, final Vector startX, final double eps, final Class<? extends Minimizer> uniMinimizer) {
         this(fun, startX, eps,
                 2.0 / fun.getMinEigenValueAbs()/*startX.getDim() * Math.max(1, fun.getB().maxElementAbs()) * 2 * fun.getMaxEigenValueAbs()*/,
                 uniMinimizer
         );
     }
 
-    public FastestDescent(QuadraticFunction fun, Vector startX, double eps, double maxA, Class<? extends Minimizer> uniMinimizer) {
+    public FastestDescent(final QuadraticFunction fun, final Vector startX, final double eps, final double maxA, final Class<? extends Minimizer> uniMinimizer) {
         super(fun, startX, eps);
         this.maxA = maxA;
         this.uniMinimizer = uniMinimizer;
@@ -56,14 +56,14 @@ public class FastestDescent extends MultiMinimizer {
         return x;
     }
 
-    private double oneDimMin(Vector x0) {
-        Function<Double, Double> uniFunction = a -> fun.get(x0.add(fun.getGradient(x0).multiply(-a)));
+    private double oneDimMin(final Vector x0) {
+        final Function<Double, Double> uniFunction = a -> fun.get(x0.add(fun.getGradient(x0).multiply(-a)));
         try {
-            var uniMinInstance = uniMinimizer
+            final var uniMinInstance = uniMinimizer
                     .getConstructor(Function.class, double.class, double.class, double.class)
                     .newInstance(uniFunction, 0.0, maxA, eps);
             return uniMinInstance.findMinimum();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             System.err.println("Error occurred while trying to use one dimension minimizer");
             throw new IllegalStateException("See log, message: " + e.getMessage(), e);
         }
