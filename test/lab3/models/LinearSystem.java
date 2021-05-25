@@ -27,6 +27,10 @@ public class LinearSystem {
         assert matrix.size() == b.getDim();
     }
 
+    public int size() {
+        return matrix.size();
+    }
+
     public MutableSquareMatrix getA() {
         return matrix;
     }
