@@ -83,7 +83,7 @@ public class Gauss {
         for (int k = 0; k < n - 1; k++) {
             if (doSwap) {
                 if (!swapKthWithLargest(a, b, k, perm, eps)) {
-                  //  return Optional.empty();
+                    return Optional.empty();
                 }
             }
 
