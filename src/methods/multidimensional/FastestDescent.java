@@ -13,20 +13,20 @@ public class FastestDescent extends MultiMinimizer {
     private final double maxA;
     private final Class<? extends Minimizer> uniMinimizer;
 
+    private static double getMaxA(final QuadraticFunction f) {
+        return 2.0 / f.getMinEigenValueAbs() * Math.max(1, f.getB().getEuclideanNorm());
+    }
+
     public FastestDescent(final QuadraticFunction fun, final Vector startX, final double eps, final double maxA) {
-        this(fun, startX, eps, maxA, startX.getDim() < 100 ? ParabolicMinimizer.class : FibonacciMinimizer.class);
+        this(fun, startX, eps, maxA, /*ParabolicMinimizer.class*/ FibonacciMinimizer.class);
     }
 
     public FastestDescent(final QuadraticFunction fun, final Vector startX, final double eps) {
-        this(fun, startX, eps,
-                startX.getDim() * Math.max(1, fun.getB().maxElementAbs()) * 2 * fun.getMaxEigenValueAbs());
+        this(fun, startX, eps, getMaxA(fun));
     }
 
     public FastestDescent(final QuadraticFunction fun, final Vector startX, final double eps, final Class<? extends Minimizer> uniMinimizer) {
-        this(fun, startX, eps,
-                2.0 / fun.getMinEigenValueAbs() * Math.max(1, fun.getB().getEuclideanNorm()),
-                uniMinimizer
-        );
+        this(fun, startX, eps, getMaxA(fun), uniMinimizer);
     }
 
     public FastestDescent(final QuadraticFunction fun, final Vector startX, final double eps, final double maxA, final Class<? extends Minimizer> uniMinimizer) {

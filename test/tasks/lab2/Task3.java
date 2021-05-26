@@ -23,7 +23,7 @@ public class Task3 {
         try {
             var constructor = mToken
                     .getConstructor(QuadraticFunction.class, Vector.class, double.class);
-            return constructor.newInstance(task.f, task.initialPoint, Constants.SMALL_EPS);
+            return constructor.newInstance(task.f, task.initialPoint, STANDARD_EPS);
         } catch (Exception e) {
             System.err.println("Error occurred while trying to create an instance of " + mToken.getSimpleName());
             throw new IllegalStateException("See log, message: " + e.getMessage(), e);
