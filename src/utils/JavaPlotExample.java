@@ -20,7 +20,8 @@ public class JavaPlotExample {
             NamedPlotColor.DARK_VIOLET,
             NamedPlotColor.GREEN,
             NamedPlotColor.BROWN,
-            NamedPlotColor.DARK_MAGENTA
+            NamedPlotColor.DARK_MAGENTA,
+            NamedPlotColor.BLACK
     };
 
     public static DataSetPlot getPointsGraph(final List<Point2D.Double> points, final String name) {
