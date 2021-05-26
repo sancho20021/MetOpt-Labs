@@ -90,7 +90,7 @@ public class Task3 {
                 "Число итераций",
                 graphs
         );
-        plot.getAxis("x").setLogScale(true);
+        plot.getAxis("x").setLogScale(false);
         plot.plot();
     }
 

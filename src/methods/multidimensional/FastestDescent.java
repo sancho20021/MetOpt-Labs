@@ -2,7 +2,6 @@ package methods.multidimensional;
 
 import methods.unidimensional.FibonacciMinimizer;
 import methods.unidimensional.Minimizer;
-import methods.unidimensional.ParabolicMinimizer;
 import models.Vector;
 import models.functions.QuadraticFunction;
 
@@ -38,7 +37,8 @@ public class FastestDescent extends MultiMinimizer {
 
     @Override
     public boolean hasNext() {
-        return fun.getGradient(x).getEuclideanNorm() >= eps;
+        final double gradNorm = fun.getGradient(x).getEuclideanNorm();
+        return gradNorm >= eps;
     }
 
     @Override

@@ -16,8 +16,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static methods.multidimensional.Constants.STANDARD_DIGITS;
-import static methods.multidimensional.Constants.STANDARD_EPS;
+import static methods.multidimensional.Constants.*;
 import static utils.JavaPlotExample.getPlot;
 import static utils.JavaPlotExample.getPointsGraph;
 
@@ -32,7 +31,7 @@ public class Task1 {
     );
 
     private static Stream<Vector> getPoints(final Task task, final Class<? extends Minimizer> m) {
-        return new FastestDescent(task.f, task.initialPoint, STANDARD_EPS, m).points();
+        return new FastestDescent(task.f, task.initialPoint, SMALL_EPS, m).points();
     }
 
     private static int getItersNumber(final Task task, final Class<? extends Minimizer> m) {
@@ -112,8 +111,8 @@ public class Task1 {
 
     @Test
     public void differentOneDimMinimizers() {
-        System.out.println("EPS = " + STANDARD_EPS);
-        var tasks = IntStream.range(1, 11).mapToObj(k -> getRandomTasks(5, DIMENSION, k, -10, 10))
+        System.out.println("EPS = " + SMALL_EPS);
+        var tasks = IntStream.range(1, 11).mapToObj(k -> getRandomTasks(40, DIMENSION, k, -10, 10))
                 .collect(Collectors.toList());
         var results = getTestMethodsResults(tasks);
         var plot = conditionNumberToIterations(results);
@@ -129,7 +128,7 @@ public class Task1 {
         System.out.println(taskForRecord.f);
         System.out.println("Начальная точка:");
         System.out.println(taskForRecord.initialPoint);
-        System.out.println("Точность: " + STANDARD_EPS);
+        System.out.println("Точность: " + SMALL_EPS);
         System.out.println("Результаты работы алгоритмов:");
         for (var m : methodVariations.entrySet()) {
             System.out.println(m.getKey());
@@ -139,7 +138,7 @@ public class Task1 {
                     getPoints(taskForRecord, m.getValue())
                             .map(v ->
                                     v.getElements().stream()
-                                            .map(x -> String.format("%." + STANDARD_DIGITS + "f", x))
+                                            .map(x -> String.format("%.7f", x))
                                             .collect(Collectors.toList())
                             ).collect(Collectors.toList())
             );

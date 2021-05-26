@@ -42,6 +42,7 @@ public class JavaPlotExample {
     ) {
         JavaPlot p = new JavaPlot();
         p.setTitle(name);
+        p.getAxis("x").unset("logscale");
         p.getAxis("x").setLabel(xAxisName);
         p.getAxis("y").setLabel(yAxisName);
         for (int i = 0; i < dataSets.size(); i++) {
