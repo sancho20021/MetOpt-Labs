@@ -16,7 +16,7 @@ import static methods.multidimensional.Constants.SMALL_EPS;
 
 public class Task2 {
     private static void testCondition(final SquareMatrix a, final double l, final double L, final Vector startX) {
-        final Vector b = new Vector(0, 0, 0);
+        final Vector b = new Vector(0, 0);
         final double c = 0;
         final QuadraticFunction f = new QuadraticFunction(a, b, c);
         final Task task = new Task(startX, f);
@@ -43,30 +43,33 @@ public class Task2 {
 
     @Test
     public void testBadCondition() {
+        // f(x, y) = 1 / 2 * (5x^2 + 3y^2 + 6xy)
         testCondition(
-                new FullMatrix(60, 40, 30, 40, 30, 20, 30, 20, 18),
-                1.860,
-                103.008,
-                new Vector(100, -20, 3)
+                new FullMatrix(5, 3, 3, 3),
+                0.8378,
+                7.1623,
+                new Vector(100, -20)
         );
     }
 
     @Test
     public void testGoodCondition() {
+        // f(x, y) = 30x^2 + 25y^2
         testCondition(
-                new FullMatrix(60, 0, 0, 0, 50, 0, 0, 0, 50),
+                new FullMatrix(60, 0, 0, 50),
                 50,
                 60,
-                new Vector(20, 30, 40)
+                new Vector(20, 30)
         );
     }
     @Test
     public void testBestCondition() {
+        // f(x, y) = 30x^2 + 25y^2
         testCondition(
-                new FullMatrix(60, 0, 0, 0, 50, 0, 0, 0, 50),
+                new FullMatrix(60, 0, 0, 50),
                 50,
                 60,
-                new Vector(0, 30, 0)
+                new Vector(0, 30)
         );
     }
 
