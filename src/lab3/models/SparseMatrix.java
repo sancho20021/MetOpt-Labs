@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SparseMatrix implements MutableSquareMatrix {
-    final double[] d;
-    final double[] al;
-    final double[] au;
-    final int[] ja;
-    final int[] ia;
+    private final double[] d;
+    private final double[] al;
+    private final double[] au;
+    private final int[] ja;
+    private final int[] ia;
 
     /**
      * Constructs a sparse matrix with element copies of other matrix
@@ -86,5 +86,18 @@ public class SparseMatrix implements MutableSquareMatrix {
             }
         }
         return ja[l] == j ? a[l] : 0;
+    }
+
+    public Vector multiply(final Vector v) {
+        final int n = size();
+        final double[] ans = new double[n];
+        for (int i = 0; i < n; i++) {
+            for (int k = ia[i]; k < ia[i + 1]; k++) {
+                ans[i] += al[k] * v.get(ja[k]);
+                ans[ja[k]] += au[k] * v.get(i);
+            }
+            ans[i] += d[i] * v.get(i);
+        }
+        return new Vector(ans);
     }
 }
