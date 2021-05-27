@@ -12,8 +12,8 @@ public class LinearSystem {
         this.matrix = matrix;
         this.b = b;
         this.correctAnswer = Optional.of(correctAnswer);
-        assert matrix.size() == b.getDim();
-        assert matrix.size() == correctAnswer.getDim();
+        assert matrix.size() == b.size();
+        assert matrix.size() == correctAnswer.size();
     }
 
     public LinearSystem(final double[][] a, final double[] b) {
@@ -24,7 +24,7 @@ public class LinearSystem {
         this.matrix = matrix;
         this.b = b;
         this.correctAnswer = Optional.empty();
-        assert matrix.size() == b.getDim();
+        assert matrix.size() == b.size();
     }
 
     public int size() {

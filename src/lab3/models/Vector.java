@@ -23,11 +23,11 @@ public class Vector {
         }
     }
 
-    public int getDim() {
+    public int size() {
         return coordinates.length;
     }
 
-    public double getIth(int i) throws IllegalArgumentException {
+    public double get(int i) throws IllegalArgumentException {
         checkIndex(i);
         return coordinates[i];
     }
@@ -46,8 +46,8 @@ public class Vector {
     }
 
     public Vector add(final Vector other) {
-        double[] result = new double[getDim()];
-        for (int i = 0; i < getDim(); i++) {
+        double[] result = new double[size()];
+        for (int i = 0; i < size(); i++) {
             result[i] = coordinates[i] + other.coordinates[i];
         }
         return new Vector(result);
@@ -58,8 +58,8 @@ public class Vector {
     }
 
     public Vector multiply(final double scalingFactor) {
-        double[] result = new double[getDim()];
-        for (int i = 0; i < getDim(); i++) {
+        double[] result = new double[size()];
+        for (int i = 0; i < size(); i++) {
             result[i] = coordinates[i] * scalingFactor;
         }
         return new Vector(result);
@@ -67,7 +67,7 @@ public class Vector {
 
     public double scalarProduct(final Vector other) {
         double result = 0;
-        for (int i = 0; i < getDim(); i++) {
+        for (int i = 0; i < size(); i++) {
             result += coordinates[i] * other.coordinates[i];
         }
         return result;
@@ -80,7 +80,7 @@ public class Vector {
     private void checkIndex(int i) {
         if (!(0 <= i && i < coordinates.length)) {
             throw new IllegalArgumentException(
-                    "trying to get " + i + "-th coordinate in a vector of dimension " + getDim());
+                    "trying to get " + i + "-th coordinate in a vector of dimension " + size());
         }
     }
 

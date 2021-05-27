@@ -91,7 +91,7 @@ public class FullMatrix extends AdvancedMatrix {
 
     @Override
     public Vector getColumn(int column) {
-        return new Vector(getRows().stream().mapToDouble(row -> row.getIth(column)).toArray());
+        return new Vector(getRows().stream().mapToDouble(row -> row.get(column)).toArray());
     }
 
     @Override

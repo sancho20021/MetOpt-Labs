@@ -93,4 +93,14 @@ public abstract class AdvancedMatrix implements MutableSquareMatrix {
         return getRows().stream().map(Vector::toRawString).collect(Collectors.joining(System.lineSeparator()));
     }
 
+    public static Vector multiply(final SimpleSquareMatrix matrix, final Vector vector) {
+        final int n = matrix.size();
+        final double[] ans = new double[n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                ans[i] += matrix.get(i, j) * vector.get(j);
+            }
+        }
+        return new Vector(ans);
+    }
 }

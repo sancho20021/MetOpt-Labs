@@ -57,7 +57,7 @@ public class DiagonalMatrix extends AdvancedMatrix {
 
     @Override
     public Vector multiply(Vector vector) {
-        return new Vector(doubleArray(size(), i -> elements[i] * vector.getIth(i)));
+        return new Vector(doubleArray(size(), i -> elements[i] * vector.get(i)));
     }
 
     @Override

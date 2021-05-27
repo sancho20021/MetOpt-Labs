@@ -70,9 +70,6 @@ public class FileTesting {
 
     @Test
     public void deleteTests() {
-        if (true) {
-            throw new IllegalStateException("Ты че конч удалять тесты?");
-        }
         try {
             Files.walk(TEST_ROOT)
                     .sorted(Comparator.reverseOrder())
@@ -84,8 +81,6 @@ public class FileTesting {
     }
 
     public static void main(String[] args) throws IOException {
-        writeFile("TEST NA PIDORA", "Ты пидор?");
-        writeFile("Тест на труса", "Ты трус?");
 //        deleteTests();
     }
 
