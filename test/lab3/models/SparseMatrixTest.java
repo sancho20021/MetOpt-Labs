@@ -43,8 +43,8 @@ public class SparseMatrixTest {
     }
 
     private void testMultiply(final BiFunction<AdvancedMatrix, Vector, Vector> multiplier) {
-        final int samples = 3;
-        final int n = 5000;
+        final int samples = 300;
+        final int n = 10;
         for (int i = 0; i < samples; i++) {
             final FullMatrix original = new FullMatrix(MatrixGenerators.generateSparseMatrix(n, -100, 100, 0.5));
             final Vector v = new Vector(VectorGenerators.generateIntegerVector(n, -100, 100));

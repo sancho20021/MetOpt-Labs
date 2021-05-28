@@ -3,32 +3,24 @@ package lab3.methods;
 import lab3.models.FullMatrix;
 import lab3.models.SparseMatrix;
 import lab3.models.Vector;
-import lab3.utils.generators.MatrixGenerators;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
-public class ConjugateTest {
+public class ConjugateLSSolverTest {
     private final static double EPS = 1e-7;
 
+
     @Test
-    public void testRandomMatrices() {
-        final int samples = 100;
-        final int n = 2;
-        final Vector f = new Vector(IntStream.range(0, n).mapToDouble(x -> x + 1).toArray());
-        final Stream<SparseMatrix> as =
-                Stream.generate(() -> new SparseMatrix(MatrixGenerators.generateIntegerMatrix(n, -10, 10)))
-                        .limit(samples);
-        as.forEach(a -> checkEqual(a, f));
-
+    public void test() {
+//        checkEqual(new SparseMatrix(new FullMatrix(8, 1, 1, -3)), new Vector(1, 2));
     }
-
     private static void checkEqual(final SparseMatrix a, final Vector f) {
         final Vector x0 = new Vector(new double[a.size()]);
-        final Vector expected = new Vector(Gauss.solve(new FullMatrix(a), f.getElementsArrayCopy()).orElseThrow());
-        final Vector got = new Conjugate(a, f, x0, EPS).solve().orElseThrow();
+        final FullMatrix fullMatrix = new FullMatrix(a);
+        System.out.println(fullMatrix);
+        System.out.println(f);
+        final Vector expected = new Vector(Gauss.solve(fullMatrix, f.getElementsArrayCopy()).orElseThrow());
+        final Vector got = new ConjugateLSSolver(a, f, x0, EPS).solve().orElseThrow();
         Assert.assertTrue(checkEqual(expected, got, EPS));
     }
 

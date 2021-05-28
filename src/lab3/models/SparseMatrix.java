@@ -2,6 +2,7 @@ package lab3.models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class SparseMatrix implements MutableSquareMatrix {
     private final double[] d;
@@ -11,7 +12,7 @@ public class SparseMatrix implements MutableSquareMatrix {
     private final int[] ia;
 
     /**
-     * Constructs a sparse matrix with element copies of other matrix
+     * Constructs a symmetric sparse matrix with element copies of other matrix
      *
      * @param other other matrix
      */
@@ -29,15 +30,51 @@ public class SparseMatrix implements MutableSquareMatrix {
             int len = 0;
             for (int j = 0; j < i; j++) {
                 final double ij = other.get(i, j);
-                final double ji = other.get(j, i);
-                if (ij != 0 || ji != 0) {
+                if (ij != 0) {
                     jaList.add(j);
                     alList.add(ij);
-                    auList.add(ji);
+                    auList.add(ij);
                     len++;
                 }
             }
             ia[i + 1] = ia[i] + len;
+        }
+        al = alList.stream().mapToDouble(x -> x).toArray();
+        au = auList.stream().mapToDouble(x -> x).toArray();
+        ja = jaList.stream().mapToInt(x -> x).toArray();
+    }
+
+    /**
+     * Constructs a matrix from scanner.
+     * Format: {@code <n> \n a[1][0] \n a[2][0] a[2][1] \n ... a[n-1][0] ... a[n-1][n-2] \n a[0][0] .. a[n-1][n-1]}
+     *
+     * @param scn Scanner
+     */
+    public SparseMatrix(final Scanner scn) {
+        final int n = scn.nextInt();
+        d = new double[n];
+        ia = new int[n + 1];
+        final List<Double> alList = new ArrayList<>();
+        final List<Double> auList = new ArrayList<>();
+        final List<Integer> jaList = new ArrayList<>();
+        for (int i = 1; i < n; i++) {
+            if (i % 1000 == 0) {
+                System.out.println("Reading another 1000 done");
+            }
+            int len = 0;
+            for (int j = 0; j < i; j++) {
+                final double ij = scn.nextDouble();
+                if (ij != 0) {
+                    jaList.add(j);
+                    alList.add(ij);
+                    auList.add(ij);
+                    len++;
+                }
+            }
+            ia[i + 1] = ia[i] + len;
+        }
+        for (int i = 0; i < n; i++) {
+            d[i] = scn.nextDouble();
         }
         al = alList.stream().mapToDouble(x -> x).toArray();
         au = auList.stream().mapToDouble(x -> x).toArray();

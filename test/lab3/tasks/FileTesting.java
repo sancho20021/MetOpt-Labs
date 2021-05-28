@@ -11,13 +11,16 @@ import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 
 public class FileTesting {
     private static final Path TEST_ROOT = Path.of("tests");
     private static final Map<String, Path> TEST_FOLDERS = new HashMap<>(Map.of(
             Task2.TEST_FOLDER, TEST_ROOT.resolve(Task2.TEST_FOLDER),
             Task3.TEST_FOLDER, TEST_ROOT.resolve(Task3.TEST_FOLDER),
-            Task4.TEST_FOLDER, TEST_ROOT.resolve(Task4.TEST_FOLDER)
+            Task4.TEST_FOLDER, TEST_ROOT.resolve(Task4.TEST_FOLDER),
+            Task52.TEST_FOLDER, TEST_ROOT.resolve(Task52.TEST_FOLDER)
     ));
 
     public static void writeFile(final String testName, final String testFolder, final String testData) throws IOException {
@@ -27,6 +30,15 @@ public class FileTesting {
         final PrintWriter writer = new PrintWriter(new FileWriter(testFile.toFile()));
         writer.print(testData);
         writer.close();
+    }
+
+    public static void writeFile(final String testName, final String testFolder, final Consumer<PrintWriter> write) throws IOException {
+        final Path testDir = TEST_FOLDERS.computeIfAbsent(testFolder, TEST_ROOT::resolve).resolve(Path.of(testName));
+        final Path testFile = testDir.resolve(Path.of(testName + ".txt"));
+        Files.createDirectories(testDir);
+        try (final PrintWriter writer = new PrintWriter(new FileWriter(testFile.toFile()))) {
+            write.accept(writer);
+        }
     }
 
     public static void writeFile(final String testName, final String testData) throws IOException {
@@ -45,11 +57,15 @@ public class FileTesting {
             return;
         }
         try {
+            final AtomicInteger testN = new AtomicInteger(0);
             Files.createDirectories(testDir);
             Files.walk(testDir, 3)
                     .map(Path::toFile)
                     .filter(File::isFile)
-                    .forEach(test -> solver.solve(test, getSolutionFile(test)));
+                    .forEach(test -> {
+                        solver.solve(test, getSolutionFile(test));
+                        System.out.println("test " + testN.getAndIncrement());
+                    });
         } catch (final IOException e) {
             System.err.println("Error while walking the tests folders");
         }

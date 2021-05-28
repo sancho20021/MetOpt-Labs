@@ -1,13 +1,9 @@
 package lab3.utils.generators;
 
 import java.util.Arrays;
-import java.util.IntSummaryStatistics;
 import java.util.Random;
 import java.util.function.DoubleSupplier;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
-import static lab3.utils.generators.MainGenerator.random;
 
 public class MatrixGenerators {
     private static final Random RANDOM = new Random(228);
@@ -43,8 +39,8 @@ public class MatrixGenerators {
     }
 
     /*
-    * Generates a matrix that has the nonzero elements in a small neighbourhood of the diagonal
-    * */
+     * Generates a matrix that has the nonzero elements in a small neighbourhood of the diagonal
+     * */
     public static double[][] generateDiagonalDominanceMatrix(final int n) {
         final double[][] matrix = generateIntegerMatrix(n, -4, 0);
         IntStream.range(0, n).forEach(i -> matrix[i][i] = -Arrays.stream(matrix[i]).sum() + matrix[i][i]);
@@ -53,22 +49,22 @@ public class MatrixGenerators {
     }
 
     /*
-    * a[i][j] = 1 / (i + j + 1)
-    *  i, j in [1 : n]
-    * */
+     * a[i][j] = 1 / (i + j + 1)
+     *  i, j in [1 : n]
+     * */
     public static double[][] generateHilbertMatrix(final int n) {
         final double[][] matrix = new double[n][n];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                matrix[i][j] = 1.0/(i + 1 + j);
+                matrix[i][j] = 1.0 / (i + 1 + j);
             }
         }
         return matrix;
     }
 
     /*
-    * Generates the matrix from the second task
-    * */
+     * Generates the matrix from the second task
+     * */
     public static double[][] generateAkMatrix(final int n, final int k) {
         final double[][] matrix = generateIntegerMatrix(n, -4, 0);
         IntStream.range(0, n).forEach(i -> matrix[i][i] = -Arrays.stream(matrix[i]).sum() + matrix[i][i]);
@@ -80,12 +76,22 @@ public class MatrixGenerators {
         return generateMatrix(n, () -> RANDOM.nextInt(hi - lo) + lo);
     }
 
+    public static double[][] generateSymmetricIntegerMatrix(final int n, final int lo, final int hi) {
+        return generateMatrix(n, () -> RANDOM.nextInt(hi - lo) + lo, true);
+    }
+
     public static double[][] generateMatrix(final int n, final DoubleSupplier getElement) {
+        return generateMatrix(n, getElement, false);
+    }
+
+    public static double[][] generateMatrix(final int n, final DoubleSupplier getElement, final boolean symmetric) {
         double[][] ans = new double[n][n];
         for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
+            for (int j = 0; j < i; j++) {
                 ans[i][j] = getElement.getAsDouble();
+                ans[j][i] = symmetric ? ans[i][j] : getElement.getAsDouble();
             }
+            ans[i][i] = getElement.getAsDouble();
         }
         return ans;
     }

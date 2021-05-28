@@ -5,7 +5,8 @@ import lab3.models.Vector;
 
 import java.util.Optional;
 
-public class Conjugate {
+public class ConjugateLSSolver {
+    public final static double STANDARD_EPS = 1e-7;
     private final SparseMatrix a;
     private final Vector f;
     private final double eps;
@@ -14,9 +15,9 @@ public class Conjugate {
     private Vector z;
     private double rr;
     private int iteration;
-    public final static int MAX_ITERATIONS = 1000;
+    public final static int MAX_ITERATIONS = 10000;
 
-    public Conjugate(final SparseMatrix a, final Vector f, final Vector x0, double eps) {
+    public ConjugateLSSolver(final SparseMatrix a, final Vector f, final Vector x0, double eps) {
         this.a = a;
         this.f = f;
         this.x = x0;
@@ -26,6 +27,9 @@ public class Conjugate {
         rr = r.scalarProduct(r);
         iteration = 0;
     }
+    public ConjugateLSSolver(final SparseMatrix a, final Vector f, final Vector x0) {
+        this(a, f, x0, STANDARD_EPS);
+    }
 
     public Optional<Vector> solve() {
         while (hasNext()) {
@@ -33,6 +37,10 @@ public class Conjugate {
         }
         System.out.println("-----------solved---------------");
         return iteration >= MAX_ITERATIONS ? Optional.empty() : Optional.of(x);
+    }
+
+    public int getIteration() {
+        return iteration;
     }
 
     private boolean hasNext() {
@@ -56,7 +64,6 @@ public class Conjugate {
         z = r.add(z.multiply(beta));
         iteration++;
 
-        System.out.println("x_k = " + x);
         System.out.println("||Ax - f|| = " + a.multiply(x).subtract(f).getEuclideanNorm());
     }
 }
