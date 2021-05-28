@@ -1,5 +1,6 @@
 package lab3.methods;
 
+import lab3.models.SimpleSquareMatrix;
 import lab3.models.SparseMatrix;
 import lab3.models.Vector;
 
@@ -17,6 +18,14 @@ public class ConjugateLSSolver {
     private int iteration;
     public final static int MAX_ITERATIONS = 10000;
 
+    public ConjugateLSSolver(final SimpleSquareMatrix a, final Vector f, final Vector x0, double eps) {
+        this(new SparseMatrix(a), f, x0, eps);
+    }
+
+    public ConjugateLSSolver(final SimpleSquareMatrix a, final Vector f, final Vector x0) {
+        this(a, f, x0, STANDARD_EPS);
+    }
+
     public ConjugateLSSolver(final SparseMatrix a, final Vector f, final Vector x0, double eps) {
         this.a = a;
         this.f = f;
@@ -27,6 +36,7 @@ public class ConjugateLSSolver {
         rr = r.scalarProduct(r);
         iteration = 0;
     }
+
     public ConjugateLSSolver(final SparseMatrix a, final Vector f, final Vector x0) {
         this(a, f, x0, STANDARD_EPS);
     }

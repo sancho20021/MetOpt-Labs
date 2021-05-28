@@ -10,7 +10,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UncheckedIOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import java.util.function.BiConsumer;
 import java.util.stream.IntStream;
 
 
@@ -18,6 +21,10 @@ public class Task52 {
     final public static String TEST_FOLDER = "Task52";
 
     private static void write52Matrix(final int n, final PrintWriter writer) {
+        write52Matrix(n, writer, -1);
+    }
+
+    public static void write52Matrix(final int n, final PrintWriter writer, final double sign) {
         writer.println(n);
         final double[] sums = new double[n];
         for (int i = 1; i < n; i++) {
@@ -29,7 +36,7 @@ public class Task52 {
             writer.println();
         }
         for (int i = 0; i < n; i++) {
-            writer.print((-sums[i] + (i == 0 ? 1 : 0)) + " ");
+            writer.print((sign * sums[i] + (i == 0 ? 1 : 0)) + " ");
         }
         writer.println();
     }
@@ -51,28 +58,40 @@ public class Task52 {
 
     @Test
     public void solveAll() {
-        FileTesting.solveTests(TEST_FOLDER, (input, output) -> {
+        solveAll(TEST_FOLDER);
+    }
+
+    public static List<String> getData(final SparseMatrix a) {
+        final Vector x = getNthAscending(a.size());
+        final Vector f = a.multiply(x);
+        final ConjugateLSSolver solver = new ConjugateLSSolver(a, f, getZeros(a.size()));
+        final Vector got = solver.solve().orElseThrow();
+        final List<String> data = new ArrayList<>();
+        data.add(Integer.toString(a.size()));  // n
+        data.add(Integer.toString(solver.getIteration()));  // iterations
+        final double diff = got.subtract(x).getEuclideanNorm();
+        data.add(Double.toString(diff));  // ||x* - x||
+        final double relativeDiff = diff / x.getEuclideanNorm();
+        data.add(Double.toString(relativeDiff)); // ||x* - x||/||x*||
+        data.add(Double.toString(relativeDiff / (f.subtract(a.multiply(got)).getEuclideanNorm() / f.getEuclideanNorm()))); // cond >=
+        return data;
+    }
+
+    public static void solveAll(final String testFolder) {
+        FileTesting.solveTests(testFolder, (input, output) -> {
             try {
                 final Scanner in = new Scanner(new FileInputStream(input));
                 final PrintWriter out = new PrintWriter(output);
                 final SparseMatrix a = new SparseMatrix(in);
-                final Vector x = getNthAscending(a.size());
-                final Vector f = a.multiply(x);
-                final ConjugateLSSolver solver = new ConjugateLSSolver(a, f, getZeros(a.size()));
                 try {
-                    final Vector got = solver.solve().orElseThrow();
+                    final List<String> data = getData(a);
                     out.println("OK");
-                    out.println(a.size());  // n
-                    out.println(solver.getIteration());  // iterations
-                    final double diff = got.subtract(x).getEuclideanNorm();
-                    out.println(diff);  // ||x* - x||
-                    final double relativeDiff = diff / x.getEuclideanNorm();
-                    out.println(relativeDiff); // ||x* - x||/||x*||
-                    out.println(relativeDiff / (f.subtract(a.multiply(got)).getEuclideanNorm() / f.getEuclideanNorm())); // cond >=
+                    data.forEach(out::println);
                 } catch (final RuntimeException e) {
                     out.println("ERROR " + e.getMessage());
+                } finally {
+                    out.close();
                 }
-                out.close();
             } catch (final IOException e) {
                 throw new UncheckedIOException(e);
             }
@@ -80,10 +99,14 @@ public class Task52 {
     }
 
     private static void generate52Matrices(final int samples, final int[] ns) {
+        generate52Matrices(samples, ns, Task52::write52Matrix, TEST_FOLDER);
+    }
+
+    public static void generate52Matrices(final int samples, final int[] ns, final BiConsumer<Integer, PrintWriter> write, final String testFolder) {
         try {
             for (int k = 0; k < samples; k++) {
                 for (int n : ns) {
-                    FileTesting.writeFile("Test n = " + n + ", sample = " + k, TEST_FOLDER, writer -> write52Matrix(n, writer));
+                    FileTesting.writeFile("Test n = " + n + ", sample = " + k, testFolder, writer -> write.accept(n, writer));
                 }
             }
         } catch (final IOException e) {
@@ -91,9 +114,8 @@ public class Task52 {
         }
     }
 
-    @Test
-    public void read52Matrices() {
-        FileTesting.solveTests(TEST_FOLDER, (input, output) -> {
+    public static void read52Matrices(final String testFolder) {
+        FileTesting.solveTests(testFolder, (input, output) -> {
             try {
                 final Scanner in = new Scanner(new FileInputStream(input));
                 final PrintWriter out = new PrintWriter(output);
@@ -104,6 +126,11 @@ public class Task52 {
                 throw new UncheckedIOException(e);
             }
         });
+    }
+
+    @Test
+    public void read52Matrices() {
+        read52Matrices(TEST_FOLDER);
     }
 
     public static Vector getNthAscending(final int n) {

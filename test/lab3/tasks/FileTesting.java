@@ -20,7 +20,9 @@ public class FileTesting {
             Task2.TEST_FOLDER, TEST_ROOT.resolve(Task2.TEST_FOLDER),
             Task3.TEST_FOLDER, TEST_ROOT.resolve(Task3.TEST_FOLDER),
             Task4.TEST_FOLDER, TEST_ROOT.resolve(Task4.TEST_FOLDER),
-            Task52.TEST_FOLDER, TEST_ROOT.resolve(Task52.TEST_FOLDER)
+            Task52.TEST_FOLDER, TEST_ROOT.resolve(Task52.TEST_FOLDER),
+            Task53.TEST_FOLDER, TEST_ROOT.resolve(Task53.TEST_FOLDER),
+            Task54.TEST_FOLDER, TEST_ROOT.resolve(Task54.TEST_FOLDER)
     ));
 
     public static void writeFile(final String testName, final String testFolder, final String testData) throws IOException {
