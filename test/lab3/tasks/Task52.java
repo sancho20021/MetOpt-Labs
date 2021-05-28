@@ -5,12 +5,13 @@ import lab3.models.SparseMatrix;
 import lab3.models.Vector;
 import lab3.utils.generators.MainGenerator;
 import org.junit.Test;
+import utils.Table;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UncheckedIOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 import java.util.function.BiConsumer;
@@ -60,6 +61,10 @@ public class Task52 {
     public void solveAll() {
         solveAll(TEST_FOLDER);
     }
+    @Test
+    public void capd() {
+        collectAndPrintData(TEST_FOLDER, "Матрицы с диагональным преобладанием");
+    }
 
     public static List<String> getData(final SparseMatrix a) {
         final Vector x = getNthAscending(a.size());
@@ -70,11 +75,15 @@ public class Task52 {
         data.add(Integer.toString(a.size()));  // n
         data.add(Integer.toString(solver.getIteration()));  // iterations
         final double diff = got.subtract(x).getEuclideanNorm();
-        data.add(Double.toString(diff));  // ||x* - x||
+        data.add(toString(diff));  // ||x* - x||
         final double relativeDiff = diff / x.getEuclideanNorm();
-        data.add(Double.toString(relativeDiff)); // ||x* - x||/||x*||
-        data.add(Double.toString(relativeDiff / (f.subtract(a.multiply(got)).getEuclideanNorm() / f.getEuclideanNorm()))); // cond >=
+        data.add(toString(relativeDiff)); // ||x* - x||/||x*||
+        data.add(toString(relativeDiff / (f.subtract(a.multiply(got)).getEuclideanNorm() / f.getEuclideanNorm()))); // cond >=
         return data;
+    }
+
+    private static String toString(double x) {
+        return String.format("%.7f", x);
     }
 
     public static void solveAll(final String testFolder) {
@@ -139,5 +148,45 @@ public class Task52 {
 
     public static Vector getZeros(final int n) {
         return new Vector(new double[n]);
+    }
+
+    private static List<String> parseFile(final File file) {
+        try {
+            final Scanner scn = new Scanner(new FileInputStream(file));
+            final String firstLine = scn.nextLine();
+            if (!firstLine.startsWith("OK")) {
+                return null;
+            }
+            return List.of(scn.next(), scn.next(), scn.next(), scn.next(), scn.next());
+        } catch (final IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    public static void sort(final List<List<String>> lists) {
+        lists.sort(Comparator.comparing(list -> Integer.parseInt(list.get(0))));
+    }
+
+    public static void collectAndPrintData(final String testFolder, final String name) {
+        final Path testDir = FileTesting.TEST_FOLDERS.get(testFolder);
+        if (testDir == null) {
+            System.err.println("TestFolder " + testFolder + " not found");
+            return;
+        }
+        try {
+            final List<List<String>> table = new ArrayList<>();
+            Files.walk(testDir, 3)
+                    .map(Path::toFile)
+                    .filter(file -> file.isFile() && file.getName().startsWith("ANS_"))
+                    .forEach(ans -> table.add(parseFile(ans)));
+            sort(table);
+            System.out.println(new Table(
+                    name,
+                    List.of("n", "Количество итераций", "$\\| x^* - x \\|$", "$\\frac{\\|x^* - x\\|}{\\|x^*\\|}$", "cond($A$)"),
+                    table
+            ).toTex());
+        } catch (final IOException e) {
+            System.err.println("Error while walking the tests folders");
+        }
     }
 }

@@ -4,6 +4,8 @@ import org.junit.Test;
 
 import java.io.PrintWriter;
 
+import static lab3.tasks.Task52.collectAndPrintData;
+
 public class Task53 {
     final public static String TEST_FOLDER = "Task53";
 
@@ -29,6 +31,11 @@ public class Task53 {
     @Test
     public void solveAll() {
         Task52.solveAll(TEST_FOLDER);
+    }
+
+    @Test
+    public void capd() {
+        collectAndPrintData(TEST_FOLDER, "Матрицы с диагональным преобладанием, другой знак");
     }
 
     private static void generate53Matrices(final int samples, final int[] ns) {

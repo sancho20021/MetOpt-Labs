@@ -5,6 +5,8 @@ import org.junit.Test;
 
 import java.io.PrintWriter;
 
+import static lab3.tasks.Task52.collectAndPrintData;
+
 public class Task54 {
     public final static String TEST_FOLDER = "Task54";
 
@@ -26,6 +28,11 @@ public class Task54 {
     @Test
     public void solveAll() {
         Task52.solveAll(TEST_FOLDER);
+    }
+
+    @Test
+    public void capd() {
+        collectAndPrintData(TEST_FOLDER, "Матрицы Гильберта");
     }
 
     public static void writeHilbertMatrix(final int n, final PrintWriter writer) {
