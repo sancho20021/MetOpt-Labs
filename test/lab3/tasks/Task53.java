@@ -1,10 +1,11 @@
 package lab3.tasks;
 
+import lab3.models.SparseMatrix;
 import org.junit.Test;
 
 import java.io.PrintWriter;
 
-import static lab3.tasks.Task52.collectAndPrintData;
+import static lab3.tasks.Task52.*;
 
 public class Task53 {
     final public static String TEST_FOLDER = "Task53";
@@ -14,23 +15,31 @@ public class Task53 {
     }
 
     @Test
+    public void generateMatrices() {
+        final var t = new Task53();
+        t.generateSmallMatrices();
+        t.generateMediumMatrices();
+        t.generateBigMatrices();
+    }
+
+    @Test
     public void generateSmallMatrices() {
-        generate53Matrices(2, new int[]{2, 4, 8, 16, 32});
+        generate53Matrices(1, smallDimensions);
     }
 
     @Test
     public void generateMediumMatrices() {
-        generate53Matrices(3, new int[]{64, 128, 256, 512});
+        generate53Matrices(1, mediumDimensions);
     }
 
     @Test
     public void generateBigMatrices() {
-        generate53Matrices(2, new int[]{1024, 2048, 4096});
+        generate53Matrices(3, largeDimensions);
     }
 
     @Test
     public void solveAll() {
-        Task52.solveAll(TEST_FOLDER);
+        Task52.solveAll(TEST_FOLDER, in -> new SparseMatrix(SparseMatrix.DisSymMatrix.read(in)));
     }
 
     @Test

@@ -1,5 +1,6 @@
 package lab3.tasks;
 
+import lab3.models.SparseMatrix;
 import lab3.utils.generators.MatrixGenerators;
 import org.junit.Test;
 
@@ -9,6 +10,14 @@ import static lab3.tasks.Task52.collectAndPrintData;
 
 public class Task54 {
     public final static String TEST_FOLDER = "Task54";
+
+    @Test
+    public void generateMatrices() {
+        final var t = new Task54();
+        t.generateSmallMatrices();
+        t.generateMediumMatrices();
+        t.generateBigMatrices();
+    }
 
     @Test
     public void generateSmallMatrices() {
@@ -27,7 +36,7 @@ public class Task54 {
 
     @Test
     public void solveAll() {
-        Task52.solveAll(TEST_FOLDER);
+        Task52.solveAll(TEST_FOLDER, SparseMatrix::new);
     }
 
     @Test

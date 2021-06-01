@@ -1,9 +1,16 @@
 package lab3.utils.generators;
 
+import lab3.models.SparseMatrix;
+
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 import java.util.function.DoubleSupplier;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import static lab3.models.SparseMatrix.DisSymMatrix.getAiiSum;
 
 public class MatrixGenerators {
     private static final Random RANDOM = new Random(228);
@@ -94,5 +101,21 @@ public class MatrixGenerators {
             ans[i][i] = getElement.getAsDouble();
         }
         return ans;
+    }
+
+    public static SparseMatrix.DisSymMatrix generateRandomDisSymMatrix(final int n, final int lo, final int hi) {
+        final int k = Math.min(n - 1, SparseMatrix.DisSymMatrix.DIAG_N);
+        final List<Integer> allIndices = IntStream.range(1, n).boxed().collect(Collectors.toList());
+        Collections.shuffle(allIndices);
+        final List<Integer> diagIndices = allIndices.subList(0, k);
+        final List<double[]> diags = diagIndices.stream().map(diag ->
+                VectorGenerators.generateIntegerVector(n - diag, lo, hi)
+        ).collect(Collectors.toList());
+        final double[] mainDiag = new double[n];
+        for (int i = 0; i < n; i++) {
+            mainDiag[i] = -getAiiSum(i, diags, n) + (i == 0 ? 1 : 0);
+        }
+        diags.add(mainDiag);
+        return new SparseMatrix.DisSymMatrix(n, diags);
     }
 }

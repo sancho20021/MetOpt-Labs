@@ -3,7 +3,7 @@ package lab3.tasks;
 import lab3.methods.ConjugateLSSolver;
 import lab3.models.SparseMatrix;
 import lab3.models.Vector;
-import lab3.utils.generators.MainGenerator;
+import lab3.utils.generators.MatrixGenerators;
 import org.junit.Test;
 import utils.Table;
 
@@ -15,6 +15,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 import java.util.stream.IntStream;
 
 
@@ -26,45 +27,45 @@ public class Task52 {
     }
 
     public static void write52Matrix(final int n, final PrintWriter writer, final double sign) {
-        writer.println(n);
-        final double[] sums = new double[n];
-        for (int i = 1; i < n; i++) {
-            for (int j = 0; j < i; j++) {
-                final double x = MainGenerator.getInt(-4, 1, 1.0 / Math.sqrt(i));
-                sums[j] += x;
-                writer.print(x + " ");
-            }
-            writer.println();
-        }
-        for (int i = 0; i < n; i++) {
-            writer.print((sign * sums[i] + (i == 0 ? 1 : 0)) + " ");
-        }
-        writer.println();
+        MatrixGenerators.generateRandomDisSymMatrix(n, sign > 0 ? 1 : -4, sign > 0 ? 5 : 0).print(writer);
+    }
+
+    @Test
+    public void generateMatrices() {
+        final var t = new Task52();
+        t.generateSmallMatrices();
+        t.generateMediumMatrices();
+        t.generateBigMatrices();
     }
 
     @Test
     public void generateSmallMatrices() {
-        generate52Matrices(2, new int[]{2, 4, 8, 16, 32});
+        generate52Matrices(1, smallDimensions);
     }
 
     @Test
     public void generateMediumMatrices() {
-        generate52Matrices(3, new int[]{64, 128, 256, 512});
+        generate52Matrices(1, mediumDimensions);
     }
 
     @Test
     public void generateBigMatrices() {
-        generate52Matrices(2, new int[]{1024, 2048, 4096});
+        generate52Matrices(3, largeDimensions);
     }
 
     @Test
     public void solveAll() {
-        solveAll(TEST_FOLDER);
+        solveAll(TEST_FOLDER, in -> new SparseMatrix(SparseMatrix.DisSymMatrix.read(in)));
     }
+
     @Test
     public void capd() {
         collectAndPrintData(TEST_FOLDER, "Матрицы с диагональным преобладанием");
     }
+
+    public final static int[] smallDimensions = {2, 4, 16, 64};
+    public final static int[] mediumDimensions = {300, 1000, 4000};
+    public final static int[] largeDimensions = {10000, 100000};
 
     public static List<String> getData(final SparseMatrix a) {
         final Vector x = getNthAscending(a.size());
@@ -86,12 +87,12 @@ public class Task52 {
         return String.format("%.7f", x);
     }
 
-    public static void solveAll(final String testFolder) {
+    public static void solveAll(final String testFolder, final Function<Scanner, SparseMatrix> matrixReader) {
         FileTesting.solveTests(testFolder, (input, output) -> {
             try {
                 final Scanner in = new Scanner(new FileInputStream(input));
                 final PrintWriter out = new PrintWriter(output);
-                final SparseMatrix a = new SparseMatrix(in);
+                final SparseMatrix a = matrixReader.apply(in);
                 try {
                     final List<String> data = getData(a);
                     out.println("OK");
