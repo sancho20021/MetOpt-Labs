@@ -2,7 +2,7 @@ package tasks.lab2;
 
 import com.panayotis.gnuplot.JavaPlot;
 import com.panayotis.gnuplot.plot.DataSetPlot;
-import methods.multidimensional.FastestDescent;
+import methods.multidimensional.quadratic.FastestDescent;
 import methods.unidimensional.*;
 import models.DiagonalMatrix;
 import models.Vector;
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static methods.multidimensional.Constants.*;
+import static methods.multidimensional.quadratic.Constants.*;
 import static utils.JavaPlotExample.getPlot;
 import static utils.JavaPlotExample.getPointsGraph;
 

@@ -1,7 +1,10 @@
 package tasks.lab2;
 
 import com.panayotis.gnuplot.plot.DataSetPlot;
-import methods.multidimensional.*;
+import methods.multidimensional.quadratic.ConjugateGradientsMinimizer;
+import methods.multidimensional.quadratic.FastestDescent;
+import methods.multidimensional.quadratic.GradientDescentMinimizer;
+import methods.multidimensional.quadratic.MultiMinimizer;
 import models.Vector;
 import models.functions.QuadraticFunction;
 import org.junit.Test;
@@ -15,8 +18,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static methods.multidimensional.Constants.SMALL_EPS;
-import static methods.multidimensional.Constants.STANDARD_EPS;
+import static methods.multidimensional.quadratic.Constants.SMALL_EPS;
+import static methods.multidimensional.quadratic.Constants.STANDARD_EPS;
 
 public class Task3 {
     public static MultiMinimizer getMinimizerFromTask(final Task task, final Class<? extends MultiMinimizer> mToken) {

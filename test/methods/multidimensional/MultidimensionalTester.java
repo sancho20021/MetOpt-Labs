@@ -1,5 +1,8 @@
 package methods.multidimensional;
 
+import methods.multidimensional.quadratic.ConjugateGradientsMinimizer;
+import methods.multidimensional.quadratic.FastestDescent;
+import methods.multidimensional.quadratic.GradientDescentMinimizer;
 import models.DiagonalMatrix;
 import models.FullMatrix;
 import models.Vector;

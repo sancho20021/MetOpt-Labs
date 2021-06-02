@@ -1,4 +1,4 @@
-package methods.multidimensional;
+package methods.multidimensional.quadratic;
 
 public class Constants {
     public final static double STANDARD_EPS = 0.01;

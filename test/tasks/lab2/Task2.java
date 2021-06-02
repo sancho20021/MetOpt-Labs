@@ -1,8 +1,8 @@
 package tasks.lab2;
 
-import methods.multidimensional.ConjugateGradientsMinimizer;
-import methods.multidimensional.FastestDescent;
-import methods.multidimensional.GradientDescentMinimizer;
+import methods.multidimensional.quadratic.ConjugateGradientsMinimizer;
+import methods.multidimensional.quadratic.FastestDescent;
+import methods.multidimensional.quadratic.GradientDescentMinimizer;
 import models.FullMatrix;
 import models.SquareMatrix;
 import models.Vector;
@@ -12,7 +12,7 @@ import tasks.lab2.models.Task;
 
 import java.util.stream.Collectors;
 
-import static methods.multidimensional.Constants.SMALL_EPS;
+import static methods.multidimensional.quadratic.Constants.SMALL_EPS;
 
 public class Task2 {
     private static void testCondition(final SquareMatrix a, final double l, final double L, final Vector startX) {

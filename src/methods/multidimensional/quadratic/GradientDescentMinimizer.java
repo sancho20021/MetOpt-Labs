@@ -1,4 +1,4 @@
-package methods.multidimensional;
+package methods.multidimensional.quadratic;
 
 import models.Vector;
 import models.functions.QuadraticFunction;

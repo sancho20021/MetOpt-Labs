@@ -1,4 +1,4 @@
-package methods.multidimensional;
+package methods.multidimensional.quadratic;
 
 import methods.unidimensional.FibonacciMinimizer;
 import methods.unidimensional.Minimizer;

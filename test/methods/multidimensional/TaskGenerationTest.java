@@ -1,5 +1,6 @@
 package methods.multidimensional;
 
+import methods.multidimensional.quadratic.FastestDescent;
 import methods.unidimensional.*;
 import models.DiagonalMatrix;
 import models.Vector;
