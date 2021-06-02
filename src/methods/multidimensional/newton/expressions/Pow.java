@@ -32,8 +32,18 @@ public class Pow extends BinarExp {
 
     @Override
     public Expression differentiate(int x) {
-        if (b.equals(Const.ZERO)) {
-            return Const.ZERO;
+        if (b instanceof Const) {
+            if (b.equals(Const.ZERO)) {
+                return Const.ONE;
+            } else {
+                return new Multiply(
+                        b,
+                        new Multiply(
+                                a.differentiate(x),
+                                b.equals(Const.TWO) ? a : new Pow(a, ((Const) b).add(-1))
+                        )
+                );
+            }
         }
         final Expression lnATimesB = new Multiply(new Ln(a), b);
         return new Multiply(

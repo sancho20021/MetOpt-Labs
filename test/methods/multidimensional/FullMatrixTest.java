@@ -1,7 +1,7 @@
 package methods.multidimensional;
 
-import models.DiagonalMatrix;
-import models.SquareMatrix;
+import models.matrices.AdvancedMatrix;
+import models.matrices.DiagonalMatrix;
 import models.Vector;
 import org.junit.Assert;
 import org.junit.Test;
@@ -12,16 +12,16 @@ public class FullMatrixTest {
 
     @Test
     public void testMultiply() {
-        SquareMatrix matrix1 = new DiagonalMatrix(1.0, 2.0, 3.0);
-        SquareMatrix matrix2 = new DiagonalMatrix(1.0, 2.0, 3.0);
-        SquareMatrix result = matrix1.multiply(matrix2);
+        AdvancedMatrix matrix1 = new DiagonalMatrix(1.0, 2.0, 3.0);
+        AdvancedMatrix matrix2 = new DiagonalMatrix(1.0, 2.0, 3.0);
+        AdvancedMatrix result = matrix1.multiply(matrix2);
         IntStream.range(0, result.size()).forEach(i -> {
-            Vector row = result.row(i);
-            for (int j = 0; j < row.getDim(); j++) {
+            Vector row = result.getRow(i);
+            for (int j = 0; j < row.size(); j++) {
                 if (i == j) {
-                    Assert.assertNotEquals(0, row.getIth(j), 0.0);
+                    Assert.assertNotEquals(0, row.get(j), 0.0);
                 } else {
-                    Assert.assertEquals(0, row.getIth(j), 0.0);
+                    Assert.assertEquals(0, row.get(j), 0.0);
                 }
             }
         });

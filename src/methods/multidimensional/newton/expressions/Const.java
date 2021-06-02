@@ -46,4 +46,8 @@ public class Const implements Expression {
     public String toMiniString() {
         return toString();
     }
+
+    public Const add(final double x) {
+        return new Const(value + x);
+    }
 }

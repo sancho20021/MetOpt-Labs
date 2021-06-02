@@ -1,9 +1,9 @@
 package methods.multidimensional.newton.methods;
 
 import methods.multidimensional.quadratic.MultiMinimizer;
-import models.SquareMatrix;
 import models.Vector;
 import models.functions.QuadraticFunction;
+import models.matrices.AdvancedMatrix;
 
 /**
  * @author Yaroslav Ilin
@@ -25,7 +25,7 @@ public class NewtonWithDD extends MultiMinimizer {
     @Override
     protected Vector nextIteration() {
         Vector g = fun.getGradient(x);
-        SquareMatrix h = fun.getHessian(x);
+        AdvancedMatrix h = fun.getHessian(x);
         // :TODO: Решить СЛАУ (H * s = -g)
         Vector d;
         if (s.scalarProduct(g) < 0) { // :CHECK: Я не уверен что s^T * g = скалярному произведению, но мне кажется это правда

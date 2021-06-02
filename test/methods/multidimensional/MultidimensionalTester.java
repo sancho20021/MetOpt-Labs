@@ -3,8 +3,8 @@ package methods.multidimensional;
 import methods.multidimensional.quadratic.ConjugateGradientsMinimizer;
 import methods.multidimensional.quadratic.FastestDescent;
 import methods.multidimensional.quadratic.GradientDescentMinimizer;
-import models.DiagonalMatrix;
-import models.FullMatrix;
+import models.matrices.DiagonalMatrix;
+import models.matrices.FullMatrix;
 import models.Vector;
 import models.functions.QuadraticFunction;
 import org.junit.Assert;
@@ -155,7 +155,7 @@ public class MultidimensionalTester {
         var startX = new Vector(i, j);
         double eps = 1e-2;
         Stream<Vector> tmp = new FastestDescent(f1, startX, eps, 100).points();
-        tmp.forEach(x -> System.out.printf(Locale.US, "{x: %f, y: %f}, ", x.getIth(0), x.getIth(1)));
+        tmp.forEach(x -> System.out.printf(Locale.US, "{x: %f, y: %f}, ", x.get(0), x.get(1)));
     }
 
     public static void main(String[] args) throws TimeoutException {

@@ -1,11 +1,11 @@
 package models.functions;
 
-import models.DiagonalMatrix;
-import models.SquareMatrix;
+import models.matrices.AdvancedMatrix;
+import models.matrices.DiagonalMatrix;
 import models.Vector;
 
 public class QuadraticFunction {
-    private final SquareMatrix a;
+    private final AdvancedMatrix a;
 
     private final Vector b;
     private final double c;
@@ -13,7 +13,7 @@ public class QuadraticFunction {
     /**
      * Construct a quadratic function f(x) = (ax, x)/2 + (b, x) + c
      */
-    public QuadraticFunction(SquareMatrix a, Vector b, double c) {
+    public QuadraticFunction(AdvancedMatrix a, Vector b, double c) {
         this.a = a;
         this.b = b;
         this.c = c;
@@ -46,11 +46,11 @@ public class QuadraticFunction {
      * @param x the point
      * @return the value of Hessian in x
      */
-    public SquareMatrix getHessian(Vector x) {
+    public AdvancedMatrix getHessian(Vector x) {
         return a;
     }
 
-    public SquareMatrix getA() {
+    public AdvancedMatrix getA() {
         return a;
     }
 

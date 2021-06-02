@@ -1,9 +1,9 @@
 package methods.multidimensional.newton.methods;
 
 import methods.multidimensional.quadratic.MultiMinimizer;
-import models.SquareMatrix;
 import models.Vector;
 import models.functions.QuadraticFunction;
+import models.matrices.AdvancedMatrix;
 
 /**
  * @author Yaroslav Ilin
@@ -26,7 +26,7 @@ public class NewtonMethod extends MultiMinimizer {
     @Override
     protected Vector nextIteration() {
         Vector g = fun.getGradient(x);
-        SquareMatrix h = fun.getHessian(x);
+        AdvancedMatrix h = fun.getHessian(x);
         // :TODO: Решить СЛАУ (H * s = -g)
         x = x.add(s);
         return x;

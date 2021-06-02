@@ -4,7 +4,7 @@ import com.panayotis.gnuplot.JavaPlot;
 import com.panayotis.gnuplot.plot.DataSetPlot;
 import methods.multidimensional.quadratic.FastestDescent;
 import methods.unidimensional.*;
-import models.DiagonalMatrix;
+import models.matrices.DiagonalMatrix;
 import models.Vector;
 import models.functions.QuadraticFunction;
 import org.junit.Test;

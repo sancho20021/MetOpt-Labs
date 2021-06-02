@@ -3,8 +3,8 @@ package tasks.lab2;
 import methods.multidimensional.quadratic.ConjugateGradientsMinimizer;
 import methods.multidimensional.quadratic.FastestDescent;
 import methods.multidimensional.quadratic.GradientDescentMinimizer;
-import models.FullMatrix;
-import models.SquareMatrix;
+import models.matrices.AdvancedMatrix;
+import models.matrices.FullMatrix;
 import models.Vector;
 import models.functions.QuadraticFunction;
 import org.junit.Test;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 import static methods.multidimensional.quadratic.Constants.SMALL_EPS;
 
 public class Task2 {
-    private static void testCondition(final SquareMatrix a, final double l, final double L, final Vector startX) {
+    private static void testCondition(final AdvancedMatrix a, final double l, final double L, final Vector startX) {
         final Vector b = new Vector(0, 0);
         final double c = 0;
         final QuadraticFunction f = new QuadraticFunction(a, b, c);

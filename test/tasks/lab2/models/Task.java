@@ -1,7 +1,7 @@
 package tasks.lab2.models;
 
-import models.DiagonalMatrix;
-import models.SquareMatrix;
+import models.matrices.AdvancedMatrix;
+import models.matrices.DiagonalMatrix;
 import models.Vector;
 import models.functions.QuadraticFunction;
 
@@ -40,7 +40,7 @@ public class Task {
         diag[n - 1] = k;
         var middle = getRandomDoubles(n - 2, eigenvalueMin, k);
         if (n - 1 - 1 >= 0) System.arraycopy(middle, 0, diag, 1, n - 1 - 1);
-        SquareMatrix a = new DiagonalMatrix(diag);
+        AdvancedMatrix a = new DiagonalMatrix(diag);
         Vector b = new Vector(new double[n]);
         double c = 0;
         Vector startX = new Vector(getRandomDoubles(n, -1000, 1000));
@@ -57,7 +57,7 @@ public class Task {
     }
 
     public static Task getRandomTask(int n, double k, int min, int max) {
-        final SquareMatrix a = new DiagonalMatrix(getRandomConditionArray(n, k));
+        final AdvancedMatrix a = new DiagonalMatrix(getRandomConditionArray(n, k));
         final Vector b = new Vector(new double[n]);
         final double c = 0;
         final Vector startX = new Vector(getRandomDoubles(n, min, max));
