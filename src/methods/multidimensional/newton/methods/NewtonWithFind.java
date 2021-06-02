@@ -10,12 +10,11 @@ import models.functions.QuadraticFunction;
  */
 public class NewtonWithFind extends MultiMinimizer {
     private Vector x;
-    private Vector d;
     private Vector s;
 
     protected NewtonWithFind(QuadraticFunction fun, Vector startX, double eps) {
         super(fun, startX, eps);
-        this.x = startX;
+        restart();
     }
 
     @Override
@@ -27,6 +26,7 @@ public class NewtonWithFind extends MultiMinimizer {
     protected Vector nextIteration() {
         Vector g = fun.getGradient(x);
         SquareMatrix h = fun.getHessian(x);
+        Vector d = new Vector();
         // :TODO: Решить СЛАУ (H * d = -g);
         double r = 0;
         // :TODO: r = argmin alpha f(x + alpha * d);

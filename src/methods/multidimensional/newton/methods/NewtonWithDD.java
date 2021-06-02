@@ -8,15 +8,14 @@ import models.functions.QuadraticFunction;
 /**
  * @author Yaroslav Ilin
  */
-public class NewtonMethod extends MultiMinimizer {
+public class NewtonWithDD extends MultiMinimizer {
     private Vector x;
     private Vector s;
 
-    public NewtonMethod(Vector startX, QuadraticFunction f, double eps) {
-        super(f, startX, eps);
+    protected NewtonWithDD(QuadraticFunction fun, Vector startX, double eps) {
+        super(fun, startX, eps);
         restart();
     }
-
 
     @Override
     public boolean hasNext() {
@@ -28,6 +27,15 @@ public class NewtonMethod extends MultiMinimizer {
         Vector g = fun.getGradient(x);
         SquareMatrix h = fun.getHessian(x);
         // :TODO: Решить СЛАУ (H * s = -g)
+        Vector d;
+        if (s.scalarProduct(g) < 0) { // :CHECK: Я не уверен что s^T * g = скалярному произведению, но мне кажется это правда
+            d = s;
+        } else {
+            d = g.multiply(-1);
+        }
+        double r = 0;
+        // :TODO: Вычислить r = argmin alpha (f(x + alpha * d))
+        s = d.multiply(r);
         x = x.add(s);
         return x;
     }
@@ -35,6 +43,11 @@ public class NewtonMethod extends MultiMinimizer {
     @Override
     public void restart() {
         x = startX;
+        Vector d = fun.getGradient(x).multiply(-1);
+        double r = 0;
+        // :TODO: r = argmin alpha (f(x + alpha * d))
+        s = d.multiply(r);
+        x = x.add(s);
     }
 
     @Override
