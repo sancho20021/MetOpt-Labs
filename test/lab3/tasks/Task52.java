@@ -63,7 +63,7 @@ public class Task52 {
         collectAndPrintData(TEST_FOLDER, "Матрицы с диагональным преобладанием");
     }
 
-    public final static int[] smallDimensions = {2, 4, 16, 64};
+    public final static int[] smallDimensions = {10, 50, 100};
     public final static int[] mediumDimensions = {300, 1000, 4000};
     public final static int[] largeDimensions = {10000, 100000};
 
@@ -84,7 +84,7 @@ public class Task52 {
     }
 
     private static String toString(double x) {
-        return String.format("%.7f", x);
+        return String.format("%.8f", x);
     }
 
     public static void solveAll(final String testFolder, final Function<Scanner, SparseMatrix> matrixReader) {
@@ -179,7 +179,8 @@ public class Task52 {
             Files.walk(testDir, 3)
                     .map(Path::toFile)
                     .filter(file -> file.isFile() && file.getName().startsWith("ANS_"))
-                    .forEach(ans -> table.add(parseFile(ans)));
+                    .sorted(Comparator.comparing(File::getName))
+                    .forEachOrdered(ans -> table.add(parseFile(ans)));
             sort(table);
             System.out.println(new Table(
                     name,

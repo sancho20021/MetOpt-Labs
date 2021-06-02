@@ -105,9 +105,9 @@ public class MatrixGenerators {
 
     public static SparseMatrix.DisSymMatrix generateRandomDisSymMatrix(final int n, final int lo, final int hi) {
         final int k = Math.min(n - 1, SparseMatrix.DisSymMatrix.DIAG_N);
-        final List<Integer> allIndices = IntStream.range(1, n).boxed().collect(Collectors.toList());
+        final List<Integer> allIndices = IntStream.range(1, n / 2).boxed().collect(Collectors.toList());
         Collections.shuffle(allIndices);
-        final List<Integer> diagIndices = allIndices.subList(0, k);
+        final List<Integer> diagIndices = allIndices.subList(0, Math.min(allIndices.size(), k));
         final List<double[]> diags = diagIndices.stream().map(diag ->
                 VectorGenerators.generateIntegerVector(n - diag, lo, hi)
         ).collect(Collectors.toList());
