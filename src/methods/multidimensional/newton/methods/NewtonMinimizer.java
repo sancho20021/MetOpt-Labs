@@ -1,10 +1,7 @@
 package methods.multidimensional.newton.methods;
 
-import methods.multidimensional.newton.lssolvers.Gauss;
-import methods.unidimensional.FibonacciMinimizer;
 import models.Vector;
 import models.functions.AnalyticFunction;
-import models.matrices.AdvancedMatrix;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -62,5 +59,9 @@ public abstract class NewtonMinimizer {
     public Stream<Vector> points() {
         restart();
         return Stream.concat(Stream.of(startX), Stream.iterate(next(), Objects::nonNull, prev -> next()));
+    }
+
+    public interface NewtonMinimizerCons {
+        NewtonMinimizer create(AnalyticFunction function, Vector startX, double eps);
     }
 }

@@ -49,4 +49,9 @@ public class NewtonMethodTest {
         new NewtonMethod(new AnalyticFunction(2, "100*(x_{1}-x_{0}^2)^2 + (1-x_{0})^2"), new Vector(-1.2, 1), EPS)
                 .points().forEachOrdered(System.out::println);
     }
+
+    @Test
+    public void testTester() {
+        new MinimizationTester(PowellMethod::new).testAll();
+    }
 }
