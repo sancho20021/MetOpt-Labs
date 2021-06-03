@@ -9,12 +9,9 @@ import models.matrices.AdvancedMatrix;
  * @author Yaroslav Ilin
  */
 public class NewtonMethod extends NewtonMinimizer {
-    private Vector x;
-    private Vector s;
 
     public NewtonMethod(AnalyticFunction fun, Vector startX, double eps) {
         super(fun, startX, eps);
-        restart();
     }
 
 
@@ -35,10 +32,5 @@ public class NewtonMethod extends NewtonMinimizer {
     @Override
     public void restart() {
         x = startX;
-    }
-
-    @Override
-    public Vector getCurrentXMin() {
-        return x;
     }
 }
