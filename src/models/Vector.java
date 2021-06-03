@@ -1,7 +1,10 @@
 package models;
 
+import models.matrices.AdvancedMatrix;
+import models.matrices.FullMatrix;
 import utils.Utility;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.DoubleSummaryStatistics;
 import java.util.List;
@@ -11,8 +14,8 @@ import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 
 /*
-* An immutable vector in R^n
-* */
+ * An immutable vector in R^n
+ * */
 public class Vector {
     private final double[] coordinates;
 
@@ -118,5 +121,16 @@ public class Vector {
 
     public double maxElementAbs() {
         return Arrays.stream(coordinates).map(Math::abs).max().getAsDouble();
+    }
+
+    public AdvancedMatrix multiply(Vector x) {  // :TODO: check correct.
+        if (size() != x.size()) {
+            throw new IllegalArgumentException("Error: Can't multiply vectors with difference length. len1 = " + size() + "; len2 = " + x.size() + ";");
+        }
+        List<Vector> res = new ArrayList<>();
+        for (int i = 0; i < size(); i++) {
+            res.add(x.multiply(i));
+        }
+        return new FullMatrix(res);
     }
 }
