@@ -36,7 +36,7 @@ public class NewtonWithDD extends NewtonMinimizer {
         s = new Vector(sol.get());
         // :DONE: end
         final Vector d;
-        if (s.scalarProduct(g) < 0) { // :CHECK: Я не уверен что s^T * g = скалярному произведению, но мне кажется это правда
+        if (s.scalarProduct(g) < 0) {
             d = s;
         } else {
             d = g.multiply(-1);
