@@ -10,14 +10,10 @@ import models.matrices.AdvancedMatrix;
  * @author Yaroslav Ilin
  */
 public class NewtonWithFind extends NewtonMinimizer {
-    private Vector x;
-    private Vector s;
 
     public NewtonWithFind(AnalyticFunction fun, Vector startX, double eps) {
         super(fun, startX, eps);
-        restart();
     }
-
 
     @Override
     public boolean hasNext() {
@@ -38,10 +34,5 @@ public class NewtonWithFind extends NewtonMinimizer {
     @Override
     public void restart() {
         x = startX;
-    }
-
-    @Override
-    public Vector getCurrentXMin() {
-        return x;
     }
 }

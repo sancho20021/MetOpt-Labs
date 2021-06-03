@@ -88,4 +88,41 @@ public class QuadraticFunction {
                 getC());
     }
 
+    public AnalyticFunction toAnalyticFunction() {
+        return new AnalyticFunction(a.size(), toParsableString());
+    }
+
+    public String toParsableString() {
+        StringBuilder res = new StringBuilder("0");
+        for (int i = 0; i < a.size(); i++) {
+            // appending x_{i}*a_{i,i}
+            if (a.get(i, i) != 0) {
+                res.append(sign(a.get(i, i) / 2)).append(Math.abs(a.get(i, i) / 2))
+                        .append("*x_{").append(i).append("}^2");
+            }
+
+            // appending x_{i}*x_{j}*
+            for (int j = 0; j < i; j++) {
+                if (a.get(i, j) != 0) {
+                    res.append(sign(a.get(i, j))).append(Math.abs(a.get(i, j)))
+                            .append("*x_{").append(i).append("}*x_{").append(j).append("}");
+                }
+            }
+        }
+        for (int i = 0; i < b.size(); i++) {
+            if (b.get(i) != 0) {
+                res.append(sign(b.get(i))).append(Math.abs(b.get(i)))
+                        .append("*x_{").append(i).append("}");
+            }
+        }
+        if (c != 0) {
+            res.append(sign(c)).append(Math.abs(c));
+        }
+        return res.toString();
+    }
+
+    private static String sign(double c) {
+        return c < 0 ? "-" : "+";
+    }
+
 }

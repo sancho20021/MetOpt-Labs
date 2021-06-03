@@ -13,12 +13,9 @@ import models.matrices.AdvancedMatrix;
  * @author Yaroslav Ilin
  */
 public class NewtonWithDD extends NewtonMinimizer {
-    private Vector x;
-    private Vector s;
 
-    protected NewtonWithDD(final AnalyticFunction fun, final Vector startX, final double eps) {
+    public NewtonWithDD(AnalyticFunction fun, Vector startX, double eps) {
         super(fun, startX, eps);
-        restart();
     }
 
     @Override
@@ -72,10 +69,5 @@ public class NewtonWithDD extends NewtonMinimizer {
                 Constants.STANDARD_LOWER_BOUND,
                 Constants.STANDARD_UPPER_BOUND,
                 Constants.STANDARD_EPS).findMinimum();
-    }
-
-    @Override
-    public Vector getCurrentXMin() {
-        return x;
     }
 }

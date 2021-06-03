@@ -13,14 +13,17 @@ public abstract class NewtonMinimizer {
     protected final AnalyticFunction fun;
     protected Vector startX;
     protected final double eps;
+    protected Vector x;
+    protected Vector s;
 
-    protected NewtonMinimizer(final AnalyticFunction fun, Vector startX, double eps) {
+    public NewtonMinimizer(final AnalyticFunction fun, Vector startX, double eps) {
         if (eps <= 0) {
             throw new IllegalArgumentException("eps should be > 0");
         }
         this.fun = fun;
         this.startX = startX;
         this.eps = eps;
+        restart();
     }
 
     public abstract boolean hasNext();
@@ -45,7 +48,9 @@ public abstract class NewtonMinimizer {
         return i == MAX_ITERATIONS ? Optional.empty() : Optional.of(getCurrentXMin());
     }
 
-    public abstract Vector getCurrentXMin();
+    public Vector getCurrentXMin() {
+        return x;
+    }
 
     public AnalyticFunction getFun() {
         return fun;

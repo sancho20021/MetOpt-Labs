@@ -17,7 +17,7 @@ import java.util.concurrent.TimeoutException;
 import java.util.stream.Stream;
 
 public class MultidimensionalTester {
-    static QuadraticFunction f1 = new QuadraticFunction(
+    public static QuadraticFunction f1 = new QuadraticFunction(
             new FullMatrix(
                     128, 126,
                     126, 128),
@@ -28,7 +28,7 @@ public class MultidimensionalTester {
     static double maxEigen1 = 254;
 
 
-    static QuadraticFunction f2 = new QuadraticFunction(
+    public static QuadraticFunction f2 = new QuadraticFunction(
             new FullMatrix(
                     508, 506,
                     506, 508),
@@ -38,7 +38,7 @@ public class MultidimensionalTester {
     static double minEigen2 = 2;
     static double maxEigen2 = 1014;
 
-    static QuadraticFunction f3 = new QuadraticFunction(
+    public static QuadraticFunction f3 = new QuadraticFunction(
             new FullMatrix(
                     422, -420,
                     -420, 422),
@@ -48,7 +48,7 @@ public class MultidimensionalTester {
     static double minEigen3 = 2;
     static double maxEigen3 = 842;
 
-    static QuadraticFunction circle = new QuadraticFunction(
+    public static QuadraticFunction circle = new QuadraticFunction(
             new DiagonalMatrix(1, 1),
             new Vector(0, 0),
             0
@@ -64,7 +64,7 @@ public class MultidimensionalTester {
         return new QuadraticFunction(new DiagonalMatrix(es), new Vector(zeros), 0);
     }
 
-    static QuadraticFunction crazy = crazyMatrix();
+    public static QuadraticFunction crazy = crazyMatrix();
     static double minEigenCrazy = 2;
     static double maxEigenCrazy = 2;
 

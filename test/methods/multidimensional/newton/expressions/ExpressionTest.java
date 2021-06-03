@@ -1,9 +1,12 @@
 package methods.multidimensional.newton.expressions;
 
+import methods.multidimensional.MultidimensionalTester;
+import models.functions.QuadraticFunction;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Map;
+import java.util.stream.Stream;
 
 public class ExpressionTest {
     @Test
@@ -36,5 +39,13 @@ public class ExpressionTest {
     public void test04_ln() {
         final Expression lnx1 = new Ln(new Variable(1));
         Assert.assertEquals(Math.log(50), lnx1.evaluate(Map.of(1, 50.0)), 0);
+    }
+
+    @Test
+    public void test05_QuadraticParsableString() {
+        Stream.of(MultidimensionalTester.f1, MultidimensionalTester.f2, MultidimensionalTester.f3)
+                .sequential()
+                .map(QuadraticFunction::toParsableString)
+                .forEach(System.out::println);
     }
 }
