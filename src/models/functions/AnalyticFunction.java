@@ -1,6 +1,7 @@
 package models.functions;
 
 import methods.multidimensional.newton.expressions.Expression;
+import methods.multidimensional.newton.parser.ExpressionParser;
 import models.Vector;
 import models.matrices.AdvancedMatrix;
 import models.matrices.FullMatrix;
@@ -14,6 +15,10 @@ public class AnalyticFunction {
     private final Expression expression;
     private final Expression[] gradient;
     private final Expression[][] hessian;
+
+    public AnalyticFunction(final int arity, final String function) {
+        this(arity, new ExpressionParser().parse(function));
+    }
 
     public AnalyticFunction(final int arity, final Expression expression) {
         this.arity = arity;

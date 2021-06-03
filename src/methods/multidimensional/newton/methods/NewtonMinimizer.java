@@ -4,7 +4,7 @@ import models.Vector;
 import models.functions.AnalyticFunction;
 
 import java.util.Objects;
-import java.util.concurrent.TimeoutException;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public abstract class NewtonMinimizer {
@@ -36,16 +36,13 @@ public abstract class NewtonMinimizer {
 
     public abstract void restart();
 
-    public Vector findMinimum() throws TimeoutException {
+    public Optional<Vector> findMinimum() {
         restart();
         int i;
         for (i = 0; i < MAX_ITERATIONS && hasNext(); i++) {
             nextIteration();
         }
-        if (i == MAX_ITERATIONS) {
-            throw new TimeoutException("Failed time out");
-        }
-        return getCurrentXMin();
+        return i == MAX_ITERATIONS ? Optional.empty() : Optional.of(getCurrentXMin());
     }
 
     public abstract Vector getCurrentXMin();
