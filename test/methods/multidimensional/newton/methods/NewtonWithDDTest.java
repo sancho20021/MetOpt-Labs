@@ -1,6 +1,10 @@
 package methods.multidimensional.newton.methods;
 
 import methods.multidimensional.MultidimensionalTester;
+import methods.multidimensional.newton.expressions.Add;
+import methods.multidimensional.newton.expressions.Const;
+import methods.multidimensional.newton.expressions.Divide;
+import methods.multidimensional.newton.expressions.Subtract;
 import methods.multidimensional.newton.methods.NewtonWithDD;
 import methods.multidimensional.quadratic.ConjugateGradientsMinimizer;
 import methods.multidimensional.quadratic.Constants;
@@ -38,6 +42,34 @@ public class NewtonWithDDTest {
     public static AnalyticFunction f1 = MultidimensionalTester.f1.toAnalyticFunction();
     public static AnalyticFunction f2 = MultidimensionalTester.f2.toAnalyticFunction();
     public static AnalyticFunction f3 = MultidimensionalTester.f3.toAnalyticFunction();
+
+    /*
+    * x_min = (1, 1)
+    * f_min = 0
+    * */
+    public static AnalyticFunction f4 = new AnalyticFunction(2, "100*(x_{1}-x_{0}^2)^2+(1-x_{0})^2");
+
+    /*
+    * x_min = (3, 2)
+    * f_min = 0
+    * */
+    public static AnalyticFunction f5 = new AnalyticFunction(2, "(x_{0}^2+x_{1}-11)^2+(x_{0}+x_{1}^2-7)^2");
+
+    /*
+    * x_min = (0, 0, 0, 0)
+    * f_min = 0
+    * */
+    public static AnalyticFunction f6 = new AnalyticFunction(4,
+            "(x_{0}+10*x_{1})^2+5*(x_{2}-x_{3})^2+(x_{1}-2*x_{2})^4+10*(x_{0}-2*x_{3})^4");
+
+    /*
+    * x_min = (1.29164, 1)
+    * f_min = 97.1531
+    * */
+    public static AnalyticFunction f7 = new AnalyticFunction(2,
+            "100" +
+                    "-2/(1+(x_{0}-1)^2/4+(x_{1}-1)^2/9)" +
+                    "-1/(1+(x_{0}-2)^2/4+(x_{1}-1)^2/9)");
 
     @Test
     public void testSquare() {
