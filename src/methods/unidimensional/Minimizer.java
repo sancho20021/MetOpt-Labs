@@ -32,6 +32,10 @@ public abstract class Minimizer {
 
     public abstract void restart();
 
+    /**
+     * Finds argmin of function
+     * @return Argmin of function
+     */
     public double findMinimum() {
         restart();
         while (hasNext()) {

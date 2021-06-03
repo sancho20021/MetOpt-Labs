@@ -10,8 +10,9 @@ import org.junit.runners.MethodSorters;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class NewtonMethodTest {
     public final static double EPS = 1e-7;
-    final AnalyticFunction paraboloid = new AnalyticFunction(2, "x_{0}^2 + x_{1}^2");
-    final AnalyticFunction shiftedParaboloid = new AnalyticFunction(2, "(x_{0} - 2)^2 + (x_{1} - 3)^2");
+    final static AnalyticFunction paraboloid = new AnalyticFunction(2, "x_{0}^2 + x_{1}^2");
+    final static AnalyticFunction shiftedParaboloid = new AnalyticFunction(2, "(x_{0} - 2)^2 + (x_{1} - 3)^2");
+    final static AnalyticFunction fourthPower = new AnalyticFunction(2, "(x_{0} - 2)^4 + (x_{1})^4");
 
     @After
     public void after() {
@@ -24,10 +25,16 @@ public class NewtonMethodTest {
         final NewtonMethod m = new NewtonMethod(paraboloid, x0, EPS);
         m.points().forEachOrdered(System.out::println);
     }
+
     @Test
     public void test02_shifted_paraboloid() {
         final Vector x0 = new Vector(0, 0);
         final NewtonMethod m = new NewtonMethod(shiftedParaboloid, x0, EPS);
         m.points().forEachOrdered(System.out::println);
+    }
+
+    @Test
+    public void test03_fourthPower() {
+        new NewtonMethod(fourthPower, new Vector(0, 0), EPS).points().forEachOrdered(System.out::println);
     }
 }

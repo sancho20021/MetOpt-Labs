@@ -6,6 +6,7 @@ import models.Vector;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.function.Function;
 
 public class AnalyticFunctionTest {
 
@@ -20,5 +21,19 @@ public class AnalyticFunctionTest {
         System.out.println();
         System.out.println(Arrays.deepToString(f.getHessian()));
         System.out.println(f.getHessian(new Vector(1, 1)));
+    }
+
+    @Test
+    public void test02() {
+        final String fourthPower = "(x_{0} - 1)^4 + (x_{1} - 2)^4";
+        final AnalyticFunction f = new AnalyticFunction(2, fourthPower);
+        System.out.println(f);
+        System.out.println(Arrays.deepToString(f.getGradient()));
+        System.out.println();
+        System.out.println(Arrays.deepToString(f.getHessian()));
+    }
+
+    public static void test(final AnalyticFunction f, final Function<Vector, Double> expected) {
+        
     }
 }
