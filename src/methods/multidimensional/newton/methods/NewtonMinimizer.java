@@ -1,7 +1,10 @@
 package methods.multidimensional.newton.methods;
 
+import methods.multidimensional.newton.lssolvers.Gauss;
+import methods.unidimensional.FibonacciMinimizer;
 import models.Vector;
 import models.functions.AnalyticFunction;
+import models.matrices.AdvancedMatrix;
 
 import java.util.Objects;
 import java.util.Optional;
