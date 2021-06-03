@@ -20,7 +20,7 @@ public class NewtonMethod extends NewtonMinimizer {
 
     @Override
     public boolean hasNext() {
-        return s.getEuclideanNorm() > eps;
+        return s == null || s.getEuclideanNorm() > eps;
     }
 
     @Override
