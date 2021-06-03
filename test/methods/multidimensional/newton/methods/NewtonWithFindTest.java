@@ -32,6 +32,6 @@ public class NewtonWithFindTest {
 
     @Test
     public void test03_fourthPower() {
-        new NewtonWithFind(NewtonMethodTest.fourthPower, new Vector(0, 0), EPS).points().forEachOrdered(System.out::println);
+        new NewtonWithFind(NewtonMethodTest.fourthPower, new Vector(3, 3), EPS).points().forEachOrdered(System.out::println);
     }
 }

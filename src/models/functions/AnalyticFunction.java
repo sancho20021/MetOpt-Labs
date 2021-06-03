@@ -54,6 +54,10 @@ public class AnalyticFunction {
         return hessian;
     }
 
+    public Expression getExpression() {
+        return expression;
+    }
+
     private static <T> double[][] mapToDouble(final T[][] a, final Function<T, Double> f) {
         double[][] result = new double[a.length][a.length];
         for (int i = 0; i < result.length; i++) {

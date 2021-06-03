@@ -35,6 +35,18 @@ public class NewtonMethodTest {
 
     @Test
     public void test03_fourthPower() {
-        new NewtonMethod(fourthPower, new Vector(0, 0), EPS).points().forEachOrdered(System.out::println);
+        new NewtonMethod(fourthPower, new Vector(3, 3), EPS).points().forEachOrdered(System.out::println);
+    }
+
+    @Test
+    public void test12_1() {
+        new NewtonMethod(new AnalyticFunction(2, "x_{0}^2 + x_{1}^2 - 1.2*x_{0}*x_{1}"), new Vector(4, 1), EPS)
+                .points().forEachOrdered(System.out::println);
+    }
+
+    @Test
+    public void test12_2() {
+        new NewtonMethod(new AnalyticFunction(2, "100*(x_{1}-x_{0}^2)^2 + (1-x_{0})^2"), new Vector(-1.2, 1), EPS)
+                .points().forEachOrdered(System.out::println);
     }
 }
