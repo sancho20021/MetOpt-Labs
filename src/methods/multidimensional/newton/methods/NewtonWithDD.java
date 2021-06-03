@@ -1,18 +1,22 @@
 package methods.multidimensional.newton.methods;
 
-import methods.multidimensional.quadratic.MultiMinimizer;
+import expression.exceptions.CalculationException;
+import methods.multidimensional.newton.lssolvers.Gauss;
+import methods.multidimensional.quadratic.Constants;
+import methods.unidimensional.FibonacciMinimizer;
 import models.Vector;
+import models.functions.AnalyticFunction;
 import models.functions.QuadraticFunction;
 import models.matrices.AdvancedMatrix;
 
 /**
  * @author Yaroslav Ilin
  */
-public class NewtonWithDD extends MultiMinimizer {
+public class NewtonWithDD extends NewtonMinimizer {
     private Vector x;
     private Vector s;
 
-    protected NewtonWithDD(QuadraticFunction fun, Vector startX, double eps) {
+    protected NewtonWithDD(final AnalyticFunction fun, final Vector startX, final double eps) {
         super(fun, startX, eps);
         restart();
     }
@@ -24,10 +28,17 @@ public class NewtonWithDD extends MultiMinimizer {
 
     @Override
     protected Vector nextIteration() {
-        Vector g = fun.getGradient(x);
-        AdvancedMatrix h = fun.getHessian(x);
+        final Vector g = fun.getGradient(x);
+        final AdvancedMatrix h = fun.getHessian(x);
         // :TODO: Решить СЛАУ (H * s = -g)
-        Vector d;
+        // :DONE: begin
+        final var sol = Gauss.solve(h, g.multiply(-1).getElementsArrayCopy());
+        if (sol.isEmpty()) {
+            throw new CalculationException("No solution to H * s = -g");
+        }
+        s = new Vector(sol.get());
+        // :DONE: end
+        final Vector d;
         if (s.scalarProduct(g) < 0) { // :CHECK: Я не уверен что s^T * g = скалярному произведению, но мне кажется это правда
             d = s;
         } else {
@@ -35,6 +46,9 @@ public class NewtonWithDD extends MultiMinimizer {
         }
         double r = 0;
         // :TODO: Вычислить r = argmin alpha (f(x + alpha * d))
+        // :DONE: begin
+        r = getArgmin(d);
+        // :DONE: end
         s = d.multiply(r);
         x = x.add(s);
         return x;
@@ -43,11 +57,21 @@ public class NewtonWithDD extends MultiMinimizer {
     @Override
     public void restart() {
         x = startX;
-        Vector d = fun.getGradient(x).multiply(-1);
+        final Vector d = fun.getGradient(x).multiply(-1);
         double r = 0;
         // :TODO: r = argmin alpha (f(x + alpha * d))
+        // :DONE: begin
+        r = getArgmin(d);
+        // :DONE: end
         s = d.multiply(r);
         x = x.add(s);
+    }
+
+    private double getArgmin(final Vector d) {
+        return new FibonacciMinimizer(alpha -> fun.get(x.add(d.multiply(alpha))),
+                Constants.STANDARD_LOWER_BOUND,
+                Constants.STANDARD_UPPER_BOUND,
+                Constants.STANDARD_EPS).findMinimum();
     }
 
     @Override
