@@ -51,4 +51,16 @@ public class ParserTest {
         final String f = "ln x_{1} * 2";
         System.out.println(new ExpressionParser().parse(f).toMiniString());
     }
+
+    @Test
+    public void test07() {
+        final String f = "(x_{0} - 2)^2 + (x_{1} - 3)^2";
+        System.out.println(new ExpressionParser().parse(f).toMiniString());
+    }
+
+    @Test
+    public void test08() {
+        final String f = "x_{0}^2 + x_{1}^2";
+        System.out.println(new ExpressionParser().parse(f).toMiniString());
+    }
 }

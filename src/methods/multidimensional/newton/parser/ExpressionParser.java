@@ -60,7 +60,7 @@ public class ExpressionParser extends BaseParser implements Parser {
         if (test('(')) {
             Expression expression = parseLevel(START_LEVEL);
             expect(')');
-            nextChar();
+//            nextChar();
             return expression;
         } else if (test('-')) {
             if (between('0', '9')) {
