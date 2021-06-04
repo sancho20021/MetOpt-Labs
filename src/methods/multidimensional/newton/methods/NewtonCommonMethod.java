@@ -19,7 +19,7 @@ public abstract class NewtonCommonMethod extends NewtonMinimizer {
     protected Vector nextIteration() {
         Vector g = fun.getGradient(x);
         AdvancedMatrix h = fun.getHessian(x);
-        final Vector lsSolution = new Vector(Gauss.solveOptimized(h, g.multiply(-1).getElementsArrayCopy(), eps).orElseThrow());
+        final Vector lsSolution = new Vector(Gauss.solveOptimized(h, g.multiply(-1).getElementsArrayCopy(), 0).orElseThrow());
         Vector direction = getDirection(lsSolution, g);
         double alpha = getAlpha(direction);
         s = direction.multiply(alpha);

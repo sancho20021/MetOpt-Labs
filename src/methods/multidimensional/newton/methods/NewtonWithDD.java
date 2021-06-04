@@ -16,4 +16,17 @@ public class NewtonWithDD extends NewtonWithFind {
     protected Vector getDirection(Vector lsSolution, Vector gradient) {
         return lsSolution.scalarProduct(gradient) < 0 ? lsSolution : gradient.multiply(-1);
     }
+
+    @Override
+    public void restart() {
+        x = startX;
+        final Vector d = fun.getGradient(x).multiply(-1);
+        double r = 0;
+        // :TODO: r = argmin alpha (f(x + alpha * d))
+        // :DONE: begin
+        r = getAlpha(d);
+        // :DONE: end
+        s = d.multiply(r);
+        x = x.add(s);
+    }
 }
