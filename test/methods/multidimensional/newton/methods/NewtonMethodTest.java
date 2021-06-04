@@ -56,16 +56,16 @@ public class NewtonMethodTest {
         new MinimizationTester(NewtonMethod::new).testAll();
     }
 
-    private void printData(AnalyticFunction f) {
+    private static void printData(AnalyticFunction f) {
         Vector[] points = new NewtonMethod(f, distantPoint(f), EPS).points().toArray(Vector[]::new);
         System.out.println("Iterations " + points.length);
         System.out.println("Points " +
                 Arrays.stream(points).map(Vector::toString).collect(Collectors.joining(", ", "[", "]")));
         System.out.println("Gnuplottable points");
-        System.out.println("#x y z");
-        System.out.println(Arrays.stream(points)
-                .map(x -> " " + String.format(Locale.US, "%.3f", x.get(0)) + " " + String.format(Locale.US, "%.3f", x.get(1)) + " 1")
-                .collect(Collectors.joining(System.lineSeparator())));
+        System.out.println(getGnuplottablePoints(points));
+        System.out.println();
+        System.out.println("Gnuplottable levels");
+        System.out.println(getGnuplottableLevels(points, f));
         System.out.println();
         if (points.length != 0) {
             Vector x_min = points[points.length - 1];
@@ -76,10 +76,32 @@ public class NewtonMethodTest {
     }
 
     /*
+    * Use this to generate data for gnuplot
+    * */
+    public static String getGnuplottablePoints(Vector[] points) {
+        return new StringBuilder("#x y z")
+                .append(System.lineSeparator())
+                .append(Arrays.stream(points)
+                        .map(x -> " " +
+                                String.format(Locale.US, "%.5f", x.get(0)) + " " +
+                                String.format(Locale.US, "%.5f", x.get(1)) + " 1")
+                        .collect(Collectors.joining(System.lineSeparator()))).toString();
+    }
+
+    /**
+     * Use this to generate contour levels for gnuplot
+     * */
+    public static String getGnuplottableLevels(Vector[] points, AnalyticFunction f) {
+        return Arrays.stream(points)
+                .map(x -> String.format(Locale.US, "%.5f", f.get(x)))
+                .collect(Collectors.joining(" "));
+    }
+
+    /*
     * for function f: R^n -> R
     * returns vector in R^n equal to (228, 228, ..., 228)
     * */
-    private Vector distantPoint(AnalyticFunction f) {
+    private static Vector distantPoint(AnalyticFunction f) {
         return new Vector(DoubleStream.generate(() -> 228).limit(f.getArity()).toArray());
     }
 }
