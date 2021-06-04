@@ -2,7 +2,6 @@ package models;
 
 import models.matrices.AdvancedMatrix;
 import models.matrices.FullMatrix;
-import utils.Utility;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -123,13 +122,13 @@ public class Vector {
         return Arrays.stream(coordinates).map(Math::abs).max().getAsDouble();
     }
 
-    public AdvancedMatrix multiply(Vector x) {  // :TODO: check correct.
+    public AdvancedMatrix multiply(Vector x) {
         if (size() != x.size()) {
             throw new IllegalArgumentException("Error: Can't multiply vectors with difference length. len1 = " + size() + "; len2 = " + x.size() + ";");
         }
         List<Vector> res = new ArrayList<>();
         for (int i = 0; i < size(); i++) {
-            res.add(x.multiply(i));
+            res.add(x.multiply(get(i)));
         }
         return new FullMatrix(res);
     }

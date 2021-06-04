@@ -26,7 +26,7 @@ public class NewtonWithDD extends NewtonWithFind {
         // :DONE: begin
         r = getAlpha(d);
         // :DONE: end
-        s = d.multiply(r);
-        x = x.add(s);
+        dx = d.multiply(r);
+        x = x.add(dx);
     }
 }

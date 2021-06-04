@@ -17,14 +17,24 @@ public class Task12 {
             new Vector(-1.2, 1)
     );
 
-    private void test(final AnalyticMinimizer.AnalyticMinimizerCons cons, final double eps, final double delta, final String methodName) {
-        final var tester = new MinimizationTester(cons, eps, true, false, methodName);
-        tester.addTask(f1);
-        tester.addTask(f2);
-        tester.testAll(delta);
+    public static void test(
+            final AnalyticMinimizer.AnalyticMinimizerCons cons,
+            final double eps,
+            final String methodName,
+            final boolean showPoints,
+            final MinimizationTester.MinimizationTask task
+    ) {
+        final var tester = new MinimizationTester(cons, eps, showPoints, methodName);
+        tester.test(task);
     }
 
-    private void testNewton(final AnalyticMinimizer.AnalyticMinimizerCons cons, final double eps, final String methodName) {
+    private static void test(final AnalyticMinimizer.AnalyticMinimizerCons cons, final double eps, final double delta, final String methodName) {
+        final var tester = new MinimizationTester(cons, eps, false, methodName);
+        tester.test(f1, delta);
+        tester.test(f2, delta);
+    }
+
+    private static void testNewton(final AnalyticMinimizer.AnalyticMinimizerCons cons, final double eps, final String methodName) {
         test(cons, eps, eps, methodName);
     }
 

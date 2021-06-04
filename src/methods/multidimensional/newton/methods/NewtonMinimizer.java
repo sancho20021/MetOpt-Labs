@@ -15,7 +15,7 @@ public abstract class NewtonMinimizer implements AnalyticMinimizer {
     protected Vector startX;
     protected final double eps;
     protected Vector x;
-    protected Vector s;
+    protected Vector dx;
 
     public NewtonMinimizer(final AnalyticFunction fun, Vector startX, double eps) {
         if (eps <= 0) {

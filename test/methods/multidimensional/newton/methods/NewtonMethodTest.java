@@ -51,12 +51,7 @@ public class NewtonMethodTest {
         printData(new AnalyticFunction(2, "100*(x_{1}-x_{0}^2)^2 + (1-x_{0})^2"));
     }
 
-    @Test
-    public void testTester() {
-        new MinimizationTester(NewtonMethod::new).testAll();
-    }
-
-    private static void printData(AnalyticFunction f) {
+    private void printData(AnalyticFunction f) {
         Vector[] points = new NewtonMethod(f, distantPoint(f), EPS).points().toArray(Vector[]::new);
         System.out.println("Iterations " + points.length);
         System.out.println("Points " +
@@ -76,8 +71,8 @@ public class NewtonMethodTest {
     }
 
     /*
-    * Use this to generate data for gnuplot
-    * */
+     * Use this to generate data for gnuplot
+     * */
     public static String getGnuplottablePoints(Vector[] points) {
         return new StringBuilder("#x y z")
                 .append(System.lineSeparator())
@@ -101,7 +96,7 @@ public class NewtonMethodTest {
     * for function f: R^n -> R
     * returns vector in R^n equal to (228, 228, ..., 228)
     * */
-    private static Vector distantPoint(AnalyticFunction f) {
+    private Vector distantPoint(AnalyticFunction f) {
         return new Vector(DoubleStream.generate(() -> 228).limit(f.getArity()).toArray());
     }
 }
