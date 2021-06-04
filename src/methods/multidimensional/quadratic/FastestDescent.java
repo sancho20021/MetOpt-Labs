@@ -13,7 +13,8 @@ public class FastestDescent extends MultiMinimizer {
     private final Class<? extends Minimizer> uniMinimizer;
 
     private static double getMaxA(final QuadraticFunction f) {
-        return 2.0 / f.getMinEigenValueAbs() * Math.max(1, f.getB().getEuclideanNorm());
+//        return 2.0 / f.getMinEigenValueAbs() * Math.max(1, f.getB().getEuclideanNorm());
+        return 1000;
     }
 
     public FastestDescent(final QuadraticFunction fun, final Vector startX, final double eps, final double maxA) {
