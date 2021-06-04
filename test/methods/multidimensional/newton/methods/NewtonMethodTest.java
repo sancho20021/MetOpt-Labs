@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
@@ -60,6 +61,12 @@ public class NewtonMethodTest {
         System.out.println("Iterations " + points.length);
         System.out.println("Points " +
                 Arrays.stream(points).map(Vector::toString).collect(Collectors.joining(", ", "[", "]")));
+        System.out.println("Gnuplottable points");
+        System.out.println("#x y z");
+        System.out.println(Arrays.stream(points)
+                .map(x -> " " + String.format(Locale.US, "%.3f", x.get(0)) + " " + String.format(Locale.US, "%.3f", x.get(1)) + " 1")
+                .collect(Collectors.joining(System.lineSeparator())));
+        System.out.println();
         if (points.length != 0) {
             Vector x_min = points[points.length - 1];
             System.out.println("Found solution x_min=" + x_min + " f(x_min)=" + f.get(x_min));
