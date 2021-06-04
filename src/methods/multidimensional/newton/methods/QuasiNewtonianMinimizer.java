@@ -12,8 +12,6 @@ import java.util.stream.DoubleStream;
  * @author Yaroslav Ilin
  */
 public abstract class QuasiNewtonianMinimizer extends NewtonMinimizer {
-       protected Vector x;
-       protected Vector s;
        protected Vector gx;
        protected Vector d;
        protected AdvancedMatrix g;
