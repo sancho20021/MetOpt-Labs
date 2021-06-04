@@ -36,7 +36,7 @@ public class Marquardt extends NewtonMinimizer {
         double fy;
         while (true) {
             p = new Vector(0, 0);
-            // :TODO: СЛАУ (H(x) + tau * I) * p = -grad(x)
+            // :TODO: СЛАУ (H(x) + tau * I) * p = -g
             y = x.add(p);
             fy = fun.get(y);
             if (fy >= fx) {
@@ -53,7 +53,6 @@ public class Marquardt extends NewtonMinimizer {
 
     @Override
     public void restart() {
-        tau = startTau;
         tau0 = startTau;
         x = startX;
         fx = fun.get(x);
