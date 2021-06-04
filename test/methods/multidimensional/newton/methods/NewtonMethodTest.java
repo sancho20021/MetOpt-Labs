@@ -8,6 +8,8 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
 
@@ -25,43 +27,45 @@ public class NewtonMethodTest {
 
     @Test
     public void test01_paraboloid() {
-        final Vector x0 = new Vector(4, 4);
-        final NewtonMethod m = new NewtonMethod(paraboloid, x0, EPS);
-        m.points().forEachOrdered(System.out::println);
+        printData(paraboloid);
     }
 
     @Test
     public void test02_shifted_paraboloid() {
-        final Vector x0 = new Vector(0, 0);
-        final NewtonMethod m = new NewtonMethod(shiftedParaboloid, x0, EPS);
-        m.points().forEachOrdered(System.out::println);
+        printData(shiftedParaboloid);
     }
 
     @Test
     public void test03_fourthPower() {
-        new NewtonMethod(fourthPower, new Vector(3, 3), EPS).points().forEachOrdered(System.out::println);
+        printData(fourthPower);
     }
 
     @Test
     public void test12_1() {
-        new NewtonMethod(new AnalyticFunction(2, "x_{0}^2 + x_{1}^2 - 1.2*x_{0}*x_{1}"), new Vector(4, 1), EPS)
-                .points().forEachOrdered(System.out::println);
+        printData(new AnalyticFunction(2, "x_{0}^2 + x_{1}^2 - 1.2*x_{0}*x_{1}"));
     }
 
     @Test
     public void test12_2() {
-        new NewtonMethod(new AnalyticFunction(2, "100*(x_{1}-x_{0}^2)^2 + (1-x_{0})^2"), new Vector(-1.2, 1), EPS)
-                .points().forEachOrdered(System.out::println);
+        printData(new AnalyticFunction(2, "100*(x_{1}-x_{0}^2)^2 + (1-x_{0})^2"));
     }
 
     @Test
     public void testTester() {
-        new MinimizationTester(PowellMethod::new).testAll();
+        new MinimizationTester(NewtonMethod::new).testAll();
     }
 
     private void printData(AnalyticFunction f) {
         Vector[] points = new NewtonMethod(f, distantPoint(f), EPS).points().toArray(Vector[]::new);
         System.out.println("Iterations " + points.length);
+        System.out.println("Points " +
+                Arrays.stream(points).map(Vector::toString).collect(Collectors.joining(", ", "[", "]")));
+        if (points.length != 0) {
+            Vector x_min = points[points.length - 1];
+            System.out.println("Found solution x_min=" + x_min + " f(x_min)=" + f.get(x_min));
+        } else {
+            System.out.println("No solution found");
+        }
     }
 
     /*
