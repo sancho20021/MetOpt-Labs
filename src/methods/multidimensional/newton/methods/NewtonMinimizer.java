@@ -1,5 +1,6 @@
 package methods.multidimensional.newton.methods;
 
+import methods.unidimensional.FibonacciMinimizer;
 import models.Vector;
 import models.functions.AnalyticFunction;
 
@@ -63,5 +64,9 @@ public abstract class NewtonMinimizer {
 
     public interface NewtonMinimizerCons {
         NewtonMinimizer create(AnalyticFunction function, Vector startX, double eps);
+    }
+
+    protected double getArgMin(final Vector vector, final double lo, final double hi) {
+        return new FibonacciMinimizer(alpha -> fun.get(x.add(vector.multiply(alpha))), lo, hi, eps).findMinimum();
     }
 }

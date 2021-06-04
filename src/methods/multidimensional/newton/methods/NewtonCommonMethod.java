@@ -19,6 +19,7 @@ public abstract class NewtonCommonMethod extends NewtonMinimizer {
     protected Vector nextIteration() {
         Vector g = fun.getGradient(x);
         AdvancedMatrix h = fun.getHessian(x);
+        // :NOTE: Gauss(_, _, eps) -> Gauss(_, _, 0)
         final Vector lsSolution = new Vector(Gauss.solveOptimized(h, g.multiply(-1).getElementsArrayCopy(), 0).orElseThrow());
         Vector direction = getDirection(lsSolution, g);
         double alpha = getAlpha(direction);
@@ -36,8 +37,4 @@ public abstract class NewtonCommonMethod extends NewtonMinimizer {
     protected abstract Vector getDirection(final Vector lsSolution, final Vector gradient);
 
     protected abstract double getAlpha(final Vector direction);
-
-    protected double getArgMin(final Vector vector, final double lo, final double hi) {
-        return new FibonacciMinimizer(alpha -> fun.get(x.add(vector.multiply(alpha))), lo, hi, eps).findMinimum();
-    }
 }

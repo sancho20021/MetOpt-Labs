@@ -1,11 +1,15 @@
 package methods.multidimensional.newton.methods;
 
+import methods.multidimensional.quadratic.Constants;
 import models.Vector;
 import models.functions.AnalyticFunction;
 import org.junit.After;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
+
+import java.util.stream.DoubleStream;
+import java.util.stream.Stream;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class NewtonMethodTest {
@@ -53,5 +57,18 @@ public class NewtonMethodTest {
     @Test
     public void testTester() {
         new MinimizationTester(PowellMethod::new).testAll();
+    }
+
+    private void printData(AnalyticFunction f) {
+        Vector[] points = new NewtonMethod(f, distantPoint(f), EPS).points().toArray(Vector[]::new);
+        System.out.println("Iterations " + points.length);
+    }
+
+    /*
+    * for function f: R^n -> R
+    * returns vector in R^n equal to (228, 228, ..., 228)
+    * */
+    private Vector distantPoint(AnalyticFunction f) {
+        return new Vector(DoubleStream.generate(() -> 228).limit(f.getArity()).toArray());
     }
 }

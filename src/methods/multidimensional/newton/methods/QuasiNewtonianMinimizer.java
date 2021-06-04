@@ -1,5 +1,6 @@
 package methods.multidimensional.newton.methods;
 
+import methods.unidimensional.FibonacciMinimizer;
 import models.Vector;
 import models.functions.AnalyticFunction;
 import models.matrices.AdvancedMatrix;
@@ -32,6 +33,7 @@ public abstract class QuasiNewtonianMinimizer extends NewtonMinimizer {
               // :SORRY: я не научился искать минимум функции
               double r = 0;
               // :TODO: r = argmin alpha (f(x + alpha * d))
+              r = getArgMin(d, 0, 1000);
               s = d.multiply(r);
               x = x.add(s);
               Vector gy = gx;
@@ -57,4 +59,5 @@ public abstract class QuasiNewtonianMinimizer extends NewtonMinimizer {
        }
 
        public abstract AdvancedMatrix getG(Vector v, Vector p, Vector s);
+
 }
