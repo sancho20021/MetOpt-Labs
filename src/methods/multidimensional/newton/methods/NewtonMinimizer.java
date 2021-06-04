@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public abstract class NewtonMinimizer {
+public abstract class NewtonMinimizer implements AnalyticMinimizer {
     public static final int MAX_ITERATIONS = 10_000_000;
 
     protected final AnalyticFunction fun;
@@ -60,10 +60,6 @@ public abstract class NewtonMinimizer {
     public Stream<Vector> points() {
         restart();
         return Stream.concat(Stream.of(startX), Stream.iterate(next(), Objects::nonNull, prev -> next()));
-    }
-
-    public interface NewtonMinimizerCons {
-        NewtonMinimizer create(AnalyticFunction function, Vector startX, double eps);
     }
 
     protected double getArgMin(final Vector vector, final double lo, final double hi) {
