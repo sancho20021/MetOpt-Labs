@@ -1,5 +1,6 @@
 package methods.multidimensional.newton.tasks;
 
+import methods.multidimensional.newton.expressions.Pow;
 import methods.multidimensional.newton.methods.MinimizationTester;
 import methods.multidimensional.newton.methods.NewtonWithDDTest;
 import methods.multidimensional.newton.methods.PowellMethod;
@@ -52,7 +53,7 @@ public class Task2 {
 
     @Test
     public void test1() {
-        tester.test(changeX0(f1, new Vector(4, 2)));
+        tester.test(changeX0(f1, new Vector(-100, 100)));
     }
 
     @Test

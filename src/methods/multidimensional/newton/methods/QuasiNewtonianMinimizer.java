@@ -11,7 +11,7 @@ import java.util.stream.DoubleStream;
  * @author Yaroslav Ilin
  */
 public abstract class QuasiNewtonianMinimizer extends NewtonMinimizer {
-    protected Vector gradient;
+    //    protected Vector gradient;
     protected Vector w;
     private Vector dw;
     protected AdvancedMatrix g;
@@ -23,37 +23,37 @@ public abstract class QuasiNewtonianMinimizer extends NewtonMinimizer {
 
     @Override
     public boolean hasNext() {
-        return dx == null || dx.getEuclideanNorm() > eps;
+        return dx == null || dx.getEuclideanNorm() >= eps;
     }
 
     @Override
     protected Vector nextIteration() {
         final Vector prevW = w;
-        w = gradient.multiply(-1);
+        w = fun.getGradient(x).multiply(-1);
         final Vector dw = w.subtract(prevW);
         g = getG(g, dx, dw);
         final Vector p = g.multiply(w);
         final double alpha = findAlpha(p);
         dx = p.multiply(alpha);
         x = x.add(dx);
-        gradient = fun.getGradient(x);
+//        gradient = fun.getGradient(x);
         return x;
     }
 
     @Override
     public void restart() {
         x = startX;
-        gradient = fun.getGradient(x);
-        w = gradient.multiply(-1);
+//        gradient = fun.getGradient(x);
+        w = fun.getGradient(x).multiply(-1);
         g = new DiagonalMatrix(DoubleStream.generate(() -> 1).limit(startX.size()).toArray());
         final double alpha = findAlpha(w);
         dx = w.multiply(alpha);
         x = x.add(dx);
-        gradient = fun.getGradient(x);
+//        gradient = fun.getGradient(x);
     }
 
     private double findAlpha(final Vector vector) {
-        return getArgMin(vector, 0, 1000);
+        return getArgMin(vector, -1000, 1000);
     }
 
     @Override
