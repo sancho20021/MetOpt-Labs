@@ -7,8 +7,8 @@ import models.matrices.AdvancedMatrix;
 /**
  * @author Yaroslav Ilin
  */
-public class PowellMethod extends QuasiNewtonianMinimizer {
-    public PowellMethod(AnalyticFunction fun, Vector startX, double eps) {
+public class PavelMethod extends QuasiNewtonianMinimizer {
+    public PavelMethod(AnalyticFunction fun, Vector startX, double eps) {
         super(fun, startX, eps);
     }
 

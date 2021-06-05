@@ -17,9 +17,9 @@ import java.util.stream.Stream;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class NewtonMethodTest {
     public final static double EPS = 1e-7;
-    final static AnalyticFunction paraboloid = new AnalyticFunction(2, "x_{0}^2 + x_{1}^2");
-    final static AnalyticFunction shiftedParaboloid = new AnalyticFunction(2, "(x_{0} - 2)^2 + (x_{1} - 3)^2");
-    final static AnalyticFunction fourthPower = new AnalyticFunction(2, "(x_{0} - 2)^4 + (x_{1})^4");
+    public final static AnalyticFunction paraboloid = new AnalyticFunction(2, "x_{0}^2 + x_{1}^2");
+    public final static AnalyticFunction shiftedParaboloid = new AnalyticFunction(2, "(x_{0} - 2)^2 + (x_{1} - 3)^2");
+    public final static AnalyticFunction fourthPower = new AnalyticFunction(2, "(x_{0} - 2)^4 + (x_{1})^4");
 
     @After
     public void after() {

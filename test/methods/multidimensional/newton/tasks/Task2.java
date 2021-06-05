@@ -1,9 +1,7 @@
 package methods.multidimensional.newton.tasks;
 
-import methods.multidimensional.newton.expressions.Pow;
 import methods.multidimensional.newton.methods.MinimizationTester;
 import methods.multidimensional.newton.methods.NewtonWithDDTest;
-import methods.multidimensional.newton.methods.PowellMethod;
 import methods.multidimensional.newton.methods.QuasiNewtonianDFP;
 import models.Vector;
 import models.functions.AnalyticFunction;
@@ -17,7 +15,7 @@ public class Task2 {
     final public static MinimizationTester.MinimizationTask f1 = new MinimizationTester.MinimizationTask(
             NewtonWithDDTest.f21,
             new Vector(1, 1),
-            new Vector(-1.2, 2)
+            new Vector(400, 3)
     );
     final public static MinimizationTester.MinimizationTask f2 = new MinimizationTester.MinimizationTask(
             NewtonWithDDTest.f22,
@@ -43,7 +41,7 @@ public class Task2 {
             QuasiNewtonianDFP::new,
             MinimizationTester.STANDARD_EPS,
             true,
-            "Дэвидон-Флетчер-Пауэл"
+            "Пауэл"
     );
 
     @Test
@@ -53,7 +51,7 @@ public class Task2 {
 
     @Test
     public void test1() {
-        tester.test(changeX0(f1, new Vector(-100, 100)));
+        tester.test(f1);
     }
 
     @Test
@@ -63,11 +61,11 @@ public class Task2 {
 
     @Test
     public void test3() {
-        tester.test(f3, 1e-6*2);
+        tester.test(f3, 1e-6 * 3);
     }
 
     @Test
     public void test4() {
-        tester.test(f4, 1e-6*5);
+        tester.test(f4, 1e-6 * 5);
     }
 }
