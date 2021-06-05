@@ -1,8 +1,12 @@
 package methods.multidimensional.newton.methods;
 
+import methods.multidimensional.newton.lssolvers.Gauss;
 import models.Vector;
 import models.functions.AnalyticFunction;
 import models.matrices.AdvancedMatrix;
+import models.matrices.DiagonalMatrix;
+
+import java.util.stream.DoubleStream;
 
 /**
  * @author Yaroslav Ilin
@@ -35,7 +39,8 @@ public class Marquardt extends NewtonMinimizer {
         Vector y;
         double fy;
         while (true) {
-            p = new Vector(0, 0);
+            final AdvancedMatrix i = new DiagonalMatrix(DoubleStream.generate(() -> 1).limit(startX.size()).toArray());
+            p = new Vector(Gauss.solveOptimized(h.add(i.multiply(tau)), g.multiply(-1).getElementsArrayCopy()));
             // :TODO: СЛАУ (H(x) + tau * I) * p = -g
             y = x.add(p);
             fy = fun.get(y);

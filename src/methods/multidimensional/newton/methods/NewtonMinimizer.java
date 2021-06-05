@@ -63,6 +63,6 @@ public abstract class NewtonMinimizer implements AnalyticMinimizer {
     }
 
     protected double getArgMin(final Vector vector, final double lo, final double hi) {
-        return new FibonacciMinimizer(alpha -> fun.get(x.add(vector.multiply(alpha))), lo, hi, eps).findMinimum();
+        return new FibonacciMinimizer(alpha -> fun.get(x.add(vector.multiply(alpha))), lo, hi, Math.min(1e-9, eps)).findMinimum();
     }
 }

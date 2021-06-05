@@ -11,48 +11,56 @@ import java.util.stream.DoubleStream;
  * @author Yaroslav Ilin
  */
 public abstract class QuasiNewtonianMinimizer extends NewtonMinimizer {
-       protected Vector gx;
-       protected Vector w;
-       protected AdvancedMatrix g;
+    protected Vector gradient;
+    protected Vector w;
+    private Vector dw;
+    protected AdvancedMatrix g;
 
-       protected QuasiNewtonianMinimizer(AnalyticFunction fun, Vector startX, double eps) {
-              super(fun, startX, eps);
-              restart();
-       }
+    protected QuasiNewtonianMinimizer(AnalyticFunction fun, Vector startX, double eps) {
+        super(fun, startX, eps);
+        restart();
+    }
 
-       @Override
-       public boolean hasNext() {
-              return dx == null || dx.getEuclideanNorm() > eps;
-       }
+    @Override
+    public boolean hasNext() {
+        return dx == null || dx.getEuclideanNorm() > eps;
+    }
 
-       @Override
-       protected Vector nextIteration() {
-              double r = getArgMin(w, 0, 1000);
-              dx = w.multiply(r);
-              x = x.add(dx);
-              Vector gPrev = gx;
-              gx = fun.getGradient(x);
-              Vector deltaG = gx.subtract(gPrev);
-              Vector v = g.multiply(deltaG);
-              g = getG(v, deltaG, dx);
-              w = g.multiply(-1).multiply(gx);
-              return x;
-       }
+    @Override
+    protected Vector nextIteration() {
+        final Vector prevW = w;
+        w = gradient.multiply(-1);
+        final Vector dw = w.subtract(prevW);
+        g = getG(g, dx, dw);
+        final Vector p = g.multiply(w);
+        final double alpha = findAlpha(p);
+        dx = p.multiply(alpha);
+        x = x.add(dx);
+        gradient = fun.getGradient(x);
+        return x;
+    }
 
-       @Override
-       public void restart() {
-              x = startX;
-              gx = fun.getGradient(x);
-              w = gx.multiply(-1);
-              g = new DiagonalMatrix(DoubleStream.generate(() -> 1).limit(startX.size()).toArray());
-              dx = null;
-       }
+    @Override
+    public void restart() {
+        x = startX;
+        gradient = fun.getGradient(x);
+        w = gradient.multiply(-1);
+        g = new DiagonalMatrix(DoubleStream.generate(() -> 1).limit(startX.size()).toArray());
+        final double alpha = findAlpha(w);
+        dx = w.multiply(alpha);
+        x = x.add(dx);
+        gradient = fun.getGradient(x);
+    }
 
-       @Override
-       public Vector getCurrentXMin() {
-              return x;
-       }
+    private double findAlpha(final Vector vector) {
+        return getArgMin(vector, 0, 1000);
+    }
 
-       public abstract AdvancedMatrix getG(Vector v, Vector p, Vector s);
+    @Override
+    public Vector getCurrentXMin() {
+        return x;
+    }
+
+    public abstract AdvancedMatrix getG(final AdvancedMatrix prevG, final Vector dxPrev, final Vector dw);
 
 }

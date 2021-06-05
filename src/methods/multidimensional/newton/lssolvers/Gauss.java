@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.stream.IntStream;
 
 public class Gauss {
-    public final static double DEFAULT_EPS = 1e-15;
+    public final static double DEFAULT_EPS = 0;
 
     /**
      * Finds solution to the equation Ax = b

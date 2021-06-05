@@ -50,7 +50,7 @@ public class FastestDescentV2 implements AnalyticMinimizer {
 
     private static double getMaxA(final AnalyticFunction f) {
 //        return 2.0 / f.getMinEigenValueAbs() * Math.max(1, f.getB().getEuclideanNorm());
-        return 1000;
+        return 100;
     }
 
     public FastestDescentV2(final AnalyticFunction fun, final Vector startX, final double eps, final double maxA) {
@@ -103,7 +103,7 @@ public class FastestDescentV2 implements AnalyticMinimizer {
         try {
             final var uniMinInstance = uniMinimizer
                     .getConstructor(Function.class, double.class, double.class, double.class)
-                    .newInstance(uniFunction, 0.0, maxA, eps/4);
+                    .newInstance(uniFunction, 0.0, maxA, Math.min(eps, 1e-9));
             return uniMinInstance.findMinimum();
         } catch (final Exception e) {
             System.err.println("Error occurred while trying to use one dimension minimizer");

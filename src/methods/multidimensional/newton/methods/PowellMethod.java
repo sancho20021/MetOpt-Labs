@@ -8,14 +8,13 @@ import models.matrices.AdvancedMatrix;
  * @author Yaroslav Ilin
  */
 public class PowellMethod extends QuasiNewtonianMinimizer {
-
     public PowellMethod(AnalyticFunction fun, Vector startX, double eps) {
         super(fun, startX, eps);
     }
 
     @Override
-    public AdvancedMatrix getG(Vector gTimesDeltaG, Vector deltaG, Vector dx) {
-        Vector y = dx.add(gTimesDeltaG);
-        return g.subtract(y.multiply(y).multiply(1 / deltaG.scalarProduct(y))); // :CHECK: Check correct
+    public AdvancedMatrix getG(AdvancedMatrix prevG, Vector dxPrev, Vector dw) {
+        final Vector dy = dxPrev.add(prevG.multiply(dw));
+        return prevG.subtract(dy.multiply(dy).multiply(1.0 / dw.scalarProduct(dy)));
     }
 }

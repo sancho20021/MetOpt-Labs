@@ -1,4 +1,4 @@
-package methods.multidimensional.newton.tasks;
+package methods.multidimensional.newton.tasks.Task12;
 
 import methods.multidimensional.newton.methods.*;
 import models.Vector;
@@ -29,7 +29,8 @@ public class Task12 {
     }
 
     private static void test(final AnalyticMinimizer.AnalyticMinimizerCons cons, final double eps, final double delta, final String methodName) {
-        final var tester = new MinimizationTester(cons, eps, false, methodName);
+        final var tester = new MinimizationTester(cons, eps, true, methodName);
+        System.out.println("Testing " + methodName);
         tester.test(f1, delta);
         tester.test(f2, delta);
     }
@@ -40,21 +41,21 @@ public class Task12 {
 
     @Test
     public void testFastestDescent() {
-        test(FastestDescentV2::new, 1e-7, 1e-6, "Наискорейший спуск");
+        test(FastestDescentV2::new, 1e-2, 1e-1, "Наискорейший спуск");
     }
 
     @Test
     public void testClassicNewton() {
-        testNewton(NewtonMethod::new, 1e-6, "Метод Ньютона");
+        testNewton(NewtonMethod::new, 1e-2, "Метод Ньютона");
     }
 
     @Test
     public void testNewtonWithFind() {
-        testNewton(NewtonWithFind::new, 1e-6, "Ньютон с одномерной минимизацией");
+        testNewton(NewtonWithFind::new, 1e-2, "Ньютон с одномерной минимизацией");
     }
 
     @Test
     public void testNewtonWithDD() {
-        testNewton(NewtonWithDD::new, 1e-6, "Ньютон с выбором направления спуска");
+        testNewton(NewtonWithDD::new, 1e-2, "Ньютон с выбором направления спуска");
     }
 }

@@ -37,16 +37,20 @@ public class MinimizationTester {
         test(task, eps);
     }
 
-    public void test(final MinimizationTask task, final double delta) {
+    public void test(final MinimizationTask taskK, final double delta) {
+        final var task = new MinimizationTask(taskK.function, taskK.expectedAns, taskK.startX, eps);
         System.out.println(task);
         final AnalyticMinimizer minimizer = minimizerConstructor.create(task.function, task.startX, task.eps);
         final Vector actualAns = minimizer.findMinimum().orElseThrow();
         final var points = minimizer.points().collect(Collectors.toList());
         System.out.println("Actual ans: " + points.get(points.size() - 1));
         System.out.println("Iterations: " + (points.size() - 1));
+
         if (showPoints) {
             System.out.println("Points:");
-            points.forEach(System.out::println);
+            final var gnuPoints = NewtonMethodTest.getGnuplottablePoints(points.toArray(Vector[]::new));
+            System.out.println(gnuPoints);
+//            points.forEach(System.out::println);
         }
         Assert.assertEquals(0, actualAns.subtract(task.expectedAns).getEuclideanNorm(), delta);
         System.out.println("OK\n");

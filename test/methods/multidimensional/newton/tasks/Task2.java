@@ -39,7 +39,7 @@ public class Task2 {
             new Vector(3, 5)
     );
     private final static MinimizationTester tester = new MinimizationTester(
-            PowellMethod::new,
+            QuasiNewtonianDFP::new,
             MinimizationTester.STANDARD_EPS,
             true,
             "Дэвидон-Флетчер-Пауэл"
@@ -52,7 +52,7 @@ public class Task2 {
 
     @Test
     public void test1() {
-        tester.test(changeX0(f1, new Vector(3, 4)));
+        tester.test(changeX0(f1, new Vector(4, 2)));
     }
 
     @Test

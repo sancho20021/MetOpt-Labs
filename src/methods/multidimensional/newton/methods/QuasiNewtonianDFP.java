@@ -14,8 +14,10 @@ public class QuasiNewtonianDFP extends QuasiNewtonianMinimizer {
     }
 
     @Override
-    public AdvancedMatrix getG(Vector v, Vector p, Vector s) {
-        return g.add(s.multiply(s).multiply(1 / (s.scalarProduct(p)))
-        ).subtract(v.multiply(v).multiply(1 / (v.scalarProduct(p)))); // :TODO: Check correct
+    public AdvancedMatrix getG(AdvancedMatrix prevG, Vector dxPrev, Vector dw) {
+        final Vector v = prevG.multiply(dw);
+        return prevG
+                .subtract(dxPrev.multiply(dxPrev).multiply(1.0 / dw.scalarProduct(dxPrev)))
+                .subtract(v.multiply(v).multiply(1.0 / v.scalarProduct(dw)));
     }
 }
