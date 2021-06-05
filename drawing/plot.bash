@@ -17,7 +17,7 @@ while test -e $gp_num.gp; do
   ((gp_num++))
 done
 
-fname=$gp_num.gp
+fname="${1%.*}".gp
 
 cp plot-template.gp $fname
 
