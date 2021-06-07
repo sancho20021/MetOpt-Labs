@@ -22,10 +22,7 @@ public class NewtonWithDD extends NewtonWithFind {
         x = startX;
         final Vector d = fun.getGradient(x).multiply(-1);
         double r = 0;
-        // :TODO: r = argmin alpha (f(x + alpha * d))
-        // :DONE: begin
         r = getAlpha(d);
-        // :DONE: end
         dx = d.multiply(r);
         x = x.add(dx);
     }

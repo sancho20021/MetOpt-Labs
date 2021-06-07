@@ -32,10 +32,10 @@ sed -i "s/FUNCTION/$2/g" $fname
 sed -i "s/METHOD/$3/g" $fname
 
 # $4 - MIN_X
-sed -i "s/MIN_X/${4:--250}/g" $fname
+sed -i "s/MIN_X/${4:--350}/g" $fname
 
 # $5 - MAX_X
-sed -i "s/MAX_X/${5:-250}/g" $fname
+sed -i "s/MAX_X/${5:-350}/g" $fname
 
 # $6 - MIN_Y
 sed -i "s/MIN_Y/${6:--250}/g" $fname

@@ -11,9 +11,7 @@ import java.util.stream.DoubleStream;
  * @author Yaroslav Ilin
  */
 public abstract class QuasiNewtonianMinimizer extends NewtonMinimizer {
-    //    protected Vector gradient;
     protected Vector w;
-    private Vector dw;
     protected AdvancedMatrix g;
 
     protected QuasiNewtonianMinimizer(AnalyticFunction fun, Vector startX, double eps) {
@@ -36,24 +34,21 @@ public abstract class QuasiNewtonianMinimizer extends NewtonMinimizer {
         final double alpha = findAlpha(p);
         dx = p.multiply(alpha);
         x = x.add(dx);
-//        gradient = fun.getGradient(x);
         return x;
     }
 
     @Override
     public void restart() {
         x = startX;
-//        gradient = fun.getGradient(x);
         w = fun.getGradient(x).multiply(-1);
         g = new DiagonalMatrix(DoubleStream.generate(() -> 1).limit(startX.size()).toArray());
         final double alpha = findAlpha(w);
         dx = w.multiply(alpha);
         x = x.add(dx);
-//        gradient = fun.getGradient(x);
     }
 
     private double findAlpha(final Vector vector) {
-        return getArgMin(vector, -1000, 1000);
+        return getArgMin(vector, -10, 10);
     }
 
     @Override

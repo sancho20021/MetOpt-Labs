@@ -1,11 +1,12 @@
 package methods.multidimensional.newton.methods;
 
-import methods.unidimensional.FibonacciMinimizer;
+import methods.unidimensional.GoldenMinimizer;
 import models.Vector;
 import models.functions.AnalyticFunction;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 public abstract class NewtonMinimizer implements AnalyticMinimizer {
@@ -63,6 +64,19 @@ public abstract class NewtonMinimizer implements AnalyticMinimizer {
     }
 
     protected double getArgMin(final Vector vector, final double lo, final double hi) {
-        return new FibonacciMinimizer(alpha -> fun.get(x.add(vector.multiply(alpha))), lo, hi, Math.min(1e-9, eps)).findMinimum();
+        final double unEps = Math.min(eps, 1e-9);
+        final Function<Double, Double> uniFunction = alpha -> fun.get(x.add(vector.multiply(alpha)));
+        double alpha = hi / 10000;
+        while (alpha < hi) {
+            final var uniMinimizer = new GoldenMinimizer(uniFunction, lo, alpha, unEps);
+            final double minimum = uniMinimizer.findMinimum();
+            if (alpha - minimum <= unEps) {
+                alpha *= 2;
+            } else {
+                return minimum;
+            }
+        }
+        return alpha;
+//        return new GoldenMinimizer(alpha -> fun.get(x.add(vector.multiply(alpha))), lo, hi, Math.min(1e-9, eps)).findMinimum();
     }
 }

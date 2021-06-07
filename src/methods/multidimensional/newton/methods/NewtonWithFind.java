@@ -14,6 +14,6 @@ public class NewtonWithFind extends NewtonMethod {
 
     @Override
     protected double getAlpha(Vector direction) {
-        return getArgMin(direction, -10, 200);
+        return getArgMin(direction, 0, 200);
     }
 }

@@ -1,6 +1,7 @@
 package methods.multidimensional.newton.methods;
 
 import methods.unidimensional.FibonacciMinimizer;
+import methods.unidimensional.GoldenMinimizer;
 import methods.unidimensional.Minimizer;
 import models.Vector;
 import models.functions.AnalyticFunction;
@@ -50,11 +51,11 @@ public class FastestDescentV2 implements AnalyticMinimizer {
 
     private static double getMaxA(final AnalyticFunction f) {
 //        return 2.0 / f.getMinEigenValueAbs() * Math.max(1, f.getB().getEuclideanNorm());
-        return 100;
+        return 10;
     }
 
     public FastestDescentV2(final AnalyticFunction fun, final Vector startX, final double eps, final double maxA) {
-        this(fun, startX, eps, maxA, /*ParabolicMinimizer.class*/ FibonacciMinimizer.class);
+        this(fun, startX, eps, maxA, /*ParabolicMinimizer.class*/ GoldenMinimizer.class);
     }
 
     public FastestDescentV2(final AnalyticFunction fun, final Vector startX, final double eps) {
@@ -99,12 +100,31 @@ public class FastestDescentV2 implements AnalyticMinimizer {
     }
 
     private double oneDimMin(final Vector x0) {
+        final double unEps = Math.min(eps, 1e-9);
         final Function<Double, Double> uniFunction = a -> fun.get(x0.add(fun.getGradient(x0).multiply(-a)));
         try {
-            final var uniMinInstance = uniMinimizer
+            double alpha = maxA / 10000;
+            while (alpha < maxA) {
+                final var uniMinimizer = getMinimizer(uniFunction, alpha, unEps);
+                final double minimum = uniMinimizer.findMinimum();
+                if (alpha - minimum <= unEps) {
+                    alpha *= 2;
+                } else {
+                    return minimum;
+                }
+            }
+            return alpha;
+        } catch (final Exception e) {
+            System.err.println("Error occurred while trying to use one dimension minimizer");
+            throw new IllegalStateException("See log, message: " + e.getMessage(), e);
+        }
+    }
+
+    private Minimizer getMinimizer(final Function<Double, Double> f, double hi, final double unEps) {
+        try {
+            return uniMinimizer
                     .getConstructor(Function.class, double.class, double.class, double.class)
-                    .newInstance(uniFunction, 0.0, maxA, Math.min(eps, 1e-9));
-            return uniMinInstance.findMinimum();
+                    .newInstance(f, 0, hi, unEps);
         } catch (final Exception e) {
             System.err.println("Error occurred while trying to use one dimension minimizer");
             throw new IllegalStateException("See log, message: " + e.getMessage(), e);

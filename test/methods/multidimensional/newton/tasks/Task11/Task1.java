@@ -15,7 +15,7 @@ public class Task1 {
     final public static MinimizationTask fourthPower = new MinimizationTask(
             NewtonMethodTest.fourthPower,
             new Vector(2, 0),
-            new Vector(5, 100));
+            new Vector(-1337, 322));
 
     final public static MinimizationTask shiftedParaboloid = new MinimizationTask(
             NewtonMethodTest.shiftedParaboloid,
@@ -35,9 +35,9 @@ public class Task1 {
 
     private static void test(final AnalyticMinimizer.AnalyticMinimizerCons cons, final double eps, final double delta, final String methodName) {
         final var tester = new MinimizationTester(cons, eps, true, methodName);
-        tester.test(f1, delta);
+        //tester.test(f1, delta);
         tester.test(fourthPower, delta);
-        tester.test(shiftedParaboloid, delta);
+        //tester.test(shiftedParaboloid, delta);
     }
 
     private static void testNewton(final AnalyticMinimizer.AnalyticMinimizerCons cons, final double eps, final String methodName) {
